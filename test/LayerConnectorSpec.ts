@@ -17,4 +17,12 @@ describe("Given a layer connector", () => {
     context("when the layer to be shown is of type editor", () => {
         it("should return the layer changes");
     });
+
+    context("when the bounding box is changed", () => {
+        it("should reload the source with the new bounding box");
+    });
+
+    context("when the zoom level is changed", () => {
+        it("should reload the sourc with the new zoom");
+    });
 });
