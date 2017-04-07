@@ -1,3 +1,4 @@
+require("jsdom-global")();
 import "reflect-metadata";
 import expect = require("expect.js");
 import {IMock, Mock, Times, It} from "typemoq";
