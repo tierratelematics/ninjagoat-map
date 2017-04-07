@@ -4,15 +4,22 @@ import {IMock, Mock, Times, It} from "typemoq";
 import ILayerPresenter from "../scripts/interfaces/ILayerPresenter";
 import LayerPresenter from "../scripts/LayerPresenter";
 import ILayerView from "../scripts/interfaces/ILayerView";
-import {ReplaySubject} from "rx";
+import {ReplaySubject, Subject, Observable} from "rx";
+import IMapView from "../scripts/interfaces/IMapView";
+import {LatLng, LatLngBounds} from "leaflet";
 
 describe("Given a layer presenter", () => {
 
     let subject: ILayerPresenter;
     let geojsonView: IMock<ILayerView<any, any>>;
     let data: ReplaySubject<any>;
+    let mapView: IMock<IMapView>;
+    let viewChanges: Subject<void>;
 
     beforeEach(() => {
+        viewChanges = new Subject<void>();
+        mapView = Mock.ofType<IMapView>();
+        mapView.setup(m => m.changes()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
         geojsonView = Mock.ofType<ILayerView<any, any>>();
         subject = new LayerPresenter({"GeoJSON": geojsonView.object});
@@ -57,13 +64,18 @@ describe("Given a layer presenter", () => {
             data.onNext({markers: [{id: "8283"}]});
         });
         it("should reload the source with the new bounding box", () => {
-            let layer = subject.present(context => {
-                if (context.zoom) data.onNext({zoom: context.zoom});
-                return data;
+            subject.present(context => {
+                if (!context.bounds) return data;
+                return Observable.just(context);
             }, "GeoJSON");
-            layer.refresh({bounds: null, zoom: 18});
+            mapView.setup(m => m.getBounds()).returns(() => new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)));
+            mapView.setup(m => m.getZoom()).returns(() => 12);
+            viewChanges.onNext(null);
 
-            geojsonView.verify(g => g.update(It.isValue({markers: [{id: "8283"}]}), It.isValue({zoom: 18}), null), Times.once());
+            geojsonView.verify(g => g.update(It.isAny(), It.isValue({
+                bounds: new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)),
+                zoom: 12
+            }), null), Times.once());
         });
     });
 });

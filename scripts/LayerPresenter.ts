@@ -1,6 +1,5 @@
 import ILayerPresenter from "./interfaces/ILayerPresenter";
 import {LayerType, MapContext} from "./LayerRegistration";
-import IConnectedLayer from "./interfaces/IConnectedLayer";
 import {Observable} from "rx";
 import {inject} from "inversify";
 import ILayerView from "./interfaces/ILayerView";
@@ -12,8 +11,8 @@ class LayerPresenter implements ILayerPresenter {
 
     }
 
-    present<T>(source: (context: MapContext) => Observable<T>, type: LayerType): IConnectedLayer {
-        return undefined;
+    present<T>(source: (context: MapContext) => Observable<T>, type: LayerType) {
+        
     }
 
 }
