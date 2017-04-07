@@ -23,7 +23,13 @@ describe("Given a layer presenter", () => {
         mapView.setup(m => m.changes()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
         geojsonView = Mock.ofType<ILayerView<any, any>>();
-        subject = new LayerPresenter({"GeoJSON": geojsonView.object});
+        subject = new LayerPresenter({"GeoJSON": geojsonView.object}, mapView.object);
+    });
+    
+    context("when a layer type is not registered", () => {
+        it("should throw an error", () => {
+            expect(() => subject.present(context => data, <any>"InexistentType")).to.throwError();
+        });
     });
 
     context("when a layer is shown for the first time", () => {
@@ -46,12 +52,6 @@ describe("Given a layer presenter", () => {
             subject.present(context => data, "GeoJSON");
 
             geojsonView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), null), Times.once());
-        });
-    });
-
-    context("when a layer type is not registered", () => {
-        it("should throw an error", () => {
-            expect(() => subject.present(context => data, <any>"InexistentType")).to.throwError();
         });
     });
 
