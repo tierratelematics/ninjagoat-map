@@ -1,18 +1,16 @@
 import {ObservableViewModel} from "ninjagoat";
 import {LayerEntry} from "./LayerRegistration";
-import {multiInject} from "inversify";
 
-class MapViewModel extends ObservableViewModel<void> {
+abstract class MapViewModel<T> extends ObservableViewModel<T> {
 
     layers: LayerEntry<any>[] = [];
 
-    constructor(@multiInject("LayerEntry") layers: LayerEntry<any>[]) {
+    constructor() {
         super();
-        this.layers = layers;
+        this.layers = this.defineLayers();
     }
 
-    protected onData(data: void): void {
-    }
+    abstract defineLayers(): LayerEntry<any> [];
 }
 
 export default MapViewModel
