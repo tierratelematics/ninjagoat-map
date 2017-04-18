@@ -13,13 +13,14 @@ class LayerPresenter implements ILayerPresenter {
 
     }
 
-    present<T>(source: (context: MapContext) => Observable<T>, type: LayerType) {
+    present<T>(source: (context: MapContext) => Observable<T>, type: LayerType, options: any) {
         let observable = source({
             bounds: this.mapView.getBounds(),
             zoom: this.mapView.getZoom()
         });
         let subscription = observable.subscribe(data => {
-
+            let layerView = this.layerViews[type];
+            layerView.create(data, options);
         });
     }
 

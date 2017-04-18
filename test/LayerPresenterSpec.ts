@@ -25,10 +25,10 @@ describe("Given a layer presenter", () => {
         geojsonView = Mock.ofType<ILayerView<any, any>>();
         subject = new LayerPresenter({"GeoJSON": geojsonView.object}, mapView.object);
     });
-    
+
     context("when a layer type is not registered", () => {
         it("should throw an error", () => {
-            expect(() => subject.present(context => data, <any>"InexistentType")).to.throwError();
+            expect(() => subject.present(context => data, <any>"InexistentType", null)).to.throwError();
         });
     });
 
@@ -37,9 +37,16 @@ describe("Given a layer presenter", () => {
             data.onNext({markers: []});
         });
         it("should be created", () => {
-            subject.present(context => data, "GeoJSON");
+            subject.present(context => data, "GeoJSON", null);
 
             geojsonView.verify(g => g.create(It.isValue({markers: []}), null), Times.once());
+        });
+        context("and custom options are passed", () => {
+            it("should be used on the view", () => {
+                subject.present(context => data, "GeoJSON", {popup: false});
+
+                geojsonView.verify(g => g.create(It.isValue({markers: []}), It.isValue({popup: false})), Times.once());
+            });
         });
     });
 
@@ -49,7 +56,7 @@ describe("Given a layer presenter", () => {
             data.onNext({markers: [{id: "8283"}]});
         });
         it("the layer itself should be updated", () => {
-            subject.present(context => data, "GeoJSON");
+            subject.present(context => data, "GeoJSON", null);
 
             geojsonView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), null), Times.once());
         });
@@ -68,7 +75,7 @@ describe("Given a layer presenter", () => {
             subject.present(context => {
                 if (!context.bounds) return data;
                 return Observable.just(context);
-            }, "GeoJSON");
+            }, "GeoJSON", null);
             mapView.setup(m => m.getBounds()).returns(() => new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)));
             mapView.setup(m => m.getZoom()).returns(() => 12);
             viewChanges.onNext(null);
