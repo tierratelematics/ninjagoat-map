@@ -1,6 +1,5 @@
 import ILayerPresenter from "./interfaces/ILayerPresenter";
-import {LayerType, MapContext} from "./LayerRegistration";
-import {Observable} from "rx";
+import {LayerType, MapObservableFactory} from "./LayerRegistration";
 import {inject, injectable} from "inversify";
 import ILayerView from "./interfaces/ILayerView";
 import {Dictionary} from "ninjagoat";
@@ -15,7 +14,7 @@ class LayerPresenter implements ILayerPresenter {
 
     }
 
-    present<T>(source: (context: MapContext) => Observable<T>, type: LayerType, options: any) {
+    present<T>(source: MapObservableFactory<T>, type: LayerType, options: any) {
         let layerView = this.layerViews[type];
         if (!layerView)
             throw new Error("No view registered for this type of layer");

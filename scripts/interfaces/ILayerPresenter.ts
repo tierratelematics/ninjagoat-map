@@ -1,8 +1,7 @@
-import {LayerType, MapContext} from "../LayerRegistration";
-import {Observable} from "rx";
+import {LayerType, MapObservableFactory} from "../LayerRegistration";
 
 interface ILayerPresenter {
-    present<T>(source: (context: MapContext) => Observable<T>, type: LayerType, options: any);
+    present<T>(source: MapObservableFactory<T>, type: LayerType, options: any);
 }
 
 export default ILayerPresenter
