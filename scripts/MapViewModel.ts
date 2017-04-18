@@ -1,16 +1,8 @@
-import {ObservableViewModel} from "ninjagoat";
-import {LayerEntry} from "./LayerRegistration";
+import {ObservableViewModel, Dictionary} from "ninjagoat";
+import {MapObservableFactory} from "./LayerRegistration";
 
 abstract class MapViewModel<T> extends ObservableViewModel<T> {
-
-    layers: LayerEntry<any>[] = [];
-
-    constructor() {
-        super();
-        this.layers = this.defineLayers();
-    }
-
-    abstract defineLayers(): LayerEntry<any> [];
+    abstract defineSources(): Dictionary<MapObservableFactory<any>>;
 }
 
 export default MapViewModel
