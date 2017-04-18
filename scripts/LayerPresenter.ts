@@ -1,12 +1,13 @@
 import ILayerPresenter from "./interfaces/ILayerPresenter";
 import {LayerType, MapContext} from "./LayerRegistration";
 import {Observable} from "rx";
-import {inject} from "inversify";
+import {inject, injectable} from "inversify";
 import ILayerView from "./interfaces/ILayerView";
 import {Dictionary} from "ninjagoat";
 import IMapView from "./interfaces/IMapView";
 import {Layer} from "leaflet";
 
+@injectable()
 class LayerPresenter implements ILayerPresenter {
 
     constructor(@inject("LayerViews") private layerViews: Dictionary<ILayerView<any,any>>,
