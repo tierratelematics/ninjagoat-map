@@ -16,7 +16,7 @@ class NinjagoatMap extends React.Component<void, void> {
     componentDidMount() {
         forEach(React.Children.toArray(this.props.children), (children:React.ReactElement<any>) => {
             let layer = {
-                type: children.props.type,
+                type: children.type,
                 observable: children.props.observable,
                 options: children.props.options
             };
