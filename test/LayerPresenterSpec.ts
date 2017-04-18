@@ -12,7 +12,7 @@ import {LatLng, LatLngBounds} from "leaflet";
 describe("Given a layer presenter", () => {
 
     let subject: ILayerPresenter;
-    let geojsonView: IMock<ILayerView<any, any>>;
+    let layerView: IMock<ILayerView<any, any>>;
     let data: ReplaySubject<any>;
     let mapView: IMock<IMapView>;
     let viewChanges: Subject<void>;
@@ -22,8 +22,8 @@ describe("Given a layer presenter", () => {
         mapView = Mock.ofType<IMapView>();
         mapView.setup(m => m.changes()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
-        geojsonView = Mock.ofType<ILayerView<any, any>>();
-        subject = new LayerPresenter({"GeoJSON": geojsonView.object}, mapView.object);
+        layerView = Mock.ofType<ILayerView<any, any>>();
+        subject = new LayerPresenter({"GeoJSON": layerView.object}, mapView.object);
     });
 
     context("when a layer type is not registered", () => {
@@ -39,13 +39,13 @@ describe("Given a layer presenter", () => {
         it("should be created", () => {
             subject.present(context => data, "GeoJSON", null);
 
-            geojsonView.verify(g => g.create(It.isValue({markers: []}), null), Times.once());
+            layerView.verify(g => g.create(It.isValue({markers: []}), null), Times.once());
         });
         context("and custom options are passed", () => {
             it("should be used on the view", () => {
                 subject.present(context => data, "GeoJSON", {popup: false});
 
-                geojsonView.verify(g => g.create(It.isValue({markers: []}), It.isValue({popup: false})), Times.once());
+                layerView.verify(g => g.create(It.isValue({markers: []}), It.isValue({popup: false})), Times.once());
             });
         });
     });
@@ -58,7 +58,7 @@ describe("Given a layer presenter", () => {
         it("the layer itself should be updated", () => {
             subject.present(context => data, "GeoJSON", null);
 
-            geojsonView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), null), Times.once());
+            layerView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), It.isAny(), null), Times.once());
         });
     });
 
@@ -80,10 +80,10 @@ describe("Given a layer presenter", () => {
             mapView.setup(m => m.getZoom()).returns(() => 12);
             viewChanges.onNext(null);
 
-            geojsonView.verify(g => g.update(It.isAny(), It.isValue({
+            layerView.verify(g => g.update(It.isAny(), It.isValue({
                 bounds: new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)),
                 zoom: 12
-            }), null), Times.once());
+            }), It.isAny(), null), Times.once());
         });
     });
 });
