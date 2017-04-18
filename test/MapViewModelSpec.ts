@@ -4,7 +4,6 @@ import MapViewModel from "../scripts/MapViewModel";
 import TestMapViewModel from "./fixtures/TestMapViewModel";
 import {IMock, Mock, Times, It} from "typemoq";
 import ILayerPresenter from "../scripts/interfaces/ILayerPresenter";
-import MissingMapViewModel from "./fixtures/MissingMapViewModel";
 
 describe("Given a map viewmodel", () => {
     let subject: MapViewModel<void>;
@@ -16,16 +15,16 @@ describe("Given a map viewmodel", () => {
     });
 
     context("when asked to show the map's layers", () => {
-        beforeEach(() => subject.setLayers([
-            {
-                type: "GeoJSON",
-                name: "foo"
-            }, {
-                type: "GeoJSON",
-                name: "bar"
-            }
-        ]));
         context("and all the sources are registered", () => {
+            beforeEach(() => subject.setLayers([
+                {
+                    type: "GeoJSON",
+                    name: "foo"
+                }, {
+                    type: "GeoJSON",
+                    name: "bar"
+                }
+            ]));
             it("should present the layers", () => {
                 let sources = subject.defineSources();
                 subject.present();
@@ -35,9 +34,13 @@ describe("Given a map viewmodel", () => {
             });
         });
         context("and some sources are missing", () => {
+            beforeEach(() => subject.setLayers([
+                {
+                    type: "GeoJSON",
+                    name: "bad"
+                }
+            ]));
             it("should throw an error", () => {
-                let subject = new MissingMapViewModel(layerPresenter.object);
-
                 expect(() => subject.present()).to.throwError();
             });
         });

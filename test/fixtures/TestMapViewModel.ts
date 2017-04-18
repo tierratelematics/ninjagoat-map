@@ -6,6 +6,11 @@ import {Observable} from "rx";
 
 class TestMapViewModel extends MapViewModel<any> {
 
+    private sources = {
+        "foo": context => Observable.empty(),
+        "bar": context => Observable.empty()
+    };
+
     constructor(layerPresenter: ILayerPresenter) {
         super(layerPresenter);
     }
@@ -14,10 +19,7 @@ class TestMapViewModel extends MapViewModel<any> {
     }
 
     defineSources(): Dictionary<MapObservableFactory<any>> {
-        return {
-            "foo": context => Observable.empty(),
-            "bar": context => Observable.empty()
-        }
+        return this.sources;
     }
 
 }
