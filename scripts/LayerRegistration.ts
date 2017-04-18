@@ -3,9 +3,9 @@ import {Observable} from "rx";
 
 export type MapObservableFactory<T> = (context: MapContext) => Observable<T>;
 
-export type LayerEntry<TOptions> = {
+export type LayerEntry<TData, TOptions> = {
     type: LayerType;
-    name: string;
+    observable: MapObservableFactory<TData>;
     options: TOptions
 };
 
