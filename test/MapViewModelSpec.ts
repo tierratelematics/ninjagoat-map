@@ -19,27 +19,28 @@ describe("Given a map viewmodel", () => {
             beforeEach(() => subject.setLayers([
                 {
                     type: "GeoJSON",
-                    name: "foo"
+                    name: "foo",
+                    options: {popup: false}
                 }, {
                     type: "GeoJSON",
-                    name: "bar"
+                    name: "bar",
+                    options: null
                 }
             ]));
             it("should present the layers", () => {
                 let sources = subject.defineSources();
                 subject.present();
 
-                layerPresenter.verify(l => l.present(sources["foo"], "GeoJSON"), Times.once());
-                layerPresenter.verify(l => l.present(sources["bar"], "GeoJSON"), Times.once());
+                layerPresenter.verify(l => l.present(sources["foo"], "GeoJSON", It.isValue({popup: false})), Times.once());
+                layerPresenter.verify(l => l.present(sources["bar"], "GeoJSON", null), Times.once());
             });
         });
         context("and some sources are missing", () => {
-            beforeEach(() => subject.setLayers([
-                {
-                    type: "GeoJSON",
-                    name: "bad"
-                }
-            ]));
+            beforeEach(() => subject.setLayers([{
+                type: "GeoJSON",
+                name: "bad",
+                options: null
+            }]));
             it("should throw an error", () => {
                 expect(() => subject.present()).to.throwError();
             });

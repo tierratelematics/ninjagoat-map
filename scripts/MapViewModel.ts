@@ -6,7 +6,7 @@ import {forEach} from "lodash";
 
 abstract class MapViewModel<T> extends ObservableViewModel<T> {
 
-    protected layers: LayerEntry[];
+    protected layers: LayerEntry<any>[];
 
     constructor(@inject("ILayerPresenter") protected layerPresenter: ILayerPresenter) {
         super();
@@ -14,7 +14,7 @@ abstract class MapViewModel<T> extends ObservableViewModel<T> {
 
     abstract defineSources(): Dictionary<MapObservableFactory<any>>;
 
-    setLayers(layers: LayerEntry[]) {
+    setLayers(layers: LayerEntry<any>[]) {
         this.layers = layers;
     }
 
@@ -24,7 +24,7 @@ abstract class MapViewModel<T> extends ObservableViewModel<T> {
             let source = sources[layer.name];
             if (!source)
                 throw new Error("A layer source must be specified");
-            this.layerPresenter.present(source, layer.type);
+            this.layerPresenter.present(source, layer.type, layer.options);
         });
     }
 }
