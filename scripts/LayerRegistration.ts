@@ -3,6 +3,11 @@ import {Observable} from "rx";
 
 export type MapObservableFactory<T> = (context: MapContext) => Observable<T>;
 
+export type LayerEntry = {
+    type: LayerType;
+    name: string;
+};
+
 export type LayerType = "GeoJSON";
 
 export type MapContext = {
