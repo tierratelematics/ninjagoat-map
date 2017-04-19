@@ -2,7 +2,9 @@ import ILayerView from "../interfaces/ILayerView";
 import {Layer, tileLayer} from "leaflet";
 import TileProps from "./TileProps";
 import {LayerType} from "../LayerRegistration";
+import {injectable} from "inversify";
 
+@injectable()
 class TileLayerView implements ILayerView<TileProps, void> {
     type:LayerType = "Tile";
 

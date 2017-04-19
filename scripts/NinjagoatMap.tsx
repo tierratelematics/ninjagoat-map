@@ -5,6 +5,8 @@ import {Map} from "react-leaflet";
 import ILayerPresenter from "./interfaces/ILayerPresenter";
 import {LayerEntry, LayerType} from "./LayerRegistration";
 import IMapHolder from "./interfaces/IMapHolder";
+import Tile from "./tile/Tile";
+import GeoJSON from "./geojson/GeoJSON";
 
 class NinjagoatMap extends React.Component<void, void> {
 
@@ -14,18 +16,27 @@ class NinjagoatMap extends React.Component<void, void> {
     private mapHolder: IMapHolder;
 
     render() {
-        return <Map ref={component => this.mapHolder.setMap(component.map)}/>;
+        return <Map center={[45, 45]} zoom={16} ref={component => this.mapHolder.setMap(component.leafletElement)}/>;
     }
 
     componentDidMount() {
         forEach(React.Children.toArray(this.props.children), (children: React.ReactElement<any>) => {
             let layer: LayerEntry<any, any> = {
-                type: children.type as LayerType,
+                type: this.getLayerType(children.type),
                 observable: children.props.observable,
                 options: children.props.options
             };
             this.layerPresenter.present(layer.observable, layer.type, layer.options);
         });
+    }
+
+    private getLayerType(constructor: any): LayerType {
+        let type: LayerType;
+        if (constructor === Tile)
+            type = "Tile";
+        if (constructor === GeoJSON)
+            type = "GeoJSON";
+        return type;
     }
 }
 
