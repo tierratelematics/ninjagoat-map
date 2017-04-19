@@ -3,6 +3,7 @@ import {forEach} from "lodash";
 import {lazyInject} from "ninjagoat";
 import {Map} from "react-leaflet";
 import ILayerPresenter from "./interfaces/ILayerPresenter";
+import {LayerEntry, LayerType} from "./LayerRegistration";
 
 class NinjagoatMap extends React.Component<void, void> {
 
@@ -15,8 +16,8 @@ class NinjagoatMap extends React.Component<void, void> {
 
     componentDidMount() {
         forEach(React.Children.toArray(this.props.children), (children:React.ReactElement<any>) => {
-            let layer = {
-                type: children.type,
+            let layer:LayerEntry<any, any> = {
+                type: children.type as LayerType,
                 observable: children.props.observable,
                 options: children.props.options
             };

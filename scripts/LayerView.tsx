@@ -1,5 +1,5 @@
 import * as React from "react";
-import LayerProps from "../interfaces/LayerProps";
+import LayerProps from "./interfaces/LayerProps";
 
 class LayerView<TProps, TOptions> extends React.Component<LayerProps<TProps, TOptions>, void> {
 

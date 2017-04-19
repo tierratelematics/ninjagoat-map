@@ -1,7 +1,8 @@
 import * as React from "react";
 import LayerView from "../LayerView";
+import GeoJSONProps from "./GeoJSONProps";
 
-class Tile extends LayerView<GeoJSON, void> {
+class Tile extends LayerView<GeoJSONProps, void> {
 
 }
 

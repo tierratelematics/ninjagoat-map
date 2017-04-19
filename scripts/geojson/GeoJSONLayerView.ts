@@ -1,16 +1,17 @@
 import ILayerView from "../interfaces/ILayerView";
 import {Layer, geoJSON as geoJSONLayer} from "leaflet";
+import GeoJSONProps from "./GeoJSONProps";
 
-class GeoJSONLayerView implements ILayerView<GeoJSON, void> {
+class GeoJSONLayerView implements ILayerView<GeoJSONProps, void> {
 
-    create(props: GeoJSON, options: void): Layer {
+    create(props: GeoJSONProps, options: void): Layer {
         return geoJSONLayer(props);
     }
 
-    update(fromProps: GeoJSON, toProps: GeoJSON, layer: L.Layer, options: void) {
+    update(fromProps: GeoJSONProps, toProps: GeoJSONProps, layer: Layer, options: void) {
 
     }
 
 }
 
-export default
+export default GeoJSONLayerView
