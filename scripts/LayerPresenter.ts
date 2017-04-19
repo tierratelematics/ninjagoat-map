@@ -5,19 +5,21 @@ import ILayerView from "./interfaces/ILayerView";
 import IMapView from "./interfaces/IMapView";
 import {Layer} from "leaflet";
 import {find} from "lodash";
+import ILayerManager from "./interfaces/ILayerManager";
 
 @injectable()
 class LayerPresenter implements ILayerPresenter {
 
     constructor(@multiInject("ILayerView") private layerViews: ILayerView<any,any>[],
-                @inject("IMapView") private mapView: IMapView) {
+                @inject("IMapView") private mapView: IMapView,
+                @inject("ILayerManager") private layerManager: ILayerManager) {
 
     }
 
     present<T>(source: MapObservableFactory<T>, type: LayerType, options: any) {
         let layerView = find(this.layerViews, ['type', type]);
         if (!layerView)
-            throw new Error("No view registered for this type of layer");
+            throw new Error("No views registered for this type of layer");
 
         let layer: Layer,
             fromData: T;
@@ -30,10 +32,12 @@ class LayerPresenter implements ILayerPresenter {
             }))
             .switch()
             .subscribe(newData => {
-                if (!fromData)
+                if (!fromData) {
                     layer = layerView.create(newData, options);
-                else
+                    this.layerManager.add(layer);
+                } else {
                     layerView.update(fromData, newData, layer, options);
+                }
                 fromData = newData;
             });
     }

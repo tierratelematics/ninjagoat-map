@@ -9,6 +9,7 @@ import {ReplaySubject, Subject, Observable} from "rx";
 import IMapView from "../scripts/interfaces/IMapView";
 import {LatLng, LatLngBounds} from "leaflet";
 import MockLayerView from "./fixtures/MockLayerView";
+import ILayerManager from "../scripts/interfaces/ILayerManager";
 
 describe("Given a layer presenter", () => {
 
@@ -17,6 +18,7 @@ describe("Given a layer presenter", () => {
     let data: ReplaySubject<any>;
     let mapView: IMock<IMapView>;
     let viewChanges: Subject<void>;
+    let layerManager: IMock<ILayerManager>;
 
     beforeEach(() => {
         viewChanges = new Subject<void>();
@@ -24,7 +26,8 @@ describe("Given a layer presenter", () => {
         mapView.setup(m => m.changes()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
         layerView = Mock.ofType<ILayerView<any, any>>(MockLayerView);
-        subject = new LayerPresenter([layerView.object], mapView.object);
+        layerManager = Mock.ofType<ILayerManager>();
+        subject = new LayerPresenter([layerView.object], mapView.object, layerManager.object);
     });
 
     context("when a layer type is not registered", () => {
@@ -41,6 +44,7 @@ describe("Given a layer presenter", () => {
             subject.present(context => data, "GeoJSON", null);
 
             layerView.verify(g => g.create(It.isValue({markers: []}), null), Times.once());
+            layerManager.verify(l => l.add(It.isAny()), Times.once());
         });
         context("and custom options are passed", () => {
             it("should be used on the view", () => {
