@@ -31,8 +31,7 @@ class MapView implements IMapView {
     }
 
     changes(): Observable<void> {
-        let map = this.holder.obtainMap();
-        return Observable.fromCallback(map.on, map)('moveend');
+        return Observable.fromEvent(this.holder.obtainMap(), 'moveend');
     }
 
 }
