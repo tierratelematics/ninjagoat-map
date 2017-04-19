@@ -2,7 +2,7 @@ import {MapObservableFactory} from "../LayerRegistration";
 
 interface LayerProps<TData, TOptions> {
     observable: MapObservableFactory<TData>,
-    options: TOptions
+    options?: TOptions
 }
 
 export default LayerProps

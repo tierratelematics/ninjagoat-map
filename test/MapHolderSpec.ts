@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import expect = require("expect.js");
 import IMapHolder from "../scripts/interfaces/IMapHolder";
-import MapHolder from "../scripts/MapHolder";
+import MapHolder from "../scripts/leaflet/MapHolder";
 import {Map} from "leaflet";
 
 describe("Given a map holder", () => {

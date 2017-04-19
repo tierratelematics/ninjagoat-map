@@ -1,4 +1,4 @@
-import IMapHolder from "./interfaces/IMapHolder";
+import IMapHolder from "../interfaces/IMapHolder";
 import {Map} from "leaflet";
 import {injectable} from "inversify";
 

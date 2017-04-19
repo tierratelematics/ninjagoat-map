@@ -22,7 +22,7 @@ declare class LayerView<TProps, TOptions> extends React.Component<LayerProps<TPr
 
 interface LayerProps<TData, TOptions> {
     observable: MapObservableFactory<TData>,
-    options: TOptions
+    options?: TOptions
 }
 
 type MapObservableFactory<T> = (context: MapContext) => Observable<T>;

@@ -1,8 +1,8 @@
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {interfaces} from "inversify";
-import MapHolder from "./MapHolder";
+import MapHolder from "./leaflet/MapHolder";
 import IMapHolder from "./interfaces/IMapHolder";
-import MapView from "./MapView";
+import MapView from "./leaflet/MapView";
 import IMapView from "./interfaces/IMapView";
 import ILayerPresenter from "./interfaces/ILayerPresenter";
 import LayerPresenter from "./LayerPresenter";
