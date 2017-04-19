@@ -1,21 +1,21 @@
 import ILayerPresenter from "./interfaces/ILayerPresenter";
 import {LayerType, MapObservableFactory} from "./LayerRegistration";
-import {inject, injectable} from "inversify";
+import {inject, injectable, multiInject} from "inversify";
 import ILayerView from "./interfaces/ILayerView";
-import {Dictionary} from "ninjagoat";
 import IMapView from "./interfaces/IMapView";
 import {Layer} from "leaflet";
+import {find} from "lodash";
 
 @injectable()
 class LayerPresenter implements ILayerPresenter {
 
-    constructor(@inject("LayerViews") private layerViews: Dictionary<ILayerView<any,any>>,
+    constructor(@multiInject("ILayerView") private layerViews: ILayerView<any,any>[],
                 @inject("IMapView") private mapView: IMapView) {
 
     }
 
     present<T>(source: MapObservableFactory<T>, type: LayerType, options: any) {
-        let layerView = this.layerViews[type];
+        let layerView = find(this.layerViews, ['type', type]);
         if (!layerView)
             throw new Error("No view registered for this type of layer");
 

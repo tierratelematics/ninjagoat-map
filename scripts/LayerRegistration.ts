@@ -9,7 +9,7 @@ export type LayerEntry<TData, TOptions> = {
     options: TOptions
 };
 
-export type LayerType = "GeoJSON" | "GeoJSON";
+export type LayerType = "GeoJSON" | "Tile";
 
 export type MapContext = {
     bounds: LatLngBounds,

@@ -1,5 +1,5 @@
-require("jsdom-global")();
 import "reflect-metadata";
+require("jsdom-global")();
 import expect = require("expect.js");
 import {IMock, Mock, Times, It} from "typemoq";
 import ILayerPresenter from "../scripts/interfaces/ILayerPresenter";
@@ -8,6 +8,7 @@ import ILayerView from "../scripts/interfaces/ILayerView";
 import {ReplaySubject, Subject, Observable} from "rx";
 import IMapView from "../scripts/interfaces/IMapView";
 import {LatLng, LatLngBounds} from "leaflet";
+import MockLayerView from "./fixtures/MockLayerView";
 
 describe("Given a layer presenter", () => {
 
@@ -22,8 +23,8 @@ describe("Given a layer presenter", () => {
         mapView = Mock.ofType<IMapView>();
         mapView.setup(m => m.changes()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
-        layerView = Mock.ofType<ILayerView<any, any>>();
-        subject = new LayerPresenter({"GeoJSON": layerView.object}, mapView.object);
+        layerView = Mock.ofType<ILayerView<any, any>>(MockLayerView);
+        subject = new LayerPresenter([layerView.object], mapView.object);
     });
 
     context("when a layer type is not registered", () => {
