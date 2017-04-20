@@ -27,7 +27,8 @@ class MapView implements IMapView {
     }
 
     setCenter(center: LatLng, zoom?: number) {
-
+        let map = this.holder.obtainMap();
+        map.setView(center, zoom);
     }
 
     changes(): Observable<void> {
