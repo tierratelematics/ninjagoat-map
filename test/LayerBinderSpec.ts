@@ -2,8 +2,8 @@ import "reflect-metadata";
 require("jsdom-global")();
 import expect = require("expect.js");
 import {IMock, Mock, Times, It} from "typemoq";
-import ILayerPresenter from "../scripts/interfaces/ILayerPresenter";
-import LayerPresenter from "../scripts/LayerPresenter";
+import ILayerBinder from "../scripts/interfaces/ILayerBinder";
+import LayerBinder from "../scripts/LayerBinder";
 import ILayerView from "../scripts/interfaces/ILayerView";
 import {ReplaySubject, Subject, Observable} from "rx";
 import IMapView from "../scripts/interfaces/IMapView";
@@ -11,9 +11,9 @@ import {LatLng, LatLngBounds} from "leaflet";
 import MockLayerView from "./fixtures/MockLayerView";
 import ILayerManager from "../scripts/interfaces/ILayerManager";
 
-describe("Given a layer presenter", () => {
+describe("Given a layer binder", () => {
 
-    let subject: ILayerPresenter;
+    let subject: ILayerBinder;
     let layerView: IMock<ILayerView<any, any>>;
     let data: ReplaySubject<any>;
     let mapView: IMock<IMapView>;
@@ -27,12 +27,12 @@ describe("Given a layer presenter", () => {
         data = new ReplaySubject<any>();
         layerView = Mock.ofType<ILayerView<any, any>>(MockLayerView);
         layerManager = Mock.ofType<ILayerManager>();
-        subject = new LayerPresenter([layerView.object], mapView.object, layerManager.object);
+        subject = new LayerBinder([layerView.object], mapView.object, layerManager.object);
     });
 
     context("when a layer type is not registered", () => {
         it("should throw an error", () => {
-            expect(() => subject.present(context => data, <any>"InexistentType", null)).to.throwError();
+            expect(() => subject.bind(context => data, <any>"InexistentType", null)).to.throwError();
         });
     });
 
@@ -41,14 +41,14 @@ describe("Given a layer presenter", () => {
             data.onNext({markers: []});
         });
         it("should be created", () => {
-            subject.present(context => data, "GeoJSON", null);
+            subject.bind(context => data, "GeoJSON", null);
 
             layerView.verify(g => g.create(It.isValue({markers: []}), null), Times.once());
             layerManager.verify(l => l.add(It.isAny()), Times.once());
         });
         context("and custom options are passed", () => {
             it("should be used on the view", () => {
-                subject.present(context => data, "GeoJSON", {popup: false});
+                subject.bind(context => data, "GeoJSON", {popup: false});
 
                 layerView.verify(g => g.create(It.isValue({markers: []}), It.isValue({popup: false})), Times.once());
             });
@@ -61,7 +61,7 @@ describe("Given a layer presenter", () => {
             data.onNext({markers: [{id: "8283"}]});
         });
         it("the layer itself should be updated", () => {
-            subject.present(context => data, "GeoJSON", null);
+            subject.bind(context => data, "GeoJSON", null);
 
             layerView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), It.isAny(), null), Times.once());
         });
@@ -77,7 +77,7 @@ describe("Given a layer presenter", () => {
             data.onNext({markers: [{id: "8283"}]});
         });
         it("should reload the source with the new bounding box", () => {
-            subject.present(context => {
+            subject.bind(context => {
                 if (!context.bounds) return data;
                 return Observable.just(context);
             }, "GeoJSON", null);

@@ -1,4 +1,4 @@
-import ILayerPresenter from "./interfaces/ILayerPresenter";
+import ILayerBinder from "./interfaces/ILayerBinder";
 import {LayerType, MapObservableFactory} from "./LayerRegistration";
 import {inject, injectable, multiInject} from "inversify";
 import ILayerView from "./interfaces/ILayerView";
@@ -8,7 +8,7 @@ import {find} from "lodash";
 import ILayerManager from "./interfaces/ILayerManager";
 
 @injectable()
-class LayerPresenter implements ILayerPresenter {
+class LayerBinder implements ILayerBinder {
 
     constructor(@multiInject("ILayerView") private layerViews: ILayerView<any,any>[],
                 @inject("IMapView") private mapView: IMapView,
@@ -16,7 +16,7 @@ class LayerPresenter implements ILayerPresenter {
 
     }
 
-    present<T>(source: MapObservableFactory<T>, type: LayerType, options: any) {
+    bind<T>(source: MapObservableFactory<T>, type: LayerType, options: any) {
         let layerView = find(this.layerViews, ['type', type]);
         if (!layerView)
             throw new Error("No views registered for this type of layer");
@@ -44,4 +44,4 @@ class LayerPresenter implements ILayerPresenter {
 
 }
 
-export default LayerPresenter
+export default LayerBinder

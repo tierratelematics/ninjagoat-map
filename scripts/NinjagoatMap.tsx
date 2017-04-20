@@ -2,7 +2,7 @@ import * as React from "react";
 import {forEach} from "lodash";
 import {lazyInject} from "ninjagoat";
 import {Map} from "react-leaflet";
-import ILayerPresenter from "./interfaces/ILayerPresenter";
+import ILayerBinder from "./interfaces/ILayerBinder";
 import {LayerEntry, LayerType} from "./LayerRegistration";
 import IMapHolder from "./interfaces/IMapHolder";
 import Tile from "./tile/Tile";
@@ -10,8 +10,8 @@ import GeoJSON from "./geojson/GeoJSON";
 
 class NinjagoatMap extends React.Component<void, void> {
 
-    @lazyInject("ILayerPresenter")
-    private layerPresenter: ILayerPresenter;
+    @lazyInject("ILayerBinder")
+    private layerBinder: ILayerBinder;
     @lazyInject("IMapHolder")
     private mapHolder: IMapHolder;
 
@@ -26,7 +26,7 @@ class NinjagoatMap extends React.Component<void, void> {
                 observable: children.props.observable,
                 options: children.props.options
             };
-            this.layerPresenter.present(layer.observable, layer.type, layer.options);
+            this.layerBinder.bind(layer.observable, layer.type, layer.options);
         });
     }
 
