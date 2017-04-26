@@ -13,7 +13,7 @@ class ObservableLayer extends Path {
     createLeafletElement(props: any): Object {
         let observable: MapObservableFactory<any> = props.observable;
         const {...options} = props;
-        return this.layerBinder.bind(observable, null, options);
+        return this.layerBinder.bind(observable, this.getLayerType(props), options);
     }
 
     getLayerType(props: any): LayerType {
