@@ -1,18 +1,15 @@
-import ILayerBinder from "../interfaces/ILayerBinder";
-import {LayerType, MapObservableFactory} from "./LayerRegistration";
+import ILayerBinder from "./ILayerBinder";
 import {inject, injectable, multiInject} from "inversify";
-import ILayerView from "../interfaces/ILayerView";
-import IMapView from "./interfaces/IMapView";
-import {Layer} from "leaflet";
+import ILayerView from "./ILayerView";
 import {find} from "lodash";
-import ILayerManager from "./interfaces/ILayerManager";
+import {LayerType, MapObservableFactory} from "./LayerRegistration";
+import IMapView from "../leaflet/IMapView";
 
 @injectable()
 class LayerBinder implements ILayerBinder {
 
     constructor(@multiInject("ILayerView") private layerViews: ILayerView<any,any>[],
-                @inject("IMapView") private mapView: IMapView,
-                @inject("ILayerManager") private layerManager: ILayerManager) {
+                @inject("IMapView") private mapView: IMapView) {
 
     }
 
@@ -21,7 +18,7 @@ class LayerBinder implements ILayerBinder {
         if (!layerView)
             throw new Error("No views registered for this type of layer");
 
-        let layer: Layer,
+        let layer = layerView.create(options),
             fromData: T;
 
         this.mapView.changes()
@@ -32,14 +29,11 @@ class LayerBinder implements ILayerBinder {
             }))
             .switch()
             .subscribe(newData => {
-                if (!fromData) {
-                    layer = layerView.create(newData, options);
-                    this.layerManager.add(layer);
-                } else {
-                    layerView.update(fromData, newData, layer, options);
-                }
+                layerView.update(fromData, newData, layer, options);
                 fromData = newData;
             });
+
+        return layer;
     }
 
 }

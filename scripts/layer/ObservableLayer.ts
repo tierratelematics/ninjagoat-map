@@ -1,24 +1,24 @@
-import ILayerBinder from "../interfaces/ILayerBinder";
-const {Path} = require("react-leaflet");
+import ILayerBinder from "./ILayerBinder";
+import * as Leaflet from "react-leaflet";
 import {isFunction} from "lodash";
 import {lazyInject} from "ninjagoat";
 import {LayerType} from "./LayerRegistration";
 
-class ObservableLayer extends Path {
+class ObservableLayer extends Leaflet.Path {
 
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
 
-    createLeafletElement(props: Object): Object {
+    createLeafletElement(props: any): Object {
         const {observable, type, ...options} = props;
         return this.layerBinder.bind(observable, this.getLayerType(), options);
     }
 
-    getLayerType(props: Object): LayerType {
+    getLayerType(props: any): LayerType {
         return props.type;
     }
 
-    updateLeafletElement(fromProps: Object, toProps: Object) {
+    updateLeafletElement(fromProps: any, toProps: any) {
         if (isFunction(toProps.style)) {
             this.setStyle(toProps.style);
         } else {

@@ -1,8 +1,8 @@
-import IMapView from "../interfaces/IMapView";
+import IMapView from "./interfaces/IMapView";
 import {LatLng, LatLngBounds} from "leaflet";
 import {Observable} from "rx";
 import {inject, injectable} from "inversify";
-import IMapHolder from "../interfaces/IMapHolder";
+import IMapHolder from "./interfaces/IMapHolder";
 
 @injectable()
 class MapView implements IMapView {

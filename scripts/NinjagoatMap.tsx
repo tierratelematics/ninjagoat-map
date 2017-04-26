@@ -1,7 +1,7 @@
 import * as React from "react";
-import {lazyInject} from "ninjagoat";
 import {Map} from "react-leaflet";
-import IMapHolder from "./interfaces/IMapHolder";
+import {lazyInject} from "ninjagoat";
+import IMapHolder from "./leaflet/IMapHolder";
 
 class NinjagoatMap extends React.Component<void, void> {
 

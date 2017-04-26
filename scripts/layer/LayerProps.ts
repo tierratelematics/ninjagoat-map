@@ -1,4 +1,4 @@
-import {MapObservableFactory} from "../LayerRegistration";
+import {MapObservableFactory} from "./LayerRegistration";
 
 interface LayerProps<TData, TOptions> {
     observable: MapObservableFactory<TData>,

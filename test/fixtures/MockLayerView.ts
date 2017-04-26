@@ -1,4 +1,4 @@
-import ILayerView from "../../scripts/interfaces/ILayerView";
+import ILayerView from "../../scripts/layer/ILayerView";
 import {LayerType} from "../../scripts/LayerRegistration";
 
 export default class MockLayerView implements ILayerView<any, any> {

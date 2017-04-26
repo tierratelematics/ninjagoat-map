@@ -1,5 +1,5 @@
 import {Layer} from "leaflet";
-import {LayerType} from "../LayerRegistration";
+import {LayerType} from "./LayerRegistration";
 
 interface ILayerView<TProps, TOptions> {
     type: LayerType;

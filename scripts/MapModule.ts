@@ -1,16 +1,14 @@
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {interfaces} from "inversify";
-import MapHolder from "./leaflet/MapHolder";
-import IMapHolder from "./interfaces/IMapHolder";
-import MapView from "./leaflet/MapView";
-import IMapView from "./interfaces/IMapView";
-import ILayerBinder from "./interfaces/ILayerBinder";
-import LayerBinder from "./LayerBinder";
-import ILayerView from "./interfaces/ILayerView";
-import GeoJSONLayerView from "./geojson/GeoJSONLayerView";
+import ILayerBinder from "./layer/ILayerBinder";
+import LayerBinder from "./layer/LayerBinder";
+import ILayerView from "./layer/ILayerView";
 import GeoJSONProps from "./geojson/GeoJSONProps";
-import LayerManager from "./leaflet/LayerManager";
-import ILayerManager from "./interfaces/ILayerManager";
+import GeoJSONLayerView from "./geojson/GeoJSONLayerView";
+import IMapView from "./leaflet/IMapView";
+import IMapHolder from "./leaflet/IMapHolder";
+import MapHolder from "./leaflet/MapHolder";
+import MapView from "./leaflet/MapView";
 
 class MapModule implements IModule {
 
@@ -18,7 +16,6 @@ class MapModule implements IModule {
         container.bind<IMapHolder>("IMapHolder").to(MapHolder).inSingletonScope();
         container.bind<IMapView>("IMapView").to(MapView).inSingletonScope();
         container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder).inSingletonScope();
-        container.bind<ILayerManager>("ILayerManager").to(LayerManager).inSingletonScope();
         container.bind<ILayerView<GeoJSONProps, void>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
     };
 

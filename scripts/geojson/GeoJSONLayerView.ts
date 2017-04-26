@@ -1,9 +1,8 @@
-import ILayerView from "../interfaces/ILayerView";
+import ILayerView from "../layer/ILayerView";
 import {Layer, geoJSON as geoJSONLayer} from "leaflet";
-import {LayerType} from "../LayerRegistration";
 import {injectable} from "inversify";
-
-type GeoJSONProps = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+import GeoJSONProps from "./GeoJSONProps";
+import {LayerType} from "../layer/LayerRegistration";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONProps, any> {
