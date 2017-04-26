@@ -7,3 +7,5 @@ class GeoJSONLayer extends ObservableLayer {
         return "GeoJSON";
     }
 }
+
+export default GeoJSONLayer

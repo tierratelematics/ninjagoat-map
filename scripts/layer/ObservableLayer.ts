@@ -1,17 +1,19 @@
+import "../../declarations/react-leaflet";
 import ILayerBinder from "./ILayerBinder";
-import * as Leaflet from "react-leaflet";
 import {isFunction} from "lodash";
+import {Path} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
-import {LayerType} from "./LayerRegistration";
+import {LayerType, MapObservableFactory} from "./LayerRegistration";
 
-class ObservableLayer extends Leaflet.Path {
+class ObservableLayer extends Path {
 
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
 
     createLeafletElement(props: any): Object {
-        const {observable, type, ...options} = props;
-        return this.layerBinder.bind(observable, this.getLayerType(), options);
+        let observable: MapObservableFactory<any> = props.observable;
+        const {...options} = props;
+        return this.layerBinder.bind(observable, null, options);
     }
 
     getLayerType(props: any): LayerType {
