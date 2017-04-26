@@ -8,8 +8,6 @@ import ILayerBinder from "./interfaces/ILayerBinder";
 import LayerBinder from "./LayerBinder";
 import ILayerView from "./interfaces/ILayerView";
 import GeoJSONLayerView from "./geojson/GeoJSONLayerView";
-import TileLayerView from "./tile/TileLayerView";
-import TileProps from "./tile/TileProps";
 import GeoJSONProps from "./geojson/GeoJSONProps";
 import LayerManager from "./leaflet/LayerManager";
 import ILayerManager from "./interfaces/ILayerManager";
@@ -22,7 +20,6 @@ class MapModule implements IModule {
         container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder).inSingletonScope();
         container.bind<ILayerManager>("ILayerManager").to(LayerManager).inSingletonScope();
         container.bind<ILayerView<GeoJSONProps, void>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
-        container.bind<ILayerView<TileProps, void>>("ILayerView").to(TileLayerView).inSingletonScope();
     };
 
     register(registry: IViewModelRegistry, serviceLocator?: IServiceLocator, overrides?: any): void {

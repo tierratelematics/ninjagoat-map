@@ -1,7 +1,7 @@
-import ILayerBinder from "./interfaces/ILayerBinder";
+import ILayerBinder from "../interfaces/ILayerBinder";
 import {LayerType, MapObservableFactory} from "./LayerRegistration";
 import {inject, injectable, multiInject} from "inversify";
-import ILayerView from "./interfaces/ILayerView";
+import ILayerView from "../interfaces/ILayerView";
 import IMapView from "./interfaces/IMapView";
 import {Layer} from "leaflet";
 import {find} from "lodash";
