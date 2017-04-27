@@ -9,7 +9,7 @@ class NinjagoatMap extends React.Component<void, void> {
     private mapHolder: IMapHolder;
 
     render() {
-        return <Map center={[45, 45]} zoom={8} ref={component => this.mapHolder.setMap(component.leafletElement)}>
+        return <Map center={[0, 0]} zoom={1} ref={component => this.mapHolder.setMap(component.leafletElement)}>
             {this.props.children}
         </Map>;
     }
