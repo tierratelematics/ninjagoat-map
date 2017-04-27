@@ -5,7 +5,7 @@ import * as React from "react";
 import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
-import {LatLngBounds, GeoJSONOptions} from "leaflet";
+import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression} from "leaflet";
 import {Path, TileLayerProps, WMSTileLayerProps} from "react-leaflet";
 
 export class MapModule implements IModule {
@@ -16,7 +16,12 @@ export class MapModule implements IModule {
 
 }
 
-export class NinjagoatMap extends React.Component<void, void> {
+export type MapProps = {
+    center?: LatLngExpression,
+    zoom?: number
+}
+
+export class NinjagoatMap extends React.Component<MapProps, void> {
     render();
 }
 
@@ -51,3 +56,15 @@ export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<Ge
 export const TileLayer: React.ComponentClass<TileLayerProps>;
 
 export const WMSTileLayer: React.ComponentClass<WMSTileLayerProps>;
+
+export interface IMapBoundaries {
+    getCenter(): LatLng;
+    getBounds(): LatLngBounds;
+    getZoom(): number;
+    setCenter(center: LatLng, zoom?: number);
+    boundsChanges(): Observable<void>;
+}
+
+export class CoordinatesUtil {
+    static latLng(latitude: number, longitude: number): LatLng;
+}
