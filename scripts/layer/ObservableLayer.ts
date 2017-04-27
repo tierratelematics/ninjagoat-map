@@ -5,7 +5,9 @@ import {lazyInject} from "ninjagoat";
 import {LayerType, MapObservableFactory} from "./LayerRegistration";
 const PropTypes = require("prop-types");
 
-class ObservableLayer extends Path {
+export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
+
+export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends Path {
 
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
@@ -17,25 +19,19 @@ class ObservableLayer extends Path {
         pane: PropTypes.string,
     };
 
-    createLeafletElement(props: any): Object {
+    createLeafletElement(props: P): Object {
         let observable: MapObservableFactory<any> = props.observable;
-        const {...options} = props;
-        let self = <any>this;
-        return this.layerBinder.bind(observable, this.getLayerType(props), self.getOptions(options));
+        return this.layerBinder.bind(observable, this.getLayerType(props), this.getOptions(props));
     }
 
-    getLayerType(props: any): LayerType {
-        return props.type;
-    }
+    abstract getLayerType(props: P): LayerType;
 
-    updateLeafletElement(fromProps: any, toProps: any) {
-        let self = <any>this;
-        if (isFunction(toProps.style)) {
-            self.setStyle(toProps.style);
+    updateLeafletElement(fromProps: P, toProps: P) {
+        let props = <any>toProps;
+        if (isFunction(props.style)) {
+            this.setStyle(props.style);
         } else {
-            self.setStyleIfChanged(fromProps, toProps);
+            this.setStyleIfChanged(fromProps, toProps);
         }
     }
 }
-
-export default ObservableLayer

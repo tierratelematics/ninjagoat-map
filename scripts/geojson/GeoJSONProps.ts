@@ -1,3 +1,6 @@
-type GeoJSONProps = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+import {GeoJSONOptions} from "leaflet";
+import {MapObservableFactory} from "../layer/LayerRegistration";
 
-export default GeoJSONProps
+export type GeoJSON = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+
+export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSON>};
