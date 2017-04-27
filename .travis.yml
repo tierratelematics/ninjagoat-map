@@ -1,0 +1,19 @@
++language: node_js
+node_js:
+- '6'
+install:
+- npm install smild@4.3.6 -g
+- npm install
+- npm install react react-router react-dom ninjagoat@2.0.0
+script:
+- smild test
+- smild build
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: sysadmin@tierratelematics.com
+  api_key:
+    secure: GkduVfwIOp3150H8hAf1R/SnC84w8si9nyNjFz6Ug0IdLKDiJvvi9AagJvBkyoXeDONWTiakig12XR0PIC5iGEXPyJ7CppxTbK1emuGOThX/34tSoQYW/yfpUCSk+HLccrIMSkN/QV5ef9qni/BXDM+G2EAB6kXbXmda7F6BR0dVIFm982MXQh8xfPJXY83HajRjSJDnupT+UJ5RqKTt9O4rbeiCh34dpJR9lwP52oQd+5qnRhl63a8PfMiN3nErncxPiyCAnNkye8vkP9qkIQpCeUdEqIEbibfVupm6/QPkWhS+tM8TaKFCSULyTJRsSlBQfmvL3E11xJKc0qV1d3cOExBw7eOOtjFBAD6lFzOC66lik9BYOERqNhMCEmlS3T5iIkL7K1ciCKHmBBUaEwSrRXsMwqAd3A4XiFAcF5crd8dBePjlFQ/AtmtO/B1Hxb/H/dFD9vzuhoMLLf8v0tw3aizb1XCL6YQzWj18kPgy7upwAFxRrI8zDkKXPsgwB57+azsEYF9IXBGPNJXFK3P1ywEs/toXNqv3TJ7cV43SgyW5fXtmHuZTBchY1uIKU7UK2DGAmXhX40JBflKCb4Q+Swu79+WB/XD82TtLH/OSdPNMQqC7oRupJgUz/pLt88tkpUPvLGKnw4CLGjt/kT1mAza5ky/GzK3rVlei+sQ=
+  on:
+    repo: tierratelematics/ninjagoat-map
+    tags: true
