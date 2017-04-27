@@ -6,7 +6,7 @@ import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
 import {LatLngBounds, GeoJSONOptions} from "leaflet";
-import {Path, TileLayerProps} from "react-leaflet";
+import {Path, TileLayerProps, WMSTileLayerProps} from "react-leaflet";
 
 export class MapModule implements IModule {
 
@@ -49,3 +49,5 @@ export type GeoJSON = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSON>};
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
+
+export const WMSTileLayer: React.ComponentClass<WMSTileLayerProps>;
