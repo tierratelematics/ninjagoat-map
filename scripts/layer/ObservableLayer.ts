@@ -4,6 +4,7 @@ import {Path} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
 import {MapObservableFactory} from "./MapContext";
 const PropTypes = require("prop-types");
+import {Layer} from "leaflet";
 
 export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
 
@@ -19,7 +20,7 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
         pane: PropTypes.string,
     };
 
-    createLeafletElement(props: P): Object {
+    createLeafletElement(props: P): Layer {
         let observable: MapObservableFactory<any> = props.observable;
         return this.layerBinder.bind(observable, this.getLayerType(props), this.getOptions(props));
     }
