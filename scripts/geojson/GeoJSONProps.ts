@@ -1,5 +1,5 @@
 import {GeoJSONOptions} from "leaflet";
-import {MapObservableFactory} from "../layer/LayerRegistration";
+import {MapObservableFactory} from "../layer/MapContext";
 
 export type GeoJSON = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 

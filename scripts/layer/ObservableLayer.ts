@@ -2,7 +2,7 @@ import ILayerBinder from "./ILayerBinder";
 import {isFunction} from "lodash";
 import {Path} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
-import {LayerType, MapObservableFactory} from "./LayerRegistration";
+import {MapObservableFactory} from "./MapContext";
 const PropTypes = require("prop-types");
 
 export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
@@ -24,7 +24,7 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
         return this.layerBinder.bind(observable, this.getLayerType(props), this.getOptions(props));
     }
 
-    abstract getLayerType(props: P): LayerType;
+    abstract getLayerType(props: P): string;
 
     updateLeafletElement(fromProps: P, toProps: P) {
         let props = <any>toProps;

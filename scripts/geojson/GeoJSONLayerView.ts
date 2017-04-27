@@ -1,12 +1,11 @@
 import ILayerView from "../layer/ILayerView";
 import {Layer, geoJSON as geoJSONLayer} from "leaflet";
 import {injectable} from "inversify";
-import {LayerType} from "../layer/LayerRegistration";
 import {GeoJSON} from "./GeoJSONProps";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSON, any> {
-    type: LayerType = "GeoJSON";
+    type = "GeoJSON";
 
     create(options: any): Layer {
         return geoJSONLayer(null, options);

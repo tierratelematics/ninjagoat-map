@@ -2,7 +2,7 @@ import ILayerBinder from "./ILayerBinder";
 import {inject, injectable, multiInject} from "inversify";
 import ILayerView from "./ILayerView";
 import {find} from "lodash";
-import {LayerType, MapObservableFactory} from "./LayerRegistration";
+import {MapObservableFactory} from "./MapContext";
 import IMapView from "../leaflet/IMapView";
 import {Layer} from "leaflet";
 
@@ -14,7 +14,7 @@ class LayerBinder implements ILayerBinder {
 
     }
 
-    bind<T>(source: MapObservableFactory<T>, type: LayerType, options: any): Layer {
+    bind<T>(source: MapObservableFactory<T>, type: string, options: any): Layer {
         let layerView = find(this.layerViews, ['type', type]);
         if (!layerView)
             throw new Error("No views registered for this type of layer");

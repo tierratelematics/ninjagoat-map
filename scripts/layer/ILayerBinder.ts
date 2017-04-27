@@ -1,8 +1,8 @@
 import {Layer} from "leaflet";
-import {MapObservableFactory, LayerType} from "./LayerRegistration";
+import {MapObservableFactory} from "./MapContext";
 
 interface ILayerBinder {
-    bind<T>(source: MapObservableFactory<T>, type: LayerType, options: any): Layer
+    bind<T>(source: MapObservableFactory<T>, type: string, options: any): Layer
 }
 
 export default ILayerBinder
