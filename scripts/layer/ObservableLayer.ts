@@ -3,7 +3,7 @@ import {isFunction} from "lodash";
 import {Path} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
 import {LayerType, MapObservableFactory} from "./LayerRegistration";
-import {PropTypes} from "react";
+const PropTypes = require("prop-types");
 
 class ObservableLayer extends Path {
 

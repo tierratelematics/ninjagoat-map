@@ -11,6 +11,7 @@
     "inversify": "~3.0.0-rc.2",
     "leaflet": "~1.0.3",
     "lodash": "~4.10.0",
+    "prop-types": "~15.5.8",
     "react-leaflet": "~1.1.4",
     "reflect-metadata": "0.1.8",
     "rx": "~4.1.0"
