@@ -31,7 +31,7 @@ class MapBoundaries implements IMapBoundaries {
         map.setView(center, zoom);
     }
 
-    changes(): Observable<void> {
+    boundsChanges(): Observable<void> {
         return Observable.fromEvent(this.holder.obtainMap(), 'moveend');
     }
 

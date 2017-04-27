@@ -21,7 +21,7 @@ describe("Given a layer binder", () => {
     beforeEach(() => {
         viewChanges = new Subject<void>();
         mapBoundaries = Mock.ofType<IMapBoundaries>();
-        mapBoundaries.setup(m => m.changes()).returns(() => viewChanges);
+        mapBoundaries.setup(m => m.boundsChanges()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
         layerView = Mock.ofType<ILayerView<any, any>>(MockLayerView);
         subject = new LayerBinder([layerView.object], mapBoundaries.object);

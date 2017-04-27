@@ -6,7 +6,7 @@ interface IMapBoundaries {
     getBounds(): LatLngBounds;
     getZoom(): number;
     setCenter(center: LatLng, zoom?: number);
-    changes(): Observable<void>;
+    boundsChanges(): Observable<void>;
 }
 
 export default IMapBoundaries
