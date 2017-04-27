@@ -2,14 +2,13 @@ import "reflect-metadata";
 require("jsdom-global")();
 import expect = require("expect.js");
 import {IMock, Mock, Times, It} from "typemoq";
-import ILayerBinder from "../scripts/layer/ILayerBinder";
-import LayerBinder from "../scripts/LayerBinder";
-import ILayerView from "../scripts/layer/ILayerView";
 import {ReplaySubject, Subject, Observable} from "rx";
-import IMapView from "../scripts/interfaces/IMapView";
 import {LatLng, LatLngBounds} from "leaflet";
 import MockLayerView from "./fixtures/MockLayerView";
-import ILayerManager from "../scripts/interfaces/ILayerManager";
+import IMapView from "../scripts/leaflet/IMapView";
+import ILayerView from "../scripts/layer/ILayerView";
+import LayerBinder from "../scripts/layer/LayerBinder";
+import ILayerBinder from "../scripts/layer/ILayerBinder";
 
 describe("Given a layer binder", () => {
 
@@ -18,7 +17,6 @@ describe("Given a layer binder", () => {
     let data: ReplaySubject<any>;
     let mapView: IMock<IMapView>;
     let viewChanges: Subject<void>;
-    let layerManager: IMock<ILayerManager>;
 
     beforeEach(() => {
         viewChanges = new Subject<void>();
@@ -26,8 +24,7 @@ describe("Given a layer binder", () => {
         mapView.setup(m => m.changes()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
         layerView = Mock.ofType<ILayerView<any, any>>(MockLayerView);
-        layerManager = Mock.ofType<ILayerManager>();
-        subject = new LayerBinder([layerView.object], mapView.object, layerManager.object);
+        subject = new LayerBinder([layerView.object], mapView.object);
     });
 
     context("when a layer type is not registered", () => {
@@ -37,21 +34,10 @@ describe("Given a layer binder", () => {
     });
 
     context("when a layer is shown for the first time", () => {
-        beforeEach(() => {
-            data.onNext({markers: []});
-        });
-        it("should be created", () => {
-            subject.bind(context => data, "GeoJSON", null);
+        it("should be just created", () => {
+            subject.bind(context => data, "GeoJSON", {popup: false});
 
-            layerView.verify(g => g.create(It.isValue({markers: []}), null), Times.once());
-            layerManager.verify(l => l.add(It.isAny()), Times.once());
-        });
-        context("and custom options are passed", () => {
-            it("should be used on the view", () => {
-                subject.bind(context => data, "GeoJSON", {popup: false});
-
-                layerView.verify(g => g.create(It.isValue({markers: []}), It.isValue({popup: false})), Times.once());
-            });
+            layerView.verify(g => g.create(It.isValue({popup: false})), Times.once());
         });
     });
 
@@ -65,10 +51,6 @@ describe("Given a layer binder", () => {
 
             layerView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), It.isAny(), null), Times.once());
         });
-    });
-
-    context("when the layer to be shown is of type editor", () => {
-        it("should return the layer changes");
     });
 
     context("when the bounding box changes", () => {
