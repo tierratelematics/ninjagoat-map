@@ -28,7 +28,7 @@ class MapBoundaries implements IMapBoundaries {
 
     setCenter(center: LatLng, zoom?: number) {
         let map = this.holder.obtainMap();
-        map.setView(center, zoom);
+        map.flyTo(center, zoom);
     }
 
     boundsChanges(): Observable<void> {
