@@ -1,10 +1,9 @@
-import ILayerView from "../../scripts/interfaces/ILayerView";
-import {LayerType} from "../../scripts/LayerRegistration";
+import ILayerView from "../../scripts/layer/ILayerView";
 
 export default class MockLayerView implements ILayerView<any, any> {
-    type:LayerType = "GeoJSON";
+    type = "GeoJSON";
 
-    create(props: any, options: any): L.Layer {
+    create(options: any): L.Layer {
         return undefined;
     }
 

@@ -1,12 +1,12 @@
 import {LatLng, LatLngBounds} from "leaflet";
 import {Observable} from "rx";
 
-interface IMapView {
+interface IMapBoundaries {
     getCenter(): LatLng;
     getBounds(): LatLngBounds;
     getZoom(): number;
     setCenter(center: LatLng, zoom?: number);
-    changes(): Observable<void>;
+    boundsChanges(): Observable<void>;
 }
 
-export default IMapView
+export default IMapBoundaries

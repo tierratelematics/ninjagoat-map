@@ -1,8 +1,12 @@
+/// <reference path="../declarations/react-leaflet.d.ts" />
+/// <reference types="leaflet" />
+/// <reference types="react-leaflet" />
 import * as React from "react";
 import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
-import {LatLngBounds} from "leaflet";
+import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression} from "leaflet";
+import {Path, TileLayerProps, WMSTileLayerProps} from "react-leaflet";
 
 export class MapModule implements IModule {
 
@@ -12,36 +16,55 @@ export class MapModule implements IModule {
 
 }
 
-export class NinjagoatMap extends React.Component<void, void> {
+export type MapProps = {
+    center?: LatLngExpression,
+    zoom?: number
+}
+
+export class NinjagoatMap extends React.Component<MapProps, void> {
     render();
 }
 
-declare class LayerView<TProps, TOptions> extends React.Component<LayerProps<TProps, TOptions>, void> {
-    render();
-}
-
-interface LayerProps<TData, TOptions> {
-    observable: MapObservableFactory<TData>,
-    options?: TOptions
-}
-
-type MapObservableFactory<T> = (context: MapContext) => Observable<T>;
+export type MapObservableFactory<T> = (context: MapContext) => Observable<T>;
 
 export type MapContext = {
     bounds: LatLngBounds,
     zoom: number
 }
 
-export class GeoJSON extends LayerView<GeoJSONProps, void> {
+export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
 
+declare abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends Path {
+
+    static contextTypes;
+
+    createLeafletElement(props: P): Object;
+
+    abstract getLayerType(props: P): string;
+
+    updateLeafletElement(fromProps: P, toProps: P);
 }
 
-type GeoJSONProps = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
-
-export class Tile extends LayerView<TileProps, void> {
-
+export class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
+    getLayerType(props: Object): string;
 }
 
-type TileProps = {
-    url: string;
+export type GeoJSON = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+
+export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSON>};
+
+export const TileLayer: React.ComponentClass<TileLayerProps>;
+
+export const WMSTileLayer: React.ComponentClass<WMSTileLayerProps>;
+
+export interface IMapBoundaries {
+    getCenter(): LatLng;
+    getBounds(): LatLngBounds;
+    getZoom(): number;
+    setCenter(center: LatLng, zoom?: number);
+    boundsChanges(): Observable<void>;
+}
+
+export class CoordinatesUtil {
+    static latLng(latitude: number, longitude: number): LatLng;
 }

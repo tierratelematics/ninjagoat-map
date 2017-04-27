@@ -1,18 +1,17 @@
-import ILayerView from "../interfaces/ILayerView";
+import ILayerView from "../layer/ILayerView";
 import {Layer, geoJSON as geoJSONLayer} from "leaflet";
-import GeoJSONProps from "./GeoJSONProps";
-import {LayerType} from "../LayerRegistration";
 import {injectable} from "inversify";
+import {GeoJSON} from "./GeoJSONProps";
 
 @injectable()
-class GeoJSONLayerView implements ILayerView<GeoJSONProps, void> {
-    type: LayerType = "GeoJSON";
+class GeoJSONLayerView implements ILayerView<GeoJSON, any> {
+    type = "GeoJSON";
 
-    create(props: GeoJSONProps, options: void): Layer {
-        return geoJSONLayer(props);
+    create(options: any): Layer {
+        return geoJSONLayer(null, options);
     }
 
-    update(fromProps: GeoJSONProps, toProps: GeoJSONProps, layer: Layer, options: void) {
+    update(fromProps: GeoJSON, toProps: GeoJSON, layer: Layer, options: any) {
         let untypedLayer = (<any>layer); //Due since leaflet types are incomplete
         untypedLayer.clearLayers();
         untypedLayer.addData(toProps);

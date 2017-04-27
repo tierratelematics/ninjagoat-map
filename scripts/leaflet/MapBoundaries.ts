@@ -1,11 +1,11 @@
-import IMapView from "../interfaces/IMapView";
 import {LatLng, LatLngBounds} from "leaflet";
 import {Observable} from "rx";
 import {inject, injectable} from "inversify";
-import IMapHolder from "../interfaces/IMapHolder";
+import IMapBoundaries from "./IMapBoundaries";
+import IMapHolder from "./IMapHolder";
 
 @injectable()
-class MapView implements IMapView {
+class MapBoundaries implements IMapBoundaries {
 
     constructor(@inject("IMapHolder") private holder: IMapHolder) {
 
@@ -31,10 +31,10 @@ class MapView implements IMapView {
         map.setView(center, zoom);
     }
 
-    changes(): Observable<void> {
+    boundsChanges(): Observable<void> {
         return Observable.fromEvent(this.holder.obtainMap(), 'moveend');
     }
 
 }
 
-export default MapView
+export default MapBoundaries
