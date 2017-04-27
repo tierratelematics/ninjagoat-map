@@ -1,11 +1,11 @@
 import {LatLng, LatLngBounds} from "leaflet";
 import {Observable} from "rx";
 import {inject, injectable} from "inversify";
-import IMapView from "./IMapView";
+import IMapBoundaries from "./IMapBoundaries";
 import IMapHolder from "./IMapHolder";
 
 @injectable()
-class MapView implements IMapView {
+class MapBoundaries implements IMapBoundaries {
 
     constructor(@inject("IMapHolder") private holder: IMapHolder) {
 
@@ -37,4 +37,4 @@ class MapView implements IMapView {
 
 }
 
-export default MapView
+export default MapBoundaries

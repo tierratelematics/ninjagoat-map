@@ -3,14 +3,14 @@ import {inject, injectable, multiInject} from "inversify";
 import ILayerView from "./ILayerView";
 import {find} from "lodash";
 import {MapObservableFactory} from "./MapContext";
-import IMapView from "../leaflet/IMapView";
+import IMapBoundaries from "../leaflet/IMapBoundaries";
 import {Layer} from "leaflet";
 
 @injectable()
 class LayerBinder implements ILayerBinder {
 
     constructor(@multiInject("ILayerView") private layerViews: ILayerView<any,any>[],
-                @inject("IMapView") private mapView: IMapView) {
+                @inject("IMapBoundaries") private mapBoundaries: IMapBoundaries) {
 
     }
 
@@ -22,11 +22,11 @@ class LayerBinder implements ILayerBinder {
         let layer = layerView.create(options),
             fromData: T;
 
-        this.mapView.changes()
+        this.mapBoundaries.changes()
             .startWith(null)
             .map(() => source({
-                bounds: this.mapView.getBounds(),
-                zoom: this.mapView.getZoom()
+                bounds: this.mapBoundaries.getBounds(),
+                zoom: this.mapBoundaries.getZoom()
             }))
             .switch()
             .subscribe(newData => {
