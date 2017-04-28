@@ -6,7 +6,7 @@ import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
 import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression} from "leaflet";
-import {Path, TileLayerProps, WMSTileLayerProps} from "react-leaflet";
+import {Path, TileLayerProps, WMSTileLayerProps, FeatureGroupProps} from "react-leaflet";
 
 export class MapModule implements IModule {
 
@@ -68,3 +68,8 @@ export interface IMapBoundaries {
 export class CoordinatesUtil {
     static latLng(latitude: number, longitude: number): LatLng;
 }
+
+export const FeatureGroup: React.ComponentClass<FeatureGroupProps>;
+
+export const EditControl: React.ComponentClass<any>;
+

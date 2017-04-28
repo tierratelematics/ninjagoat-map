@@ -2,5 +2,6 @@
 export {default as MapModule} from "./MapModule";
 export {default as NinjagoatMap} from "./view/NinjagoatMap";
 export {default as GeoJSONLayer} from "./geojson/GeoJSONLayer";
-export {TileLayer, WMSTileLayer} from "react-leaflet";
+export {TileLayer, WMSTileLayer, FeatureGroup, Circle} from "react-leaflet";
 export {default as CoordinatesUtil} from "./leaflet/CoordinatesUtil";
+export {EditControl} from "react-leaflet-draw";
