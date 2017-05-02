@@ -1,24 +1,15 @@
 import ILayerBinder from "./ILayerBinder";
-import {isFunction} from "lodash";
-import {Path} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
 import {MapObservableFactory} from "./MapContext";
-const PropTypes = require("prop-types");
 import {Layer} from "leaflet";
+import MapLayer from "./MapLayer";
 
 export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
 
-export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends Path {
+export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends MapLayer<P> {
 
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
-
-    //Patch to link context correctly in React (probably due since static fields are not inherited from javascript classes)
-    static contextTypes = {
-        layerContainer: PropTypes.any.isRequired,
-        map: PropTypes.any.isRequired,
-        pane: PropTypes.string,
-    };
 
     createLeafletElement(props: P): Layer {
         let observable: MapObservableFactory<any> = props.observable;
@@ -26,13 +17,4 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
     }
 
     abstract getLayerType(props: P): string;
-
-    updateLeafletElement(fromProps: P, toProps: P) {
-        let props = <any>toProps;
-        if (isFunction(props.style)) {
-            this.setStyle(props.style);
-        } else {
-            this.setStyleIfChanged(fromProps, toProps);
-        }
-    }
 }

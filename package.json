@@ -13,6 +13,7 @@
     "lodash": "~4.10.0",
     "prop-types": "~15.5.8",
     "react-leaflet": "~1.1.4",
+    "react-leaflet-draw": "~0.15.0",
     "reflect-metadata": "0.1.8",
     "rx": "~4.1.0"
   },

@@ -5,8 +5,8 @@ import * as React from "react";
 import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
-import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression} from "leaflet";
-import {Path, TileLayerProps, WMSTileLayerProps} from "react-leaflet";
+import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression, Layer} from "leaflet";
+import {TileLayerProps, WMSTileLayerProps, FeatureGroup} from "react-leaflet";
 
 export class MapModule implements IModule {
 
@@ -34,24 +34,27 @@ export type MapContext = {
 
 export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
 
-declare abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends Path {
+declare abstract class MapLayer<P> extends FeatureGroup<P> {
 
-    static contextTypes;
-
-    createLeafletElement(props: P): Object;
-
-    abstract getLayerType(props: P): string;
+    abstract createLeafletElement(props: P): Layer;
 
     updateLeafletElement(fromProps: P, toProps: P);
 }
 
-export class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
-    getLayerType(props: Object): string;
+declare abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends MapLayer<P> {
+
+    createLeafletElement(props: P): Layer;
+
+    abstract getLayerType(props: P): string;
 }
 
-export type GeoJSON = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+export class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
+    getLayerType(props: GeoJSONProps): string;
+}
 
-export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSON>};
+export type GeoJSONCollection = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+
+export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSONCollection>};
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
 
@@ -68,3 +71,10 @@ export interface IMapBoundaries {
 export class CoordinatesUtil {
     static latLng(latitude: number, longitude: number): LatLng;
 }
+
+export class FeatureLayer extends ObservableLayer<GeoJSONProps> {
+    getLayerType(props: GeoJSONProps): string;
+}
+
+export const EditControl: React.ComponentClass<any>;
+

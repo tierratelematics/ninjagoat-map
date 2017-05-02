@@ -1,6 +1,6 @@
 declare module "react-leaflet" {
-    //Enable the extension of react-leaflet Path class
-    export class Path extends React.Component<any, any> {
+    //Enable the extension of react-leaflet FeatureGroup class
+    export class FeatureGroup<P> extends React.Component<P, any> {
         setStyle(style);
 
         setStyleIfChanged(fromProps, toProps);

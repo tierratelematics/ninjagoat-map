@@ -1,11 +1,11 @@
 import {ObservableLayer} from "../layer/ObservableLayer";
 import {GeoJSONProps} from "./GeoJSONProps";
 
-class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
+class FeatureLayer extends ObservableLayer<GeoJSONProps> {
 
     getLayerType(props: GeoJSONProps): string {
-        return "GeoJSON";
+        return "Feature";
     }
 }
 
-export default GeoJSONLayer
+export default FeatureLayer
