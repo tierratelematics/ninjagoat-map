@@ -8,8 +8,8 @@ import IMapBoundaries from "./leaflet/IMapBoundaries";
 import IMapHolder from "./leaflet/IMapHolder";
 import MapHolder from "./leaflet/MapHolder";
 import MapBoundaries from "./leaflet/MapBoundaries";
-import {GeoJSON} from "./geojson/GeoJSONProps";
-import FeatureLayerView from "./draw/FeatureLayerView";
+import {GeoJSONCollection} from "./geojson/GeoJSONProps";
+import FeatureLayerView from "./geojson/FeatureLayerView";
 
 class MapModule implements IModule {
 
@@ -17,8 +17,8 @@ class MapModule implements IModule {
         container.bind<IMapHolder>("IMapHolder").to(MapHolder).inSingletonScope();
         container.bind<IMapBoundaries>("IMapBoundaries").to(MapBoundaries).inSingletonScope();
         container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder).inSingletonScope();
-        container.bind<ILayerView<GeoJSON, void>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
-        container.bind<ILayerView<GeoJSON, void>>("ILayerView").to(FeatureLayerView).inSingletonScope();
+        container.bind<ILayerView<GeoJSONCollection, void>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
+        container.bind<ILayerView<GeoJSONCollection, void>>("ILayerView").to(FeatureLayerView).inSingletonScope();
     };
 
     register(registry: IViewModelRegistry, serviceLocator?: IServiceLocator, overrides?: any): void {
