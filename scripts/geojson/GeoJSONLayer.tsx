@@ -3,7 +3,7 @@ import {GeoJSONProps} from "./GeoJSONProps";
 
 class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
 
-    getLayerType(props: Object): string {
+    getLayerType(props: GeoJSONProps): string {
         return "GeoJSON";
     }
 }
