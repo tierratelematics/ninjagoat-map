@@ -46,12 +46,12 @@ declare abstract class ObservableLayer<P extends ObservableLayerProps<any>> exte
 }
 
 export class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
-    getLayerType(props: Object): string;
+    getLayerType(props: GeoJSONProps): string;
 }
 
-export type GeoJSON = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+export type GeoJSONCollection = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 
-export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSON>};
+export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSONCollection>};
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
 
@@ -69,7 +69,9 @@ export class CoordinatesUtil {
     static latLng(latitude: number, longitude: number): LatLng;
 }
 
-export const FeatureGroup: React.ComponentClass<FeatureGroupProps>;
+export class FeatureLayer extends ObservableLayer<GeoJSONProps> {
+    getLayerType(props: GeoJSONProps): string;
+}
 
 export const EditControl: React.ComponentClass<any>;
 
