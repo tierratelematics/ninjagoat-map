@@ -5,8 +5,8 @@ import * as React from "react";
 import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
-import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression} from "leaflet";
-import {Path, TileLayerProps, WMSTileLayerProps, FeatureGroupProps} from "react-leaflet";
+import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression, Layer} from "leaflet";
+import {TileLayerProps, WMSTileLayerProps, FeatureGroup} from "react-leaflet";
 
 export class MapModule implements IModule {
 
@@ -34,15 +34,18 @@ export type MapContext = {
 
 export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
 
-declare abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends Path {
+declare abstract class MapLayer<P> extends FeatureGroup<P> {
 
-    static contextTypes;
-
-    createLeafletElement(props: P): Object;
-
-    abstract getLayerType(props: P): string;
+    abstract createLeafletElement(props: P): Layer;
 
     updateLeafletElement(fromProps: P, toProps: P);
+}
+
+declare abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends MapLayer<P> {
+
+    createLeafletElement(props: P): Layer;
+
+    abstract getLayerType(props: P): string;
 }
 
 export class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {

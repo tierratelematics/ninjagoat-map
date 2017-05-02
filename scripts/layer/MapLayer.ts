@@ -1,9 +1,9 @@
 import {isFunction} from "lodash";
-import {Path} from "react-leaflet";
+import {FeatureGroup} from "react-leaflet";
 const PropTypes = require("prop-types");
 import {Layer} from "leaflet";
 
-abstract class MapLayer<P> extends Path {
+abstract class MapLayer<P> extends FeatureGroup<P> {
 
     //Patch to link context correctly in React (probably due since static fields are not inherited from javascript classes)
     static contextTypes = {
