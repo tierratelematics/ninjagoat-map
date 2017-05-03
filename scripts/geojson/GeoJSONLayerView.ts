@@ -1,17 +1,17 @@
 import ILayerView from "../layer/ILayerView";
 import {Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONGroup} from "leaflet";
 import {injectable} from "inversify";
-import {GeoJSONCollection} from "./GeoJSONProps";
+import {GeoJSONCollection, GeoJSONProps} from "./GeoJSONProps";
 
 @injectable()
-class GeoJSONLayerView implements ILayerView<GeoJSONCollection, any> {
+class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     type = "GeoJSON";
 
-    create(options: any): Layer {
+    create(options: GeoJSONProps): Layer {
         return geoJSONLayer(null, options);
     }
 
-    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer, options: any) {
+    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer, options: GeoJSONProps) {
         let featureGroup = <GeoJSONGroup>layer;
         featureGroup.clearLayers();
         featureGroup.addData(toProps);
