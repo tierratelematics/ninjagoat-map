@@ -1,5 +1,5 @@
 import ILayerView from "../layer/ILayerView";
-import {Layer, featureGroup as featureGroupLayer, FeatureGroup, GeoJSON as geoJSONUtil} from "leaflet";
+import {Layer, featureGroup as featureGroupLayer, FeatureGroup, GeoJSON as geoJSONUtil, LayerGroup} from "leaflet";
 import {injectable} from "inversify";
 import {GeoJSONCollection, GeoJSONProps} from "./GeoJSONProps";
 import {forEach} from "lodash";
@@ -8,15 +8,15 @@ import {forEach} from "lodash";
 class FeatureLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     type = "Feature";
 
-    create(options: GeoJSONProps): Layer {
+    create(options: GeoJSONProps): Layer | LayerGroup {
         return featureGroupLayer([]);
     }
 
-    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer, options: GeoJSONProps) {
-        let featureGroup = <FeatureGroup>layer;
-        featureGroup.clearLayers();
+    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: GeoJSONProps) {
+        let layerGroup = <LayerGroup>layer;
+        layerGroup.clearLayers();
         forEach(toProps.features, feature => {
-            featureGroup.addLayer(geoJSONUtil.geometryToLayer(feature, options));
+            layerGroup.addLayer(geoJSONUtil.geometryToLayer(feature, options));
         });
     }
 

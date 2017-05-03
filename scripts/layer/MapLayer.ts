@@ -1,7 +1,7 @@
 import {isFunction} from "lodash";
 import {FeatureGroup} from "react-leaflet";
 const PropTypes = require("prop-types");
-import {Layer} from "leaflet";
+import {Layer, LayerGroup} from "leaflet";
 
 abstract class MapLayer<P> extends FeatureGroup<P> {
 
@@ -12,7 +12,7 @@ abstract class MapLayer<P> extends FeatureGroup<P> {
         pane: PropTypes.string,
     };
 
-    abstract createLeafletElement(props: P): Layer;
+    abstract createLeafletElement(props: P): Layer | LayerGroup;
 
     updateLeafletElement(fromProps: P, toProps: P) {
         let props = <any>toProps;

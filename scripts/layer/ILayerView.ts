@@ -1,9 +1,9 @@
-import {Layer} from "leaflet";
+import {Layer, LayerGroup} from "leaflet";
 
 interface ILayerView<TProps, TOptions> {
     type: string;
-    create(options: TOptions): Layer;
-    update(fromProps: TProps, toProps: TProps, layer: Layer, options: TOptions);
+    create(options: TOptions): Layer | LayerGroup;
+    update(fromProps: TProps, toProps: TProps, layer: Layer | LayerGroup, options: TOptions);
 }
 
 export default ILayerView
