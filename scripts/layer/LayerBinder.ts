@@ -5,6 +5,7 @@ import {find} from "lodash";
 import {MapObservableFactory} from "./MapContext";
 import IMapBoundaries from "../leaflet/IMapBoundaries";
 import {Layer} from "leaflet";
+import {Observable} from "rx";
 
 @injectable()
 class LayerBinder implements ILayerBinder {
@@ -14,7 +15,7 @@ class LayerBinder implements ILayerBinder {
 
     }
 
-    bind<T>(source: MapObservableFactory<T>, type: string, options: any): Layer {
+    bind<T>(source: MapObservableFactory<T>, type: string, options: any): [Layer, Observable<void>] {
         let layerView = find(this.layerViews, ['type', type]);
         if (!layerView)
             throw new Error("No views registered for this type of layer");
@@ -22,19 +23,19 @@ class LayerBinder implements ILayerBinder {
         let layer = layerView.create(options),
             fromData: T;
 
-        this.mapBoundaries.boundsChanges()
+        let binder = this.mapBoundaries.boundsChanges()
             .startWith(null)
             .map(() => source({
                 bounds: this.mapBoundaries.getBounds(),
                 zoom: this.mapBoundaries.getZoom()
             }))
             .switch()
-            .subscribe(newData => {
+            .map(newData => {
                 layerView.update(fromData, newData, layer, options);
                 fromData = newData;
             });
 
-        return layer;
+        return [layer, binder];
     }
 
 }
