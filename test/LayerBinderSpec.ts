@@ -47,7 +47,7 @@ describe("Given a layer binder", () => {
             data.onNext({markers: [{id: "8283"}]});
         });
         it("the layer itself should be updated", () => {
-            subject.bind(context => data, "GeoJSON", null);
+            subject.bind(context => data, "GeoJSON", null)[1].subscribe();
 
             layerView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), It.isAny(), null), Times.once());
         });
@@ -62,7 +62,7 @@ describe("Given a layer binder", () => {
             subject.bind(context => {
                 if (!context.bounds) return data;
                 return Observable.just(context);
-            }, "GeoJSON", null);
+            }, "GeoJSON", null)[1].subscribe();
             mapBoundaries.setup(m => m.getBounds()).returns(() => new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)));
             mapBoundaries.setup(m => m.getZoom()).returns(() => 12);
             viewChanges.onNext(null);
