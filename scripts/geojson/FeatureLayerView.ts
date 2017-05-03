@@ -1,5 +1,5 @@
 import ILayerView from "../layer/ILayerView";
-import {Layer, featureGroup as featureGroupLayer, FeatureGroup, GeoJSON as geoJSONUtil, LayerGroup} from "leaflet";
+import {Layer, featureGroup as featureGroupLayer, GeoJSON as geoJSONUtil, LayerGroup} from "leaflet";
 import {injectable} from "inversify";
 import {GeoJSONCollection, GeoJSONProps} from "./GeoJSONProps";
 import {forEach} from "lodash";

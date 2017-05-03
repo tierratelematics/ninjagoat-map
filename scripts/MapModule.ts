@@ -1,4 +1,4 @@
-import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
+import {IModule, IViewModelRegistry, IServiceLocator, Dictionary} from "ninjagoat";
 import {interfaces} from "inversify";
 import ILayerBinder from "./layer/ILayerBinder";
 import LayerBinder from "./layer/LayerBinder";
@@ -10,6 +10,7 @@ import MapHolder from "./leaflet/MapHolder";
 import MapBoundaries from "./leaflet/MapBoundaries";
 import {GeoJSONCollection, GeoJSONProps} from "./geojson/GeoJSONProps";
 import FeatureLayerView from "./geojson/FeatureLayerView";
+import {Layer, LayerGroup} from "leaflet";
 
 class MapModule implements IModule {
 
@@ -19,6 +20,7 @@ class MapModule implements IModule {
         container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder).inSingletonScope();
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(FeatureLayerView).inSingletonScope();
+        container.bind<Dictionary<Layer | LayerGroup>>("LayersCache").toConstantValue({});
     };
 
     register(registry: IViewModelRegistry, serviceLocator?: IServiceLocator, overrides?: any): void {
