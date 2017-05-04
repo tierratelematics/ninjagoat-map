@@ -24,7 +24,7 @@ describe("Given a shape transformer", () => {
             });
 
             expect(shape.geometry.type).to.be("Polygon");
-            expect(shape.geometry.coordinates[0][0]).to.have.length(32);
+            expect(shape.geometry.coordinates[0]).to.have.length(33);
             expect((<any>shape.properties).radius).to.be(undefined);
         });
     });

@@ -8,6 +8,7 @@
     "@types/node": "~6.0.52",
     "@types/react": "~0.14.55",
     "@types/react-leaflet": "~1.0.5",
+    "circle-to-polygon": "~1.0.0",
     "inversify": "~3.0.0-rc.2",
     "leaflet": "~1.0.3",
     "lodash": "~4.10.0",
