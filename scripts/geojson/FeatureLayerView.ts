@@ -15,6 +15,7 @@ class FeatureLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: GeoJSONProps) {
         let layerGroup = <LayerGroup>layer;
         layerGroup.clearLayers();
+        if (!toProps) return;
         forEach(toProps.features, feature => {
             layerGroup.addLayer(geoJSONUtil.geometryToLayer(feature, options));
         });

@@ -52,7 +52,11 @@ export class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
     getLayerType(props: GeoJSONProps): string;
 }
 
-export type GeoJSONCollection = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon;
+
+export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
+
+export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSONCollection>};
 
@@ -76,5 +80,7 @@ export class FeatureLayer extends ObservableLayer<GeoJSONProps> {
     getLayerType(props: GeoJSONProps): string;
 }
 
-export const EditControl: React.ComponentClass<any>;
+export class EditControl extends React.Component<{onChange: (shapes: GeoJSONCollection) => void} & any, any> {
+    render();
+}
 
