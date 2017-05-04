@@ -11,16 +11,15 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
 
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
-    @lazyInject("LayersCache")
-    private layersCache: Dictionary<Layer | LayerGroup>;
     private subscription: IDisposable;
+    protected layer: Layer | LayerGroup;
 
     createLeafletElement(props: P): Layer | LayerGroup {
         let observable: MapObservableFactory<any> = props.observable;
         let layerType = this.getLayerType(props);
         let [layer, notifications] = this.layerBinder.bind(observable, layerType, this.getOptions(props));
         this.subscription = notifications.subscribe();
-        this.layersCache[layerType] = layer;
+        this.layer = layer;
         return layer;
     }
 

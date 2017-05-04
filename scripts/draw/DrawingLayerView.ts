@@ -1,12 +1,12 @@
 import ILayerView from "../layer/ILayerView";
 import {Layer, featureGroup as featureGroupLayer, GeoJSON as geoJSONUtil, LayerGroup} from "leaflet";
 import {injectable} from "inversify";
-import {GeoJSONCollection, GeoJSONProps} from "./GeoJSONProps";
+import {GeoJSONCollection, GeoJSONProps} from "../geojson/GeoJSONProps";
 import {forEach} from "lodash";
 
 @injectable()
-class FeatureLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
-    type = "Feature";
+class DrawingLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
+    type = "Drawing";
 
     create(options: GeoJSONProps): Layer | LayerGroup {
         return featureGroupLayer([]);
@@ -23,4 +23,4 @@ class FeatureLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
 
 }
 
-export default FeatureLayerView
+export default DrawingLayerView
