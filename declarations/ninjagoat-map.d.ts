@@ -1,4 +1,4 @@
-/// <reference path="../declarations/react-leaflet.d.ts" />
+/// <reference path="./react-leaflet.d.ts" />
 /// <reference types="leaflet" />
 /// <reference types="react-leaflet" />
 import * as React from "react";
@@ -52,7 +52,11 @@ export class GeoJSONLayer extends ObservableLayer<GeoJSONProps> {
     getLayerType(props: GeoJSONProps): string;
 }
 
-export type GeoJSONCollection = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon;
+
+export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
+
+export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSONCollection>};
 
@@ -72,9 +76,8 @@ export class CoordinatesUtil {
     static latLng(latitude: number, longitude: number): LatLng;
 }
 
-export class FeatureLayer extends ObservableLayer<GeoJSONProps> {
-    getLayerType(props: GeoJSONProps): string;
-}
+type DrawingLayerProps = GeoJSONProps & {onChange: (shapes: GeoJSONCollection) => void};
 
-export const EditControl: React.ComponentClass<any>;
+export const DrawingLayer: React.ComponentClass<DrawingLayerProps>;
 
+export const DrawControl: React.ComponentClass<any>;

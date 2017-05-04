@@ -1,6 +1,10 @@
 import {GeoJSONOptions} from "leaflet";
 import {MapObservableFactory} from "../layer/MapContext";
 
-export type GeoJSONCollection = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon;
+
+export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
+
+export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSONCollection>};

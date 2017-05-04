@@ -1,4 +1,4 @@
-import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
+import {IModule, IViewModelRegistry, IServiceLocator, Dictionary} from "ninjagoat";
 import {interfaces} from "inversify";
 import ILayerBinder from "./layer/ILayerBinder";
 import LayerBinder from "./layer/LayerBinder";
@@ -9,7 +9,9 @@ import IMapHolder from "./leaflet/IMapHolder";
 import MapHolder from "./leaflet/MapHolder";
 import MapBoundaries from "./leaflet/MapBoundaries";
 import {GeoJSONCollection, GeoJSONProps} from "./geojson/GeoJSONProps";
-import FeatureLayerView from "./geojson/FeatureLayerView";
+import FeatureLayerView from "./draw/DrawingLayerView";
+import IShapeTransformer from "./draw/IShapeTransformer";
+import ShapeTransformer from "./draw/ShapeTransformer";
 
 class MapModule implements IModule {
 
@@ -19,6 +21,7 @@ class MapModule implements IModule {
         container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder).inSingletonScope();
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(FeatureLayerView).inSingletonScope();
+        container.bind<IShapeTransformer>("IShapeTransformer").to(ShapeTransformer).inSingletonScope();
     };
 
     register(registry: IViewModelRegistry, serviceLocator?: IServiceLocator, overrides?: any): void {

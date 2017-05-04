@@ -1,7 +1,7 @@
 import ILayerBinder from "./ILayerBinder";
-import {lazyInject} from "ninjagoat";
+import {lazyInject, Dictionary} from "ninjagoat";
 import {MapObservableFactory} from "./MapContext";
-import {Layer} from "leaflet";
+import {Layer, LayerGroup} from "leaflet";
 import MapLayer from "./MapLayer";
 import {IDisposable} from "rx";
 
@@ -12,12 +12,15 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
     private subscription: IDisposable;
+    protected layer: Layer | LayerGroup;
 
-    createLeafletElement(props: P): Layer {
+    createLeafletElement(props: P): Layer | LayerGroup {
         let observable: MapObservableFactory<any> = props.observable;
-        let layerData = this.layerBinder.bind(observable, this.getLayerType(props), this.getOptions(props));
-        this.subscription = layerData[1].subscribe();
-        return layerData[0];
+        let layerType = this.getLayerType(props);
+        let [layer, notifications] = this.layerBinder.bind(observable, layerType, this.getOptions(props));
+        this.subscription = notifications.subscribe();
+        this.layer = layer;
+        return layer;
     }
 
     componentWillUnmount() {

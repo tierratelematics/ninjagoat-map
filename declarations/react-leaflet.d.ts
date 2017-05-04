@@ -6,6 +6,8 @@ declare module "react-leaflet" {
         setStyleIfChanged(fromProps, toProps);
 
         getOptions(options): any;
+
+        componentDidMount();
     }
 
     export * from "@types/react-leaflet";
