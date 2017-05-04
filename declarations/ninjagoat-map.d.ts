@@ -80,7 +80,7 @@ export class FeatureLayer extends ObservableLayer<GeoJSONProps> {
     getLayerType(props: GeoJSONProps): string;
 }
 
-export class EditControl extends React.Component<{onChange: (shapes: GeoJSONCollection) => void} & any, any> {
+export class DrawControl extends React.Component<{onChange: (shapes: GeoJSONCollection) => void} & any, any> {
     render();
 }
 

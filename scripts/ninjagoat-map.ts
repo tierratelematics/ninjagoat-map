@@ -5,4 +5,4 @@ export {default as GeoJSONLayer} from "./geojson/GeoJSONLayer";
 export {default as FeatureLayer} from "./geojson/FeatureLayer";
 export {TileLayer, WMSTileLayer, FeatureGroup, Circle} from "react-leaflet";
 export {default as CoordinatesUtil} from "./leaflet/CoordinatesUtil";
-export {default as EditControl} from "./draw/EditControl";
+export {default as DrawControl} from "./draw/DrawControl";

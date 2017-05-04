@@ -1,12 +1,12 @@
 import * as React from "react";
-import {EditControl as DrawEditControl} from "react-leaflet-draw";
+import {EditControl} from "react-leaflet-draw";
 import {lazyInject, Dictionary} from "ninjagoat";
 import {map} from "lodash";
 import {GeoJSONCollection, GeoJSONFeature} from "../geojson/GeoJSONProps";
 import {Circle, LayerGroup, Layer} from "leaflet";
 import IShapeTransformer from "./IShapeTransformer";
 
-class EditControl extends React.Component<{onChange: (shapes: GeoJSONCollection) => void} & any, any> {
+class DrawControl extends React.Component<{onChange: (shapes: GeoJSONCollection) => void} & any, any> {
 
     @lazyInject("LayersCache")
     private layersCache: Dictionary<Layer|LayerGroup>;
@@ -14,7 +14,7 @@ class EditControl extends React.Component<{onChange: (shapes: GeoJSONCollection)
     private shapeTransformer: IShapeTransformer;
 
     render() {
-        return <DrawEditControl {...this.props} onCreated={this.notifyShapes.bind(this)}
+        return <EditControl {...this.props} onCreated={this.notifyShapes.bind(this)}
                                                 onEdited={this.notifyShapes.bind(this)}
                                                 onDeleted={this.notifyShapes.bind(this)}/>;
     }
@@ -38,4 +38,4 @@ class EditControl extends React.Component<{onChange: (shapes: GeoJSONCollection)
 
 }
 
-export default EditControl
+export default DrawControl
