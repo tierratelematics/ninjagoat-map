@@ -11,6 +11,8 @@ import MapBoundaries from "./leaflet/MapBoundaries";
 import {GeoJSONCollection, GeoJSONProps} from "./geojson/GeoJSONProps";
 import FeatureLayerView from "./geojson/FeatureLayerView";
 import {Layer, LayerGroup} from "leaflet";
+import IShapeTransformer from "./draw/IShapeTransformer";
+import ShapeTransformer from "./draw/ShapeTransformer";
 
 class MapModule implements IModule {
 
@@ -21,6 +23,7 @@ class MapModule implements IModule {
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(FeatureLayerView).inSingletonScope();
         container.bind<Dictionary<Layer | LayerGroup>>("LayersCache").toConstantValue({});
+        container.bind<IShapeTransformer>("IShapeTransformer").to(ShapeTransformer).inSingletonScope();
     };
 
     register(registry: IViewModelRegistry, serviceLocator?: IServiceLocator, overrides?: any): void {

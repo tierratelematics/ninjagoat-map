@@ -1,7 +1,9 @@
 import IShapeTransformer from "./IShapeTransformer";
 import {GeoJSONFeature} from "../geojson/GeoJSONProps";
+import {injectable} from "inversify";
 const toPolygon = require("circle-to-polygon");
 
+@injectable()
 class ShapeTransformer implements IShapeTransformer {
 
     transform(shape: GeoJSONFeature): GeoJSONFeature {
