@@ -21,9 +21,7 @@ export type MapProps = {
     zoom?: number
 }
 
-export class NinjagoatMap extends React.Component<MapProps, void> {
-    render();
-}
+export const Map: React.ComponentClass<MapProps>;
 
 export type MapObservableFactory<T> = (context: MapContext) => Observable<T>;
 
