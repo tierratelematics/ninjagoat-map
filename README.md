@@ -1,6 +1,6 @@
 # Ninjagoat-map
 
-Ninjagoat bindings for a leaflet map with built in support for observing GeoJSON data, draw/edit shapes and geocoding.
+Ninjagoat bindings of [Leaflet](http://leafletjs.com) with built in support for observing GeoJSON data, draw/edit shapes and geocoding.
 
 ## Installation
 
