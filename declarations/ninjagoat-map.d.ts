@@ -79,3 +79,5 @@ type DrawingLayerProps = GeoJSONProps & {onChange: (shapes: GeoJSONCollection) =
 export const DrawingLayer: React.ComponentClass<DrawingLayerProps>;
 
 export const DrawControl: React.ComponentClass<any>;
+
+export const GeocodingControl: React.ComponentClass<any>;

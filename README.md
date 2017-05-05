@@ -1,6 +1,6 @@
 # Ninjagoat-map
 
-Ninjagoat bindings for a leaflet map.
+Ninjagoat bindings for a leaflet map with built in support for observing GeoJSON data, draw/edit shapes and geocoding.
 
 ## Installation
 
@@ -24,6 +24,7 @@ Add leaflet css and images
 
 @import "../../node_modules/ninjagoat-map/node_modules/leaflet/dist/leaflet.css";
 @import "../../node_modules/ninjagoat-map/node_modules/leaflet-draw/dist/leaflet.draw.css";
+@import "../../node_modules/ninjagoat-map/node_modules/leaflet-geosearch/assets/css/leaflet.css";
 ```
 
 ```javascript
