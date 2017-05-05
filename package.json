@@ -13,6 +13,7 @@
     "inversify": "~3.0.0-rc.2",
     "leaflet": "~1.0.3",
     "leaflet-draw": "~0.4.9",
+    "leaflet-geosearch": "~2.2.0",
     "lodash": "~4.10.0",
     "prop-types": "~15.5.8",
     "react-leaflet": "~1.1.4",
