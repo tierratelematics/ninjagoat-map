@@ -1,5 +1,5 @@
 interface IGeocodingProvider {
-    search({query:string}): Promise<any[]>;
+    search(query: {query: string}): Promise<any[]>;
 }
 
 export default IGeocodingProvider

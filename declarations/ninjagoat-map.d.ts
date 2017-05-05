@@ -5,7 +5,7 @@ import * as React from "react";
 import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
-import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression, Layer} from "leaflet";
+import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression, Layer, Icon} from "leaflet";
 import {TileLayerProps, WMSTileLayerProps, FeatureGroup} from "react-leaflet";
 
 export class MapModule implements IModule {
@@ -80,4 +80,23 @@ export const DrawingLayer: React.ComponentClass<DrawingLayerProps>;
 
 export const DrawControl: React.ComponentClass<any>;
 
-export const GeocodingControl: React.ComponentClass<any>;
+export type GeocodingControlProps = {
+    position: string;
+    style?: "bar" | "button",
+    showMarker?: boolean,
+    marker?: {
+        icon: Icon,
+        draggable?: boolean,
+    },
+    searchLabel?: string
+};
+
+export const GeocodingControl: React.ComponentClass<GeocodingControlProps>;
+
+export interface IGeocodingProvider {
+    search(query: {query:string}): Promise<any[]>;
+}
+
+export interface IApiKeyConfig {
+    key: string;
+}

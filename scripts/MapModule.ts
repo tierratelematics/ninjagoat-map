@@ -14,6 +14,7 @@ import IShapeTransformer from "./draw/IShapeTransformer";
 import ShapeTransformer from "./draw/ShapeTransformer";
 import IGeocodingProvider from "./geocoding/IGeocodingProvider";
 import {OpenStreetMapProvider} from 'leaflet-geosearch';
+import GoogleGeocodingProvider from "./geocoding/GoogleGeocodingProvider";
 
 class MapModule implements IModule {
 
@@ -24,7 +25,7 @@ class MapModule implements IModule {
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(GeoJSONLayerView).inSingletonScope();
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(FeatureLayerView).inSingletonScope();
         container.bind<IShapeTransformer>("IShapeTransformer").to(ShapeTransformer).inSingletonScope();
-        container.bind<IGeocodingProvider>("IGeocodingProvider").toConstantValue(new OpenStreetMapProvider());
+        container.bind<IGeocodingProvider>("IGeocodingProvider").to(GoogleGeocodingProvider).inSingletonScope();
     };
 
     register(registry: IViewModelRegistry, serviceLocator?: IServiceLocator, overrides?: any): void {
