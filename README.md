@@ -1,6 +1,6 @@
 # Ninjagoat-map
 
-Ninjagoat bindings for a leaflet map.
+Ninjagoat bindings of [Leaflet](http://leafletjs.com) with built in support for observing GeoJSON data, draw/edit shapes and geocoding.
 
 ## Installation
 
@@ -24,6 +24,7 @@ Add leaflet css and images
 
 @import "../../node_modules/ninjagoat-map/node_modules/leaflet/dist/leaflet.css";
 @import "../../node_modules/ninjagoat-map/node_modules/leaflet-draw/dist/leaflet.draw.css";
+@import "../../node_modules/ninjagoat-map/node_modules/leaflet-geosearch/assets/css/leaflet.css";
 ```
 
 ```javascript
@@ -190,6 +191,30 @@ import {DrawingLayer, DrawControl} from "ninjagoat-map";
 ```
 
 The DrawControl can be customized using the options provided by [leaflet-draw](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html).
+
+#### Geocoding
+
+A geocoding control for places search is also available and it's backed by a geocoding provider.
+The default geocoding provider is Google Places and requires a google maps api key.
+
+```typescript
+//Module
+import {IApiKeyConfig} from "ninjagoat-map";
+
+container.bind<IApiKeyConfig>("IMapApiKeyConfig").toConstantValue({
+    key: "your_api_key"
+});
+
+//View
+import {GeocodingControl} from "ninjagoat-map";
+
+<Map center={[30, 30]} zoom={10}>
+    <TileLayer url={"http://{s}.tile.osm.org/{z}/{x}/{y}.png"}/>
+    <GeocodingControl position="topleft" />
+</Map>
+```
+
+See the optional properties to customize the control.
 
 ### Map services
 

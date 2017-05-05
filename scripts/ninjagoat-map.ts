@@ -6,3 +6,4 @@ export {TileLayer, WMSTileLayer} from "react-leaflet";
 export {default as CoordinatesUtil} from "./leaflet/CoordinatesUtil";
 export {DrawingLayer} from "./draw/DrawingLayer";
 export {EditControl as DrawControl} from "react-leaflet-draw";
+export {GeocodingControl} from "./geocoding/GeocodingControl";
