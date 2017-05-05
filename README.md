@@ -125,6 +125,8 @@ import {GeoJSONLayer} from "ninjagoat-map";
 </Map>
 ```
 
+To customize the displayed data you can pass some Leaflet callbacks to the layer: here's the official [guide](http://leafletjs.com/examples/geojson/).
+
 ### Draw and edit shapes
 
 Drawing shapes on the map follows the same principles of using the GeoJSONLayer.
