@@ -194,7 +194,7 @@ import {DrawingLayer, DrawControl} from "ninjagoat-map";
 
 The DrawControl can be customized using the options provided by [leaflet-draw](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html).
 
-#### Geocoding
+### Geocoding
 
 A geocoding control for places search is also available and it's backed by a geocoding provider.
 The default geocoding provider is Google Places and requires a google maps api key.
