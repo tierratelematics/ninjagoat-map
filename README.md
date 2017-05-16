@@ -22,9 +22,9 @@ Add leaflet css and images
 ```scss
 /*boostrapper.scss*/
 
-@import "../../node_modules/ninjagoat-map/node_modules/leaflet/dist/leaflet.css";
-@import "../../node_modules/ninjagoat-map/node_modules/leaflet-draw/dist/leaflet.draw.css";
-@import "../../node_modules/ninjagoat-map/node_modules/leaflet-geosearch/assets/css/leaflet.css";
+@import "../../node_modules/leaflet/dist/leaflet.css";
+@import "../../node_modules/leaflet-draw/dist/leaflet.draw.css";
+@import "../../node_modules/leaflet-geosearch/assets/css/leaflet.css";
 ```
 
 ```javascript
@@ -35,8 +35,8 @@ const {CopyDirectory} = require("smild-extra");
 module.exports = {
     "projectType": "frontend",
     "postBuild": (buildHelper) => Promise.all([
-        CopyDirectory("node_modules/ninjagoat-map/node_modules/leaflet/dist/images/**/*", `dist/${buildHelper.getCurrentTarget()}/css/images`),
-        CopyDirectory("node_modules/ninjagoat-map/node_modules/leaflet-draw/dist/images/**/*", `dist/${buildHelper.getCurrentTarget()}/css/images`)
+        CopyDirectory("node_modules/leaflet/dist/images/**/*", `dist/${buildHelper.getCurrentTarget()}/css/images`),
+        CopyDirectory("node_modules/leaflet-draw/dist/images/**/*", `dist/${buildHelper.getCurrentTarget()}/css/images`)
     ])
 };
 ```
