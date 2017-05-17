@@ -20,4 +20,8 @@ export class Map extends React.Component<MapProps, void> {
             {this.props.children}
         </LeafletMap>;
     }
+
+    componentWillUnmount() {
+        this.mapHolder.setMap(null);
+    }
 }
