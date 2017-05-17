@@ -6,7 +6,8 @@ import {LatLngExpression} from "leaflet";
 
 export type MapProps = {
     center?: LatLngExpression,
-    zoom?: number
+    zoom?: number,
+    onMapReady?: () => void
 }
 
 export class Map extends React.Component<MapProps, void> {
@@ -16,7 +17,13 @@ export class Map extends React.Component<MapProps, void> {
 
     render() {
         return <LeafletMap center={this.props.center} zoom={this.props.zoom}
-                    ref={component => { if (component) this.mapHolder.setMap(component.leafletElement) }}>
+                    ref={component => {
+                        let map = this.mapHolder.obtainMap();
+                        if (component && !map) {
+                            this.mapHolder.setMap(component.leafletElement);
+                            this.props.onMapReady && this.props.onMapReady();
+                        }
+                    }}>
             {this.props.children}
         </LeafletMap>;
     }
