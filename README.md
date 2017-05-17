@@ -68,7 +68,9 @@ import {Map, TileLayer} from "ninjagoat-map";
 export default class MapView extends View<any> {
 
     render() {
-        return <Map center={[30, 30]} zoom={10}>
+        return <Map center={[30, 30]} zoom={10} onMapReady={() => {
+            //Do something when the map is initialized
+        }}>
                     <TileLayer url={"http://{s}.tile.osm.org/{z}/{x}/{y}.png"}/>
                 </Map>
     }
@@ -76,6 +78,7 @@ export default class MapView extends View<any> {
 ```
 
 In this example the tiles are rendered by OpenStreetMap but can configured to work with every map provider (e.g. Mapbox).
+Notice also that we are using the onMapReady callback: this is done to ensure that all the operations on the map will be done after it's loaded.
  
 ### Display data 
 

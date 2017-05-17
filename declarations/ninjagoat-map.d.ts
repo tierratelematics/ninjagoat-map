@@ -18,7 +18,8 @@ export class MapModule implements IModule {
 
 export type MapProps = {
     center?: LatLngExpression,
-    zoom?: number
+    zoom?: number,
+    onMapReady?: () => void
 }
 
 export const Map: React.ComponentClass<MapProps>;
