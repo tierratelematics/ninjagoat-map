@@ -5,7 +5,14 @@ import * as React from "react";
 import {interfaces} from "inversify";
 import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
 import {Observable} from "rx";
-import {LatLngBounds, GeoJSONOptions, LatLng, LatLngExpression, Layer, Icon} from "leaflet";
+import {
+    GeoJSONOptions,
+    LatLng,
+    LatLngBounds,
+    LatLngExpression,
+    Layer,
+    Icon
+} from "leaflet";
 import {TileLayerProps, WMSTileLayerProps, FeatureGroup} from "react-leaflet";
 
 export class MapModule implements IModule {
@@ -31,7 +38,7 @@ export type MapContext = {
     zoom: number
 }
 
-export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
+export type ObservableLayerProps<T> = { observable: MapObservableFactory<T> };
 
 declare abstract class MapLayer<P> extends FeatureGroup<P> {
 
@@ -57,7 +64,7 @@ export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
 
 export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
-export type GeoJSONProps = GeoJSONOptions & {observable: MapObservableFactory<GeoJSONCollection>};
+export type GeoJSONProps = GeoJSONOptions & { observable: MapObservableFactory<GeoJSONCollection> };
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
 
@@ -71,11 +78,7 @@ export interface IMapBoundaries {
     boundsChanges(): Observable<void>;
 }
 
-export class CoordinatesUtil {
-    static latLng(latitude: number, longitude: number): LatLng;
-}
-
-type DrawingLayerProps = GeoJSONProps & {onChange: (shapes: GeoJSONCollection) => void};
+type DrawingLayerProps = GeoJSONProps & { onChange: (shapes: GeoJSONCollection) => void };
 
 export const DrawingLayer: React.ComponentClass<DrawingLayerProps>;
 
@@ -95,9 +98,11 @@ export type GeocodingControlProps = {
 export const GeocodingControl: React.ComponentClass<GeocodingControlProps>;
 
 export interface IGeocodingProvider {
-    search(query: {query:string}): Promise<any[]>;
+    search(query: { query: string }): Promise<any[]>;
 }
 
 export interface IApiKeyConfig {
     key: string;
 }
+
+export {latLng, latLngBounds, LatLng, LatLngBounds} from "leaflet";
