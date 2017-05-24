@@ -71,11 +71,7 @@ export interface IMapBoundaries {
     boundsChanges(): Observable<void>;
 }
 
-export class CoordinatesUtil {
-    static latLng(latitude: number, longitude: number): LatLng;
-}
-
-type DrawingLayerProps = GeoJSONProps & {onChange: (shapes: GeoJSONCollection) => void};
+type DrawingLayerProps = GeoJSONProps & { onChange: (shapes: GeoJSONCollection) => void };
 
 export const DrawingLayer: React.ComponentClass<DrawingLayerProps>;
 
