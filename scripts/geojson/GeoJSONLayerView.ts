@@ -1,5 +1,5 @@
 import ILayerView from "../layer/ILayerView";
-import {Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONGroup, LayerGroup, marker} from "leaflet";
+import {Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONGroup, LayerGroup, marker, Icon, icon} from "leaflet";
 import {injectable} from "inversify";
 import {GeoJSONCollection, GeoJSONProps} from "./GeoJSONProps";
 
@@ -8,10 +8,11 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     type = "GeoJSON";
 
     create(options: GeoJSONProps): Layer | LayerGroup {
+        let pointToLayer = !options.icon ? options.pointToLayer : (geoJsonPoint, latlng) => marker(latlng, {
+            icon: options.icon
+        });
         return geoJSONLayer(null, {
-            pointToLayer: (geoJsonPoint, latlng) => marker(latlng, {
-                icon: options.icon
-            }),
+            pointToLayer: pointToLayer,
             style: options.style,
             onEachFeature: options.onEachFeature,
             filter: options.filter,
