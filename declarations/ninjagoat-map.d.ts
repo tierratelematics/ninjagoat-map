@@ -111,6 +111,6 @@ export interface IApiKeyConfig {
 
 export {latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, icon} from "leaflet";
 
-type PopupProps = { feature: GeoJSONFeature, onPopupClose: () => void };
+type PopupProps = { feature: GeoJSONFeature, onPopupClose?: () => void };
 
 export const PopupLayer: React.ComponentClass<PopupProps>;
