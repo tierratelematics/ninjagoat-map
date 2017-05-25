@@ -1,3 +1,8 @@
+# 0.5.0
+
+* Bugfix for geocoding client initialization
+* Add popup layer
+
 # 0.4.0
 
 Export LatLng and LatLngBounds from leaflet
