@@ -8,8 +8,8 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     type = "GeoJSON";
 
     create(options: GeoJSONProps): Layer | LayerGroup {
-        let pointToLayer = !options.icon ? options.pointToLayer : (geoJsonPoint, latlng) => marker(latlng, {
-            icon: options.icon
+        let pointToLayer = !options.icon ? options.pointToLayer : (feature, latlng) => marker(latlng, {
+            icon: options.icon(feature)
         });
         let onEachFeature = (feature: GeoJSON.Feature<GeoJSON.GeometryObject>, layer: Layer) => {
             layer.on("click", () => options.onMarkerClick && options.onMarkerClick(<GeoJSONFeature>feature));

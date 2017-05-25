@@ -9,6 +9,6 @@ export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = GeoJSONOptions & {
     observable: MapObservableFactory<GeoJSONCollection>,
-    icon?: Icon,
+    icon?: (feature: GeoJSONFeature) => Icon,
     onMarkerClick?: (feature: GeoJSONFeature) => void
 };
