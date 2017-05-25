@@ -64,7 +64,11 @@ export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
 
 export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
-export type GeoJSONProps = GeoJSONOptions & { observable: MapObservableFactory<GeoJSONCollection>, icon?: Icon };
+export type GeoJSONProps = GeoJSONOptions & {
+    observable: MapObservableFactory<GeoJSONCollection>,
+    icon?: Icon,
+    onMarkerClick?: (feature: GeoJSON.Feature<GeoJSON.Point>) => void
+};
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
 
