@@ -15,7 +15,7 @@ class GoogleGeocodingProvider implements IGeocodingProvider {
     search(query: {query: any}): Promise<any[]> {
         if (!this.apiKeyConfig)
             throw new Error("Google API Key is missing");
-        if (this.client)
+        if (!this.client)
             this.client = new GoogleProvider({
                 params: {
                     key: this.apiKeyConfig.key
