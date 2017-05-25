@@ -64,7 +64,11 @@ export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
 
 export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
-export type GeoJSONProps = GeoJSONOptions & { observable: MapObservableFactory<GeoJSONCollection>, icon?: Icon };
+export type GeoJSONProps = GeoJSONOptions & {
+    observable: MapObservableFactory<GeoJSONCollection>,
+    icon?: (feature: GeoJSONFeature) => Icon,
+    onMarkerClick?: (feature: GeoJSONFeature) => void
+};
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
 
@@ -106,3 +110,7 @@ export interface IApiKeyConfig {
 }
 
 export {latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, icon} from "leaflet";
+
+type PopupProps = { feature: GeoJSONFeature, onPopupClose?: () => void };
+
+export const PopupLayer: React.ComponentClass<PopupProps>;

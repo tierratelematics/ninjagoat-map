@@ -7,3 +7,4 @@ export {DrawingLayer} from "./draw/DrawingLayer";
 export {EditControl as DrawControl} from "react-leaflet-draw";
 export {GeocodingControl} from "./geocoding/GeocodingControl";
 export {latLng, latLngBounds, marker, icon} from "leaflet";
+export{ default as PopupLayer} from "./popup/PopupLayer";
