@@ -105,4 +105,4 @@ export interface IApiKeyConfig {
     key: string;
 }
 
-export {latLng, latLngBounds, LatLng, LatLngBounds} from "leaflet";
+export {latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, icon} from "leaflet";

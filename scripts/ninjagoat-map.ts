@@ -6,4 +6,4 @@ export {TileLayer, WMSTileLayer} from "react-leaflet";
 export {DrawingLayer} from "./draw/DrawingLayer";
 export {EditControl as DrawControl} from "react-leaflet-draw";
 export {GeocodingControl} from "./geocoding/GeocodingControl";
-export {LatLng, LatLngBounds, latLng, latLngBounds} from "leaflet";
+export {latLng, latLngBounds, marker, icon} from "leaflet";
