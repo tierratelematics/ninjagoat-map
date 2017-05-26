@@ -1,4 +1,3 @@
-/// <reference path="./react-leaflet.d.ts" />
 /// <reference types="leaflet" />
 /// <reference types="react-leaflet" />
 import * as React from "react";
@@ -13,7 +12,7 @@ import {
     Layer,
     Icon
 } from "leaflet";
-import {TileLayerProps, WMSTileLayerProps, FeatureGroup} from "react-leaflet";
+import {TileLayerProps, WMSTileLayerProps} from "react-leaflet";
 
 export class MapModule implements IModule {
 
@@ -40,7 +39,7 @@ export type MapContext = {
 
 export type ObservableLayerProps<T> = { observable: MapObservableFactory<T> };
 
-declare abstract class MapLayer<P> extends FeatureGroup<P> {
+declare abstract class MapLayer<P> extends React.Component<P, any> {
 
     abstract createLeafletElement(props: P): Layer;
 

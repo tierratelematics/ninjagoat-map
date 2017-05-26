@@ -1,9 +1,9 @@
-import {LayersControl} from "react-leaflet";
+const {LayersControl} = require("react-leaflet");
 const PropTypes = require("prop-types");
 
 abstract class MapControl<P> extends LayersControl<P> {
 
-    //Patch to link context correctly in React (probably due since static fields are not inherited from javascript classes)
+    // Patch to link context correctly in React (probably due since static fields are not inherited from javascript classes)
     static contextTypes = {
         map: PropTypes.any.isRequired,
     };
