@@ -1,4 +1,3 @@
-/// <reference path="../declarations/react-leaflet.d.ts" />
 export {default as MapModule} from "./MapModule";
 export {Map} from "./Map";
 export {default as GeoJSONLayer} from "./geojson/GeoJSONLayer";
