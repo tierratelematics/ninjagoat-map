@@ -1,3 +1,7 @@
+# 0.6.0
+
+* Removed leaflet direct typings dependency
+
 # 0.5.0
 
 * Bugfix for geocoding client initialization
