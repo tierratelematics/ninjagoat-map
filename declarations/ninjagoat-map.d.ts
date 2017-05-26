@@ -1,4 +1,3 @@
-/// <reference path="./react-leaflet.d.ts" />
 /// <reference types="leaflet" />
 /// <reference types="react-leaflet" />
 import * as React from "react";
