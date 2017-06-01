@@ -1,14 +1,22 @@
 import { Layer } from "leaflet";
+import { injectable } from "inversify";
 import { Dictionary } from "ninjagoat";
-import { GeoJSONFeature, GeoJSONProps } from "./GeoJSONProps";
+import { GeoJSONFeature } from "./GeoJSONProps";
+import { IGeoJSONLayerCache } from "./IGeoJSONLayerCache";
 
-export class GeoJSONLayerCache {
+@injectable()
+export class GeoJSONLayerCache implements IGeoJSONLayerCache {
     public layers: Dictionary<Layer> = {};
     public features: Dictionary<GeoJSONFeature> = {};
 
     private updated: Dictionary<GeoJSONFeature>;
 
     public init() {
+        this.layers = {};
+        this.features = {};
+    }
+
+    public clear() {
         this.updated = {};
     }
 

@@ -6,7 +6,7 @@ import { GeoJSONCollection, GeoJSONFeature, GeoJSONProps } from "./GeoJSONProps"
 import IMapHolder from "../leaflet/IMapHolder";
 import { lazyInject } from "ninjagoat";
 import { render } from "react-dom";
-import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
+import { IGeoJSONLayerCache } from "./IGeoJSONLayerCache";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
@@ -14,40 +14,38 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
 
     @lazyInject("IMapHolder")
     private mapHolder: IMapHolder;
-    private options: GeoJSONProps;
-    private cache: GeoJSONLayerCache;
+
+    @lazyInject("IGeoJSONLayerCache")
+    private cache: IGeoJSONLayerCache;
 
     create(options: GeoJSONProps): Layer | LayerGroup {
-        this.cache = new GeoJSONLayerCache();
-        this.options = this.enrichOptions(options);
-        return geoJSONLayer(null, this.options);
+        this.cache.init();
+        return geoJSONLayer(null, options);
     }
 
     update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: GeoJSONProps) {
-        this.cache.init();
-        this.handleFeature(toProps);
+        if (!toProps || !toProps.features) return;
+
+        this.cache.clear();
+        toProps.features.map(f => this.drawFeature(f, this.enrichOptions(options)));
         this.removeLayers();
     }
 
     private enrichOptions(options: GeoJSONProps): GeoJSONProps {
-        let getFeatureId = !options.getFeatureId ? (feature: any) => feature.properties.id : options.getFeatureId;
-        let getPopupContent = !options.getPopupContent ? () => null : options.getPopupContent;
-        let isPopupOpen = !options.isPopupOpen ? () => false : options.isPopupOpen;
-
+        let featureId = !options.featureId ? (feature: any) => feature.properties.id : options.featureId;
+        let popup = !options.popup ? () => null : options.popup;
         let pointToLayer = !options.icon ? options.pointToLayer : (feature, latlng) => marker(latlng, {
             icon: options.icon(feature)
         });
-
         let onEachFeature = (feature: GeoJSON.Feature<GeoJSON.GeometryObject>, layer: Layer) => {
             layer.on("click", () => options.onMarkerClick && options.onMarkerClick(<GeoJSONFeature>feature));
             options.onEachFeature && options.onEachFeature(feature, layer);
         };
 
         return <GeoJSONProps>{
-            getFeatureId: getFeatureId,
-            isPopupOpen: isPopupOpen,
+            featureId: featureId,
             pointToLayer: pointToLayer,
-            getPopupContent: getPopupContent,
+            popup: popup,
             style: options.style,
             onEachFeature: onEachFeature,
             filter: options.filter,
@@ -55,49 +53,39 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
         };
     }
 
-    private handleFeature(geojson: GeoJSONFeature | GeoJSONCollection): void {
-        let features = L.Util.isArray(geojson)
-            ? (geojson as GeoJSONFeature)
-            : (geojson as GeoJSONCollection).features;
-
-        if (features) (features as GeoJSONFeature[]).map(f => isFeature(f) ? this.handleFeature(f) : null);
-        else this.drawFeature(geojson as GeoJSONFeature);
-    }
-
-    private drawFeature(geojson: GeoJSONFeature): void {
+    private drawFeature(geojson: GeoJSONFeature, options: GeoJSONProps): void {
         let feature = L.GeoJSON.asFeature(geojson) as GeoJSONFeature;
-        let fId = this.options.getFeatureId(feature);
-        let layer = this.updateFeature(feature, this.cache.layers[fId]);
-        this.options.isPopupOpen(feature) && layer.openPopup();
+        let fId = options.featureId(feature);
+        let layer = this.updateFeature(feature, this.cache.layers[fId], options);
         this.cache.add(fId, feature, layer);
     }
 
-    private updateFeature(feature: GeoJSONFeature, previous: Layer): Layer {
+    private updateFeature(feature: GeoJSONFeature, previous: Layer, options: GeoJSONProps): Layer {
         if (feature.geometry.type !== "Point") return;
-        return !previous ? this.createLayer(feature) : this.moveLayer(previous, feature);
+        return !previous ? this.createLayer(feature, options) : this.moveLayer(previous, feature, options);
     }
 
-    private createLayer(feature: GeoJSONFeature): Layer {
-        let layer = L.GeoJSON.geometryToLayer(feature, this.options);
+    private createLayer(feature: GeoJSONFeature, options: GeoJSONProps): Layer {
+        let layer = L.GeoJSON.geometryToLayer(feature, options);
         if (!layer) return;
 
-        this.options.onEachFeature(feature, layer);
-        layer.bindPopup(stringifyTemplate(this.options.getPopupContent(feature)));
+        options.onEachFeature(feature, layer);
+        layer.bindPopup(stringifyTemplate(options.popup(feature)));
         this.mapHolder.obtainMap().addLayer(layer);
         return layer;
     }
 
-    private moveLayer(previous, feature: GeoJSONFeature): Layer {
+    private moveLayer(previous, feature: GeoJSONFeature, options: GeoJSONProps): Layer {
         if (!previous) return;
 
         let [lng, lat] = feature.geometry.coordinates;
         previous.setLatLng([lat, lng]);
-        previous.setPopupContent(stringifyTemplate(this.options.getPopupContent(feature)));
+        previous.setPopupContent(stringifyTemplate(options.popup(feature)));
         return previous;
     }
 
     private removeLayers() {
-        _.map(this.cache.layers, (l, fId) => {
+        _.map(this.cache.layers, (l: Layer, fId: string) => {
             if (this.cache.has(fId)) return;
 
             this.mapHolder.obtainMap().removeLayer(this.cache.layers[fId]);
@@ -105,8 +93,6 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
         });
     }
 }
-
-const isFeature = (feature): boolean => (feature.geometries || feature.geometry || feature.features || feature.coordinates);
 
 const stringifyTemplate = (template: JSX.Element): string => {
     if (!template) return;

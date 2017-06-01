@@ -67,9 +67,8 @@ export type GeoJSONProps = GeoJSONOptions & {
     observable: MapObservableFactory<GeoJSONCollection>,
     icon?: (feature: GeoJSONFeature) => Icon,
     onMarkerClick?: (feature: GeoJSONFeature) => void,
-    getPopupContent?: (feature: GeoJSONFeature) => JSX.Element,
-    isPopupOpen?: (feature: GeoJSONFeature) => boolean,
-    getFeatureId?: (feature: GeoJSONFeature) => string
+    popup?: (feature: GeoJSONFeature) => JSX.Element,
+    featureId?: (feature: GeoJSONFeature) => string
 };
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
