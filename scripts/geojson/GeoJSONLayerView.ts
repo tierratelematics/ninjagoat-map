@@ -1,22 +1,18 @@
 import * as _ from "lodash";
 import ILayerView from "../layer/ILayerView";
 import { Layer, geoJSON as geoJSONLayer, LayerGroup, marker } from "leaflet";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { GeoJSONCollection, GeoJSONFeature, GeoJSONProps } from "./GeoJSONProps";
 import IMapHolder from "../leaflet/IMapHolder";
-import { lazyInject } from "ninjagoat";
 import { render } from "react-dom";
-import { IGeoJSONLayerCache } from "./IGeoJSONLayerCache";
+import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     type = "GeoJSON";
 
-    @lazyInject("IMapHolder")
-    private mapHolder: IMapHolder;
-
-    @lazyInject("IGeoJSONLayerCache")
-    private cache: IGeoJSONLayerCache;
+    constructor( @inject("IMapHolder") private mapHolder: IMapHolder,
+        @inject("GeoJSONLayerCache") private cache: GeoJSONLayerCache) { }
 
     create(options: GeoJSONProps): Layer | LayerGroup {
         this.cache.init();

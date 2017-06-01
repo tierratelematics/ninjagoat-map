@@ -2,10 +2,9 @@ import { Layer } from "leaflet";
 import { injectable } from "inversify";
 import { Dictionary } from "ninjagoat";
 import { GeoJSONFeature } from "./GeoJSONProps";
-import { IGeoJSONLayerCache } from "./IGeoJSONLayerCache";
 
 @injectable()
-export class GeoJSONLayerCache implements IGeoJSONLayerCache {
+export class GeoJSONLayerCache {
     public layers: Dictionary<Layer> = {};
     public features: Dictionary<GeoJSONFeature> = {};
 
