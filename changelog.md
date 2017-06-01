@@ -1,3 +1,8 @@
+# 0.7.0
+
+* Remove PopupLayer
+* Add popup management inside GeoJSONLayer
+
 # 0.6.0
 
 * Removed leaflet direct typings dependency
