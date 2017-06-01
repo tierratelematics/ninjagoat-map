@@ -1,9 +1,9 @@
 /// <reference types="leaflet" />
 /// <reference types="react-leaflet" />
 import * as React from "react";
-import {interfaces} from "inversify";
-import {IModule, IViewModelRegistry, IServiceLocator} from "ninjagoat";
-import {Observable} from "rx";
+import { interfaces } from "inversify";
+import { IModule, IViewModelRegistry, IServiceLocator } from "ninjagoat";
+import { Observable } from "rx";
 import {
     GeoJSONOptions,
     LatLng,
@@ -12,7 +12,7 @@ import {
     Layer,
     Icon
 } from "leaflet";
-import {TileLayerProps, WMSTileLayerProps} from "react-leaflet";
+import { TileLayerProps, WMSTileLayerProps } from "react-leaflet";
 
 export class MapModule implements IModule {
 
@@ -66,7 +66,9 @@ export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 export type GeoJSONProps = GeoJSONOptions & {
     observable: MapObservableFactory<GeoJSONCollection>,
     icon?: (feature: GeoJSONFeature) => Icon,
-    onMarkerClick?: (feature: GeoJSONFeature) => void
+    onMarkerClick?: (feature: GeoJSONFeature) => void,
+    popup?: (feature: GeoJSONFeature) => JSX.Element,
+    featureId?: (feature: GeoJSONFeature) => string
 };
 
 export const TileLayer: React.ComponentClass<TileLayerProps>;
@@ -108,8 +110,4 @@ export interface IApiKeyConfig {
     key: string;
 }
 
-export {latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, icon} from "leaflet";
-
-type PopupProps = { feature: GeoJSONFeature, onPopupClose?: () => void };
-
-export const PopupLayer: React.ComponentClass<PopupProps>;
+export { latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, icon } from "leaflet";
