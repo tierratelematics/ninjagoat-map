@@ -1,11 +1,13 @@
 import * as _ from "lodash";
 import ILayerView from "../layer/ILayerView";
-import { Layer, geoJSON as geoJSONLayer, LayerGroup, marker } from "leaflet";
+import { Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONLeaflet, LayerGroup, marker } from "leaflet";
 import { inject, injectable } from "inversify";
 import { GeoJSONCollection, GeoJSONFeature, GeoJSONProps } from "./GeoJSONProps";
 import IMapHolder from "../leaflet/IMapHolder";
 import { render } from "react-dom";
 import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
+import {interfaces} from "inversify";
+import {Component} from "react";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
@@ -49,11 +51,10 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
         };
     }
 
-    private drawFeature(geojson: GeoJSONFeature, options: GeoJSONProps): void {
-        let feature = L.GeoJSON.asFeature(geojson) as GeoJSONFeature;
-        let fId = options.featureId(feature);
-        let layer = this.updateFeature(feature, this.cache.layers[fId], options);
-        this.cache.add(fId, feature, layer);
+    private drawFeature(feature: GeoJSONFeature, options: GeoJSONProps): void {
+        let featureId = options.featureId(feature);
+        let layer = this.updateFeature(feature, this.cache.layers[featureId], options);
+        this.cache.add(featureId, feature, layer);
     }
 
     private updateFeature(feature: GeoJSONFeature, previous: Layer, options: GeoJSONProps): Layer {
@@ -62,7 +63,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     }
 
     private createLayer(feature: GeoJSONFeature, options: GeoJSONProps): Layer {
-        let layer = L.GeoJSON.geometryToLayer(feature, options);
+        let layer = GeoJSONLeaflet.geometryToLayer(feature, options);
         if (!layer) return;
 
         options.onEachFeature(feature, layer);
@@ -90,7 +91,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     }
 }
 
-const stringifyTemplate = (template: JSX.Element): string => {
+const stringifyTemplate = (template: interfaces.Newable<Component<any, any>>): string => {
     if (!template) return;
     let host = document.createElement("div");
     render(template, host);
