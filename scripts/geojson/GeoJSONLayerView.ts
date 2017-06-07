@@ -11,8 +11,8 @@ import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     type = "GeoJSON";
 
-    constructor(@inject("IMapHolder") private mapHolder: IMapHolder,
-                @inject("GeoJSONLayerCache") private cache: GeoJSONLayerCache) { }
+    constructor( @inject("IMapHolder") private mapHolder: IMapHolder,
+        @inject("GeoJSONLayerCache") private cache: GeoJSONLayerCache) { }
 
     create(options: GeoJSONProps): Layer | LayerGroup {
         this.cache.init();
@@ -30,6 +30,9 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     private enrichOptions(options: GeoJSONProps): GeoJSONProps {
         let featureId = !options.featureId ? (feature: any) => feature.properties.id : options.featureId;
         let popup = !options.popup ? () => null : options.popup;
+        let pointToLayer = !options.icon ? options.pointToLayer : (feature, latlng) => marker(latlng, {
+            icon: options.icon(feature)
+        });
         let onEachFeature = (feature: GeoJSON.Feature<GeoJSON.GeometryObject>, layer: Layer) => {
             layer.on("click", () => options.onMarkerClick && options.onMarkerClick(<GeoJSONFeature>feature));
             options.onEachFeature && options.onEachFeature(feature, layer);
@@ -37,7 +40,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
 
         return <GeoJSONProps>{
             featureId: featureId,
-            pointToLayer: options.pointToLayer,
+            pointToLayer: pointToLayer,
             popup: popup,
             style: options.style,
             onEachFeature: onEachFeature,
