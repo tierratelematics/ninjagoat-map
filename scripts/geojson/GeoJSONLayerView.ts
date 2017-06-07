@@ -6,8 +6,6 @@ import { GeoJSONCollection, GeoJSONFeature, GeoJSONProps } from "./GeoJSONProps"
 import IMapHolder from "../leaflet/IMapHolder";
 import { render } from "react-dom";
 import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
-import {interfaces} from "inversify";
-import {Component} from "react";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
@@ -88,7 +86,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     }
 }
 
-const stringifyTemplate = (template: interfaces.Newable<Component<any, any>>): string => {
+const stringifyTemplate = (template: JSX.Element): string => {
     if (!template) return;
     let host = document.createElement("div");
     render(template, host);
