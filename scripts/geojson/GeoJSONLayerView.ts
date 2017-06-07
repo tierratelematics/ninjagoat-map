@@ -77,11 +77,12 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
     }
 
     private removeLayers() {
-        _.map(this.cache.layers, (l: Layer, fId: string) => {
-            if (this.cache.has(fId)) return;
+        let map = this.mapHolder.obtainMap();
+        _.map(this.cache.layers, (l: Layer, featureId: string) => {
+            if (this.cache.has(featureId)) return;
 
-            this.mapHolder.obtainMap().removeLayer(this.cache.layers[fId]);
-            this.cache.remove(fId);
+            map.removeLayer(this.cache.layers[featureId]);
+            this.cache.remove(featureId);
         });
     }
 

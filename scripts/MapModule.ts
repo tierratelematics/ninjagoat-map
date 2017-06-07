@@ -1,4 +1,4 @@
-import { IModule, IViewModelRegistry, IServiceLocator, Dictionary } from "ninjagoat";
+import { IModule, IViewModelRegistry, IServiceLocator } from "ninjagoat";
 import { interfaces } from "inversify";
 import ILayerBinder from "./layer/ILayerBinder";
 import LayerBinder from "./layer/LayerBinder";
@@ -13,7 +13,6 @@ import FeatureLayerView from "./draw/DrawingLayerView";
 import IShapeTransformer from "./draw/IShapeTransformer";
 import ShapeTransformer from "./draw/ShapeTransformer";
 import IGeocodingProvider from "./geocoding/IGeocodingProvider";
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import GoogleGeocodingProvider from "./geocoding/GoogleGeocodingProvider";
 import { GeoJSONLayerCache } from "./geojson/GeoJSONLayerCache";
 
