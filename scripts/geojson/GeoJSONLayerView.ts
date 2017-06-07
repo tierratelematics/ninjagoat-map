@@ -62,7 +62,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
         if (!layer) return;
 
         options.onEachFeature(feature, layer);
-        layer.bindPopup(stringifyTemplate(options.popup(feature)));
+        layer.bindPopup(this.stringifyTemplate(options.popup(feature)));
         this.mapHolder.obtainMap().addLayer(layer);
         return layer;
     }
@@ -72,7 +72,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
 
         let [lng, lat] = feature.geometry.coordinates;
         previous.setLatLng([lat, lng]);
-        previous.setPopupContent(stringifyTemplate(options.popup(feature)));
+        previous.setPopupContent(this.stringifyTemplate(options.popup(feature)));
         return previous;
     }
 
@@ -84,13 +84,13 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
             this.cache.remove(fId);
         });
     }
-}
 
-const stringifyTemplate = (template: JSX.Element): string => {
-    if (!template) return;
-    let host = document.createElement("div");
-    render(template, host);
-    return host.innerHTML;
-};
+    private stringifyTemplate = (template: JSX.Element): string => {
+        if (!template) return;
+        let host = document.createElement("div");
+        render(template, host);
+        return host.innerHTML;
+    }
+}
 
 export default GeoJSONLayerView;
