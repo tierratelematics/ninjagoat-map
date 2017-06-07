@@ -1,4 +1,4 @@
-import { GeoJSONOptions, Icon } from "leaflet";
+import { GeoJSONOptions, BaseIcon } from "leaflet";
 import { MapObservableFactory } from "../layer/MapContext";
 
 type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon;
@@ -9,7 +9,7 @@ export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = GeoJSONOptions & {
     observable: MapObservableFactory<GeoJSONCollection>,
-    icon?: (feature: GeoJSONFeature) => Icon,
+    icon?: (feature: GeoJSONFeature) => BaseIcon,
     onMarkerClick?: (feature: GeoJSONFeature) => void,
     popup?: (feature: GeoJSONFeature) => JSX.Element,
     featureId: (feature: GeoJSONFeature) => string
@@ -17,4 +17,5 @@ export type GeoJSONProps = GeoJSONOptions & {
 
 export type ClusterProps = GeoJSONProps & {
     isCluster: (feature: GeoJSONFeature) => boolean;
+    clusterIcon?: (feature: GeoJSONFeature) => BaseIcon,
 };

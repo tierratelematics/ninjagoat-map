@@ -10,7 +10,8 @@ import {
     LatLngBounds,
     LatLngExpression,
     Layer,
-    Icon
+    Icon,
+    BaseIcon
 } from "leaflet";
 import { TileLayerProps, WMSTileLayerProps } from "react-leaflet";
 
@@ -65,7 +66,7 @@ export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = GeoJSONOptions & {
     observable: MapObservableFactory<GeoJSONCollection>,
-    icon?: (feature: GeoJSONFeature) => Icon,
+    icon?: (feature: GeoJSONFeature) => BaseIcon,
     onMarkerClick?: (feature: GeoJSONFeature) => void,
     popup?: (feature: GeoJSONFeature) => JSX.Element,
     featureId?: (feature: GeoJSONFeature) => string
@@ -110,4 +111,4 @@ export interface IApiKeyConfig {
     key: string;
 }
 
-export { latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, icon, divIcon } from "leaflet";
+export { latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, BaseIcon, icon, divIcon, point } from "leaflet";

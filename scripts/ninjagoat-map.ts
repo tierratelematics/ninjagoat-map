@@ -5,4 +5,4 @@ export { TileLayer, WMSTileLayer } from "react-leaflet";
 export { DrawingLayer } from "./draw/DrawingLayer";
 export { EditControl as DrawControl } from "react-leaflet-draw";
 export { GeocodingControl } from "./geocoding/GeocodingControl";
-export { latLng, latLngBounds, marker, icon, divIcon } from "leaflet";
+export { latLng, latLngBounds, marker, icon, divIcon, point } from "leaflet";
