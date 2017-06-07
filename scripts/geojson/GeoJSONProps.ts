@@ -13,3 +13,7 @@ export type GeoJSONProps = GeoJSONOptions & {
     popup?: (feature: GeoJSONFeature) => JSX.Element,
     featureId: (feature: GeoJSONFeature) => string
 };
+
+export type ClusterProps = GeoJSONProps & {
+    isCluster: (feature: GeoJSONFeature) => boolean;
+};
