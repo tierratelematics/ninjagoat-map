@@ -42,6 +42,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
             featureId: featureId,
             pointToLayer: pointToLayer,
             popup: popup,
+            icon: options.icon,
             style: options.style,
             onEachFeature: onEachFeature,
             filter: options.filter,
@@ -76,6 +77,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
 
         let [lng, lat] = feature.geometry.coordinates;
         previous.setLatLng([lat, lng]);
+        previous.setIcon(options.icon(feature));
         previous.setPopupContent(stringifyTemplate(options.popup(feature)));
         return previous;
     }
