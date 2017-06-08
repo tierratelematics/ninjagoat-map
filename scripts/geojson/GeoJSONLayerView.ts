@@ -71,7 +71,8 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         if (!layer) return;
 
         options.onEachFeature(feature, layer);
-        layer.bindPopup(this.stringifyTemplate(options.popup(feature)));
+        if (!options.isCluster(feature) && options.popup)
+            layer.bindPopup(this.stringifyTemplate(options.popup(feature)));
         this.mapHolder.obtainMap().addLayer(layer);
         return layer;
     }
@@ -81,11 +82,12 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
 
         let [lng, lat] = feature.geometry.coordinates;
         previous.setLatLng([lat, lng]);
-        if (options.isCluster && options.isCluster(feature) && options.clusterIcon)
-            previous.setIcon(options.clusterIcon(feature));
-        else if (options.icon)
-            previous.setIcon(options.icon(feature));
-        previous.setPopupContent(this.stringifyTemplate(options.popup(feature)));
+        if (options.isCluster && options.isCluster(feature)) {
+            options.clusterIcon && previous.setIcon(options.clusterIcon(feature));
+        } else {
+            if (options.icon) previous.setIcon(options.icon(feature));
+            if (options.popup) previous.setPopupContent(this.stringifyTemplate(options.popup(feature)));
+        }
         return previous;
     }
 
