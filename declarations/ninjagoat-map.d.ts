@@ -112,3 +112,10 @@ export interface IApiKeyConfig {
 }
 
 export { latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, BaseIcon, icon, divIcon, point } from "leaflet";
+
+export type ClusterProps = GeoJSONProps & {
+    isCluster: (feature: GeoJSONFeature) => boolean;
+    clusterIcon?: (feature: GeoJSONFeature) => BaseIcon,
+}
+
+export const ClusterGeoJSONLayer: React.ComponentClass<ClusterProps>;
