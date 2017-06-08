@@ -2,8 +2,13 @@ import * as React from "react";
 import {ClusterProps, GeoJSONFeature} from "./GeoJSONProps";
 import GeoJSONLayer from "./GeoJSONLayer";
 import {LatLng, divIcon, BaseIcon, marker, point} from "leaflet";
+import {lazyInject} from "ninjagoat";
+import IMapBoundaries from "../leaflet/IMapBoundaries";
 
 class ClusterGeoJSONLayer extends React.Component<ClusterProps, void> {
+
+    @lazyInject("IMaIMapBoundariespHolder")
+    private mapBoundaries: IMapBoundaries;
 
     render() {
         let BaseGeoJSONLayer = GeoJSONLayer as any; // Cast since in @types/react-leaflet FeatureGroup is not a react class
@@ -21,6 +26,14 @@ class ClusterGeoJSONLayer extends React.Component<ClusterProps, void> {
                 if (this.props.isCluster(feature))
                     featureId = "__cluster__:" + featureId; // Assign an unique identifier to a cluster
                 return featureId;
+            }}
+            onMarkerClick={(feature: GeoJSON.Feature<GeoJSON.Point>) => {
+                if (this.props.isCluster(feature)) {
+                    let [lng, lat] = feature.geometry.coordinates;
+                    this.mapBoundaries.setCenter(new LatLng(lat, lng), this.mapBoundaries.getZoom() + 1);
+                } else if (this.props.onMarkerClick) {
+                    this.props.onMarkerClick(feature);
+                }
             }}
         />;
     }
