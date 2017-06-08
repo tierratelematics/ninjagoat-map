@@ -7,7 +7,7 @@ import IMapBoundaries from "../leaflet/IMapBoundaries";
 
 class ClusterGeoJSONLayer extends React.Component<ClusterProps, void> {
 
-    @lazyInject("IMaIMapBoundariespHolder")
+    @lazyInject("IMapBoundaries")
     private mapBoundaries: IMapBoundaries;
 
     render() {
