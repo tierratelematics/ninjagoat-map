@@ -2,32 +2,32 @@ import * as _ from "lodash";
 import ILayerView from "../layer/ILayerView";
 import { Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONLeaflet, LayerGroup, marker } from "leaflet";
 import { inject, injectable } from "inversify";
-import { GeoJSONCollection, GeoJSONFeature, GeoJSONProps } from "./GeoJSONProps";
+import { GeoJSONCollection, GeoJSONFeature, ClusterProps } from "./GeoJSONProps";
 import IMapHolder from "../leaflet/IMapHolder";
 import { render } from "react-dom";
 import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
 
 @injectable()
-class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
+class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     type = "GeoJSON";
 
     constructor(@inject("IMapHolder") private mapHolder: IMapHolder,
                 @inject("GeoJSONLayerCache") private cache: GeoJSONLayerCache) { }
 
-    create(options: GeoJSONProps): Layer | LayerGroup {
+    create(options: ClusterProps): Layer | LayerGroup {
         this.cache.init();
         return geoJSONLayer(null, options);
     }
 
-    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: GeoJSONProps) {
+    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: ClusterProps) {
         if (!toProps || !toProps.features) return;
 
         this.cache.clear();
-        toProps.features.map(f => this.drawFeature(f, this.enrichOptions(options)));
+        toProps.features.map(feature => this.drawFeature(feature, this.enrichOptions(options)));
         this.removeLayers();
     }
 
-    private enrichOptions(options: GeoJSONProps): GeoJSONProps {
+    private enrichOptions(options: ClusterProps): ClusterProps {
         let featureId = !options.featureId ? (feature: any) => feature.properties.id : options.featureId;
         let popup = !options.popup ? () => null : options.popup;
         let pointToLayer = options.pointToLayer ? options.pointToLayer : (feature, latlng) => {
@@ -40,29 +40,33 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
             options.onEachFeature && options.onEachFeature(feature, layer);
         };
 
-        return <GeoJSONProps>{
+        return {
+            observable: null,
             featureId: featureId,
             pointToLayer: pointToLayer,
             popup: popup,
+            icon: options.icon,
             style: options.style,
             onEachFeature: onEachFeature,
             filter: options.filter,
-            coordsToLatLng: options.coordsToLatLng
+            coordsToLatLng: options.coordsToLatLng,
+            clusterIcon: options.clusterIcon,
+            isCluster: options.isCluster
         };
     }
 
-    private drawFeature(feature: GeoJSONFeature, options: GeoJSONProps): void {
+    private drawFeature(feature: GeoJSONFeature, options: ClusterProps): void {
         let featureId = options.featureId(feature);
         let layer = this.updateFeature(feature, this.cache.layers[featureId], options);
         this.cache.add(featureId, feature, layer);
     }
 
-    private updateFeature(feature: GeoJSONFeature, previous: Layer, options: GeoJSONProps): Layer {
+    private updateFeature(feature: GeoJSONFeature, previous: Layer, options: ClusterProps): Layer {
         if (feature.geometry.type !== "Point") return;
         return !previous ? this.createLayer(feature, options) : this.moveLayer(previous, feature, options);
     }
 
-    private createLayer(feature: GeoJSONFeature, options: GeoJSONProps): Layer {
+    private createLayer(feature: GeoJSONFeature, options: ClusterProps): Layer {
         let layer = GeoJSONLeaflet.geometryToLayer(feature, options);
         if (!layer) return;
 
@@ -72,11 +76,15 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
         return layer;
     }
 
-    private moveLayer(previous, feature: GeoJSONFeature, options: GeoJSONProps): Layer {
+    private moveLayer(previous, feature: GeoJSONFeature, options: ClusterProps): Layer {
         if (!previous) return;
 
         let [lng, lat] = feature.geometry.coordinates;
         previous.setLatLng([lat, lng]);
+        if (options.isCluster && options.isCluster(feature) && options.clusterIcon)
+            previous.setIcon(options.clusterIcon(feature));
+        else if (options.icon)
+            previous.setIcon(options.icon(feature));
         previous.setPopupContent(this.stringifyTemplate(options.popup(feature)));
         return previous;
     }
