@@ -31,7 +31,7 @@ class ClusterGeoJSONLayer extends React.Component<ClusterProps, void> {
             onMarkerClick={(feature: GeoJSON.Feature<GeoJSON.Point>) => {
                 if (this.props.isCluster(feature)) {
                     let [lng, lat] = feature.geometry.coordinates;
-                    this.mapBoundaries.setCenter(new LatLng(lat, lng), this.mapBoundaries.getZoom() + 1);
+                    this.mapBoundaries.setCenter(new LatLng(lat, lng), this.mapBoundaries.getZoom() + 2);
                 } else if (this.props.onMarkerClick) {
                     this.props.onMarkerClick(feature);
                 }
