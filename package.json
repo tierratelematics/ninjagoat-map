@@ -38,5 +38,10 @@
     "test": "smild test"
   },
   "main": "dist/ninjagoat-map.js",
-  "typings": "declarations/ninjagoat-map.d.ts"
+  "typings": "declarations/ninjagoat-map.d.ts",
+  "files": [
+    "dist",
+    "declarations",
+    "styles"
+  ]
 }
