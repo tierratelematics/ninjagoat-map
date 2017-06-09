@@ -1,3 +1,7 @@
+# 0.8.0
+
+Add ClusterGeoJSONLayer
+
 # 0.7.0
 
 * Remove PopupLayer
