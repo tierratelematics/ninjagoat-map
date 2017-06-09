@@ -1,6 +1,6 @@
 {
   "name": "ninjagoat-map",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "dependencies": {
     "@types/geojson": "~1.0.0",
     "@types/leaflet": "~1.0.58",
@@ -38,5 +38,10 @@
     "test": "smild test"
   },
   "main": "dist/ninjagoat-map.js",
-  "typings": "declarations/ninjagoat-map.d.ts"
+  "typings": "declarations/ninjagoat-map.d.ts",
+  "files": [
+    "dist",
+    "declarations",
+    "styles"
+  ]
 }

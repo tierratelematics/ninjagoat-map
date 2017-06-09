@@ -1,5 +1,5 @@
 import ILayerBinder from "./ILayerBinder";
-import {lazyInject, Dictionary} from "ninjagoat";
+import {lazyInject} from "ninjagoat";
 import {MapObservableFactory} from "./MapContext";
 import {Layer, LayerGroup} from "leaflet";
 import MapLayer from "./MapLayer";
@@ -9,10 +9,10 @@ export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
 
 export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends MapLayer<P> {
 
+    protected layer: Layer | LayerGroup;
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
     private subscription: IDisposable;
-    protected layer: Layer | LayerGroup;
 
     createLeafletElement(props: P): Layer | LayerGroup {
         let observable: MapObservableFactory<any> = props.observable;
