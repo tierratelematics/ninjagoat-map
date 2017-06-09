@@ -6,6 +6,7 @@ import { GeoJSONCollection, GeoJSONFeature, ClusterProps } from "./GeoJSONProps"
 import IMapHolder from "../leaflet/IMapHolder";
 import { render } from "react-dom";
 import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
+import {defaultClusterIcon} from "./Icons";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
@@ -83,7 +84,8 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         let [lng, lat] = feature.geometry.coordinates;
         previous.setLatLng([lat, lng]);
         if (options.isCluster && options.isCluster(feature)) {
-            options.clusterIcon && previous.setIcon(options.clusterIcon(feature));
+            let iconGenerator = options.clusterIcon || defaultClusterIcon;
+            previous.setIcon(iconGenerator(feature));
         } else {
             if (options.icon) previous.setIcon(options.icon(feature));
             if (options.popup) previous.setPopupContent(this.stringifyTemplate(options.popup(feature)));
