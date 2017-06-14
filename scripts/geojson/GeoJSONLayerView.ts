@@ -72,7 +72,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         if (!layer) return;
 
         options.onEachFeature(feature, layer);
-        if (!options.isCluster(feature) && options.popup)
+        if ((!options.isCluster || (options.isCluster && !options.isCluster(feature))) && options.popup)
             layer.bindPopup(this.stringifyTemplate(options.popup(feature)));
         this.mapHolder.obtainMap().addLayer(layer);
         return layer;
