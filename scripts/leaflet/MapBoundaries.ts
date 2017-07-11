@@ -35,6 +35,10 @@ class MapBoundaries implements IMapBoundaries {
         return Observable.fromEvent(this.holder.obtainMap(), 'moveend');
     }
 
+    fitBounds(bounds, options?) {
+        let map = this.holder.obtainMap();
+        map.fitBounds(bounds, options);
+    }
 }
 
 export default MapBoundaries

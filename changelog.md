@@ -1,3 +1,7 @@
+# 0.8.1
+
+Add fitBounds to MapBoundaries
+
 # 0.8.0
 
 Add ClusterGeoJSONLayer

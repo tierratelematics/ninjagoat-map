@@ -11,7 +11,9 @@ import {
     LatLngExpression,
     Layer,
     Icon,
-    BaseIcon
+    BaseIcon,
+    LatLngBoundsExpression,
+    FitBoundsOptions
 } from "leaflet";
 import { TileLayerProps, WMSTileLayerProps } from "react-leaflet";
 
@@ -82,6 +84,7 @@ export interface IMapBoundaries {
     getZoom(): number;
     setCenter(center: LatLng, zoom?: number);
     boundsChanges(): Observable<void>;
+    fitBounds(bounds: LatLngBoundsExpression, options?: FitBoundsOptions): void;
 }
 
 type DrawingLayerProps = GeoJSONProps & { onChange: (shapes: GeoJSONCollection) => void };
