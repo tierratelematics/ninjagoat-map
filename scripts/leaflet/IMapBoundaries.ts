@@ -1,4 +1,4 @@
-import {LatLng, LatLngBounds} from "leaflet";
+import {LatLng, LatLngBounds, LatLngBoundsExpression, FitBoundsOptions} from "leaflet";
 import {Observable} from "rx";
 
 interface IMapBoundaries {
@@ -7,6 +7,7 @@ interface IMapBoundaries {
     getZoom(): number;
     setCenter(center: LatLng, zoom?: number);
     boundsChanges(): Observable<void>;
+    fitBounds(bounds: LatLngBoundsExpression, options?: FitBoundsOptions): void;
 }
 
 export default IMapBoundaries
