@@ -47,8 +47,10 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
     componentWillUnmount() {
         super.componentWillUnmount();
         let map = this.mapHolder.obtainMap();
-        map.off(L.Draw.Event.CREATED);
-        map.off(L.Draw.Event.EDITED);
-        map.off(L.Draw.Event.DELETED);
+        if (map) { // Map could be already disposed
+            map.off(L.Draw.Event.CREATED);
+            map.off(L.Draw.Event.EDITED);
+            map.off(L.Draw.Event.DELETED);
+        }
     }
 }
