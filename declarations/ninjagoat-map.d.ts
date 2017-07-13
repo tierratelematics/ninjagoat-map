@@ -8,12 +8,13 @@ import {
     GeoJSONOptions,
     LatLng,
     LatLngBounds,
-    LatLngExpression,
+    MapOptions,
     Layer,
     Icon,
     BaseIcon,
     LatLngBoundsExpression,
-    FitBoundsOptions
+    FitBoundsOptions,
+    Map as LeafletMap
 } from "leaflet";
 import { TileLayerProps, WMSTileLayerProps } from "react-leaflet";
 
@@ -25,9 +26,7 @@ export class MapModule implements IModule {
 
 }
 
-export type MapProps = {
-    center?: LatLngExpression,
-    zoom?: number,
+export type MapProps = MapOptions & {
     onMapReady?: () => void
 }
 
@@ -119,6 +118,11 @@ export { latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, BaseI
 export type ClusterProps = GeoJSONProps & {
     isCluster: (feature: GeoJSONFeature) => boolean;
     clusterIcon?: (feature: GeoJSONFeature) => BaseIcon,
+}
+
+export interface IMapHolder {
+    obtainMap(): LeafletMap;
+    setMap(map: LeafletMap);
 }
 
 export const ClusterGeoJSONLayer: React.ComponentClass<ClusterProps>;
