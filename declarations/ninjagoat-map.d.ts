@@ -13,7 +13,8 @@ import {
     Icon,
     BaseIcon,
     LatLngBoundsExpression,
-    FitBoundsOptions
+    FitBoundsOptions,
+    Map as LeafletMap
 } from "leaflet";
 import { TileLayerProps, WMSTileLayerProps } from "react-leaflet";
 
@@ -117,6 +118,11 @@ export { latLng, latLngBounds, LatLng, LatLngBounds, Marker, marker, Icon, BaseI
 export type ClusterProps = GeoJSONProps & {
     isCluster: (feature: GeoJSONFeature) => boolean;
     clusterIcon?: (feature: GeoJSONFeature) => BaseIcon,
+}
+
+export interface IMapHolder {
+    obtainMap(): LeafletMap;
+    setMap(map: LeafletMap);
 }
 
 export const ClusterGeoJSONLayer: React.ComponentClass<ClusterProps>;
