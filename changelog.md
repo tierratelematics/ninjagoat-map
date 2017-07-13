@@ -1,3 +1,7 @@
+# 0.8.2
+
+Propagate all leaflet map options
+
 # 0.8.1
 
 Add fitBounds to MapBoundaries
