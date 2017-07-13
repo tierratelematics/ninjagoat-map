@@ -8,7 +8,7 @@ import {
     GeoJSONOptions,
     LatLng,
     LatLngBounds,
-    LatLngExpression,
+    MapOptions,
     Layer,
     Icon,
     BaseIcon,
@@ -25,12 +25,8 @@ export class MapModule implements IModule {
 
 }
 
-export type MapProps = {
-    center?: LatLngExpression,
-    zoom?: number,
-    onMapReady?: () => void,
-    maxBounds?: LatLngBoundsExpression,
-    maxBoundsViscosity?: number
+export type MapProps = MapOptions & {
+    onMapReady?: () => void
 }
 
 export const Map: React.ComponentClass<MapProps>;
