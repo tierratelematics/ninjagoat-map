@@ -1,3 +1,7 @@
+# 0.8.3
+
+Update to ninjagoat 2.4.0
+
 # 0.8.2
 
 Propagate all leaflet map options

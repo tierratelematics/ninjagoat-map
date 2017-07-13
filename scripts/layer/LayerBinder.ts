@@ -10,13 +10,13 @@ import {Observable} from "rx";
 @injectable()
 class LayerBinder implements ILayerBinder {
 
-    constructor(@multiInject("ILayerView") private layerViews: ILayerView<any,any>[],
+    constructor(@multiInject("ILayerView") private layerViews: ILayerView<any, any>[],
                 @inject("IMapBoundaries") private mapBoundaries: IMapBoundaries) {
 
     }
 
     bind<T>(source: MapObservableFactory<T>, type: string, options: any): [Layer | LayerGroup, Observable<void>] {
-        let layerView = find(this.layerViews, ['type', type]);
+        let layerView = find(this.layerViews, {"type": type});
         if (!layerView)
             throw new Error("No views registered for this type of layer");
 
