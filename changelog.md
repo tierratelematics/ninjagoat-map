@@ -1,3 +1,7 @@
+# 0.8.4
+
+Fix popup bind
+
 # 0.8.3
 
 Update to ninjagoat 2.4.0
