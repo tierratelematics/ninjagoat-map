@@ -30,7 +30,6 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
 
     private enrichOptions(options: ClusterProps): ClusterProps {
         let featureId = !options.featureId ? (feature: any) => feature.properties.id : options.featureId;
-        let popup = !options.popup ? () => null : options.popup;
         let pointToLayer = options.pointToLayer ? options.pointToLayer : (feature, latlng) => {
             return marker(latlng, options.icon ? {
                 icon: options.icon(feature)
@@ -45,7 +44,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             observable: null,
             featureId: featureId,
             pointToLayer: pointToLayer,
-            popup: popup,
+            popup: options.popup,
             icon: options.icon,
             style: options.style,
             onEachFeature: onEachFeature,
