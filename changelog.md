@@ -1,3 +1,7 @@
+# 0.8.5
+
+Move types into dev deps
+
 # 0.8.4
 
 Fix popup bind
