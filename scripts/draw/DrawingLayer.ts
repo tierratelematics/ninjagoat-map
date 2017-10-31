@@ -2,7 +2,7 @@ import {ObservableLayer} from "../layer/ObservableLayer";
 import {GeoJSONProps, GeoJSONCollection, GeoJSONFeature} from "../geojson/GeoJSONProps";
 import {lazyInject} from "ninjagoat";
 import IMapHolder from "../leaflet/IMapHolder";
-import {Circle, LayerGroup} from "leaflet";
+import {Circle, LayerGroup, Draw} from "leaflet";
 import {map} from "lodash";
 import IShapeTransformer from "./IShapeTransformer";
 
@@ -22,9 +22,9 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
     componentDidMount() {
         super.componentDidMount();
         let map = this.mapHolder.obtainMap();
-        map.on(L.Draw.Event.CREATED, this.notifyShapes.bind(this));
-        map.on(L.Draw.Event.EDITED, this.notifyShapes.bind(this));
-        map.on(L.Draw.Event.DELETED, this.notifyShapes.bind(this));
+        map.on(Draw.Event.CREATED, this.notifyShapes.bind(this));
+        map.on(Draw.Event.EDITED, this.notifyShapes.bind(this));
+        map.on(Draw.Event.DELETED, this.notifyShapes.bind(this));
     }
 
     private notifyShapes() {
@@ -48,9 +48,9 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
         super.componentWillUnmount();
         let map = this.mapHolder.obtainMap();
         if (map) { // Map could be already disposed
-            map.off(L.Draw.Event.CREATED);
-            map.off(L.Draw.Event.EDITED);
-            map.off(L.Draw.Event.DELETED);
+            map.off(Draw.Event.CREATED);
+            map.off(Draw.Event.EDITED);
+            map.off(Draw.Event.DELETED);
         }
     }
 }
