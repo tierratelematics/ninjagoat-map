@@ -3,7 +3,7 @@
   "version": "0.8.5",
   "dependencies": {
     "circle-to-polygon": "~1.0.0",
-    "inversify": "~3.0.0-rc.2",
+    "inversify": "^4.3.0",
     "leaflet": "~1.0.3",
     "leaflet-draw": "~0.4.9",
     "leaflet-geosearch": "~2.2.0",
