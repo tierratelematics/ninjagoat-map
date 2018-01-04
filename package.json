@@ -32,16 +32,15 @@
     "typemoq": "~1.2.1"
   },
   "peerDependencies": {
-    "ninjagoat": "^2.4.0"
+    "ninjagoat": ">=2.4 <=3"
   },
   "scripts": {
     "test": "smild test"
   },
-  "main": "dist/ninjagoat-map.js",
-  "typings": "declarations/ninjagoat-map.d.ts",
+  "main": "dist",
+  "typings": "dist",
   "files": [
     "dist",
-    "declarations",
     "styles"
   ]
 }

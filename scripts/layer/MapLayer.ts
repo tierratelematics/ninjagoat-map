@@ -1,5 +1,5 @@
 import {isFunction} from "lodash";
-const {FeatureGroup} = require("react-leaflet");
+export const {FeatureGroup} = require("react-leaflet");
 const PropTypes = require("prop-types");
 import {Layer, LayerGroup} from "leaflet";
 

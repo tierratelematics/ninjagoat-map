@@ -1,4 +1,4 @@
-const {LayersControl} = require("react-leaflet");
+export const {LayersControl} = require("react-leaflet");
 const PropTypes = require("prop-types");
 
 abstract class MapControl<P> extends LayersControl<P> {

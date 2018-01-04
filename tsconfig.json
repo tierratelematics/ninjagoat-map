@@ -15,6 +15,7 @@
       "es5",
       "es6",
       "dom"
-    ]
+    ],
+    "declaration": true
   }
 }
