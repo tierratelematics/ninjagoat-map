@@ -4,7 +4,6 @@ import expect = require("expect.js");
 import {IMock, Mock, Times, It} from "typemoq";
 import {ReplaySubject, Subject, Observable} from "rx";
 import {LatLng, LatLngBounds} from "leaflet";
-import MockLayerView from "./fixtures/MockLayerView";
 import IMapBoundaries from "../scripts/leaflet/IMapBoundaries";
 import ILayerView from "../scripts/layer/ILayerView";
 import LayerBinder from "../scripts/layer/LayerBinder";
@@ -23,7 +22,8 @@ describe("Given a layer binder", () => {
         mapBoundaries = Mock.ofType<IMapBoundaries>();
         mapBoundaries.setup(m => m.boundsChanges()).returns(() => viewChanges);
         data = new ReplaySubject<any>();
-        layerView = Mock.ofType<ILayerView<any, any>>(MockLayerView);
+        layerView = Mock.ofType<ILayerView<any, any>>();
+        layerView.setup(l => l.type).returns(() => "GeoJSON");
         subject = new LayerBinder([layerView.object], mapBoundaries.object);
     });
 
