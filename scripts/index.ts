@@ -15,5 +15,5 @@ export { ObservableLayer, ObservableLayerProps } from "./layer/ObservableLayer";
 export { default as MapLayer } from "./layer/MapLayer";
 export { default as IMapBoundaries } from "./leaflet/IMapBoundaries";
 export { default as IMapHolder } from "./leaflet/IMapHolder"; 
-export { PathLayer } from "./path/PathLayer";
+export { PathLayer, FixedPathLayer } from "./path/PathLayer";
 export { PathProps } from "./path/PathProps";
