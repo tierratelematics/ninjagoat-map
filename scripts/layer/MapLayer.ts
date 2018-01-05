@@ -1,9 +1,13 @@
 import {isFunction} from "lodash";
-export const {FeatureGroup} = require("react-leaflet");
+const { FeatureGroup } = require("react-leaflet");
 const PropTypes = require("prop-types");
 import {Layer, LayerGroup} from "leaflet";
+import * as React from "react";
 
-abstract class MapLayer<P> extends FeatureGroup<P> {
+export interface IFeatureGroup extends React.Component {
+    new(...args: any[]): IFeatureGroup;
+}
+abstract class MapLayer<P> extends (FeatureGroup as IFeatureGroup) {
 
     // Patch to link context correctly in React (probably due since static fields are not inherited from javascript classes)
     static contextTypes = {
@@ -17,9 +21,9 @@ abstract class MapLayer<P> extends FeatureGroup<P> {
     updateLeafletElement(fromProps: P, toProps: P) {
         let props = <any>toProps;
         if (isFunction(props.style)) {
-            this.setStyle(props.style);
+            (<any>this).setStyle(props.style);
         } else {
-            this.setStyleIfChanged(fromProps, toProps);
+            (<any>this).setStyleIfChanged(fromProps, toProps);
         }
     }
 }

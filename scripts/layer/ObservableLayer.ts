@@ -20,7 +20,7 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
     createLeafletElement(props: P): Layer | LayerGroup {
         let observable: MapObservableFactory<any> = props.observable;
         let layerType = this.getLayerType(props);
-        let [layer, notifications] = this.layerBinder.bind(observable, layerType, this.getOptions(props));
+        let [layer, notifications] = this.layerBinder.bind(observable, layerType, (<any>this).getOptions(props));
         this.subscription = notifications.subscribe();
         this.layer = layer;
         return layer;
