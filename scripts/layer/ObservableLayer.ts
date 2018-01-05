@@ -5,7 +5,10 @@ import {Layer, LayerGroup} from "leaflet";
 import MapLayer from "./MapLayer";
 import {IDisposable} from "rx";
 
-export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
+export type ObservableLayerProps<T> = {
+    observable: MapObservableFactory<T>,
+    freezeBounds?: boolean;
+};
 
 export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends MapLayer<P> {
 
