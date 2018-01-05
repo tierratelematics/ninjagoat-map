@@ -1,5 +1,4 @@
-import { GeoJSONOptions, BaseIcon } from "leaflet";
-import { MapObservableFactory } from "../layer/MapContext";
+import { GeoJSONOptions, BaseIcon } from "leaflet";;
 import { ObservableLayerProps } from "../layer/ObservableLayer";
 
 export type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon;
