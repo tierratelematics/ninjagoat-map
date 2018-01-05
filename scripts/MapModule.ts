@@ -16,7 +16,7 @@ import IGeocodingProvider from "./geocoding/IGeocodingProvider";
 import GoogleGeocodingProvider from "./geocoding/GoogleGeocodingProvider";
 import { GeoJSONLayerCache } from "./geojson/GeoJSONLayerCache";
 import { PathProps } from "./path/PathProps";
-import PathLayerView from "./path/PathLayerView";
+import { PathLayerView } from "./path/PathLayerView";
 
 class MapModule implements IModule {
 
