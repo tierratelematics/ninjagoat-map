@@ -9,7 +9,7 @@ export type MapProps = MapOptions & {
     onMapClick?(event: Event): void; 
 }
 
-export class Map extends React.Component<MapProps, void> {
+export class Map extends React.Component<MapProps, any> {
 
     @lazyInject("IMapHolder")
     private mapHolder: IMapHolder;
