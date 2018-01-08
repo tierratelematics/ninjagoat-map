@@ -30,7 +30,7 @@ export class TypedFeatureGroup<P> extends FeatureGroup implements React.Componen
         super.componentWillReceiveProps(nextProps, nextContext);
     }
     shouldComponentUpdate?(nextProps: Readonly<P>, nextState: Readonly<any>, nextContext: any): boolean {
-        return super.shouldComponentUpdate(nextProps, nextState);
+        return super.shouldComponentUpdate(nextProps, nextState, nextContext);
     }
     componentWillUpdate?(nextProps: Readonly<P>, nextState: Readonly<any>, nextContext: any): void {
         super.componentWillUpdate(nextProps, nextState, nextContext);
