@@ -18,7 +18,8 @@ export class Map extends React.Component<MapProps, any> {
         return <LeafletMap {...this.props as MapOptions} ref={component => {
             let map = this.mapHolder.obtainMap();
             if (component && !map) {
-                this.mapHolder.setMap(component.leafletElement);
+                map = component.leafletElement;
+                this.mapHolder.setMap(map);
                 if (this.props.onMapReady) this.props.onMapReady();
                 map.on("click", this.props.onMapClick);
             }
