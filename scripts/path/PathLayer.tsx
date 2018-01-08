@@ -9,9 +9,3 @@ export class PathLayer extends ObservableLayer<PathProps> {
     }
 }
 
-export class FixedPathLayer extends React.Component<PathProps, void> {
-
-    render() {
-        return <PathLayer freezeBounds={true} {...this.props} />
-    }
-}
