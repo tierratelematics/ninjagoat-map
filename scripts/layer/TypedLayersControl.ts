@@ -20,26 +20,4 @@ export class TypedLayersControl<P> extends LayersControl implements React.Compon
     context: any;
     refs: { [key: string]: React.ReactInstance; };
 
-    componentWillMount?(): void {
-        super.componentWillMount();
-    }
-    componentDidMount?(): void {
-        super.componentDidMount();
-    }
-    componentWillReceiveProps?(nextProps: Readonly<P>, nextContext: any): void {
-        super.componentWillReceiveProps(nextProps, nextContext);
-    }
-    shouldComponentUpdate?(nextProps: Readonly<P>, nextState: Readonly<any>, nextContext: any): boolean {
-        return super.shouldComponentUpdate(nextProps, nextState, nextContext);
-    }
-    componentWillUpdate?(nextProps: Readonly<P>, nextState: Readonly<any>, nextContext: any): void {
-        super.componentWillUpdate(nextProps, nextState, nextContext);
-    }
-    componentDidUpdate?(prevProps: Readonly<P>, prevState: Readonly<any>, prevContext: any): void {
-        super.componentDidUpdate(prevProps, prevState, prevContext);
-    }
-    componentWillUnmount?(): void {
-        super.componentWillUnmount();
-    }
-
 }
