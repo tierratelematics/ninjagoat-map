@@ -23,18 +23,13 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: ClusterProps) {
         if (!toProps || !toProps.features) return;
 
-        if (!options.featureId) {
-            let featureGroup = <GeoJSONLeaflet>layer;
-            featureGroup.clearLayers();
-            featureGroup.addData(toProps);
-        } else {
-            this.cache.clear();
-            toProps.features.map(feature => this.drawFeature(feature, this.enrichOptions(options)));
-            this.removeLayers();
-        }
+        this.cache.clear();
+        toProps.features.map(feature => this.drawFeature(feature, this.enrichOptions(options)));
+        this.removeLayers();
     }
 
     private enrichOptions(options: ClusterProps): ClusterProps {
+        let featureId = !options.featureId ? (feature: any) => feature.properties.id : options.featureId;
         let pointToLayer = options.pointToLayer ? options.pointToLayer : (feature, latlng) => {
             return marker(latlng, options.icon ? {
                 icon: options.icon(feature)
@@ -47,7 +42,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
 
         return {
             observable: null,
-            featureId: options.featureId,
+            featureId: featureId,
             pointToLayer: pointToLayer,
             popup: options.popup,
             icon: options.icon,
