@@ -30,9 +30,9 @@ export class Map extends React.Component<MapProps, any> {
 
     componentWillUnmount() {
         let map = this.mapHolder.obtainMap();
-        if (!map) {
-            map.on("click", this.props.onMapClick);
-            if (this.props.onMapClick) this.mapHolder.setMap(null);
+        if (map) {
+            if (this.props.onMapClick) map.off("click", this.props.onMapClick);
+            this.mapHolder.setMap(null);
         }
     }
 }
