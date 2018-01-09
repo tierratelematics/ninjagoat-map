@@ -21,7 +21,7 @@ export class Map extends React.Component<MapProps, any> {
                 map = component.leafletElement;
                 this.mapHolder.setMap(map);
                 if (this.props.onMapReady) this.props.onMapReady();
-                map.on("click", this.props.onMapClick);
+                if (this.props.onMapClick) map.on("click", this.props.onMapClick);
             }
         }}>
             {this.props.children}
@@ -32,7 +32,7 @@ export class Map extends React.Component<MapProps, any> {
         let map = this.mapHolder.obtainMap();
         if (!map) {
             map.on("click", this.props.onMapClick);
-            this.mapHolder.setMap(null);
+            if (this.props.onMapClick) this.mapHolder.setMap(null);
         }
     }
 }
