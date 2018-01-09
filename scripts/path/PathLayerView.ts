@@ -22,7 +22,7 @@ export class PathLayerView implements ILayerView<GeoJSONCollection, PathProps> {
         if (!toProps || !toProps.features) return;
 
         let points = map(toProps.features, feature => {
-            let coordinates = feature.geometry.coordinates[0];
+            let coordinates = feature.geometry.coordinates as number[];
             return latLng(coordinates[1], coordinates[0]);
         });
         
