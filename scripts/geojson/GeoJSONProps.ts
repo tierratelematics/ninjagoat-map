@@ -11,7 +11,7 @@ export type GeoJSONProps = ObservableLayerProps<GeoJSONCollection> & GeoJSONOpti
     icon?: (feature: GeoJSONFeature) => BaseIcon,
     onMarkerClick?: (feature: GeoJSONFeature) => void,
     popup?: (feature: GeoJSONFeature) => JSX.Element,
-    featureId: (feature: GeoJSONFeature) => string
+    featureId?: (feature: GeoJSONFeature) => string
 };
 
 export type ClusterProps = GeoJSONProps & {
