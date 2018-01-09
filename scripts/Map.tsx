@@ -2,7 +2,7 @@ import * as React from "react";
 import {Map as LeafletMap} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
 import IMapHolder from "./leaflet/IMapHolder";
-import {MapOptions, Event} from "leaflet";
+import {MapOptions, LeafletEvent} from "leaflet";
 
 export type MapProps = MapOptions & {
     onMapReady?: () => void,
