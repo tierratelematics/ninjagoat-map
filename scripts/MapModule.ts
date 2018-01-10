@@ -15,6 +15,8 @@ import ShapeTransformer from "./draw/ShapeTransformer";
 import IGeocodingProvider from "./geocoding/IGeocodingProvider";
 import GoogleGeocodingProvider from "./geocoding/GoogleGeocodingProvider";
 import { GeoJSONLayerCache } from "./geojson/GeoJSONLayerCache";
+import { PathProps } from "./path/PathProps";
+import { PathLayerView } from "./path/PathLayerView";
 
 class MapModule implements IModule {
 
@@ -23,6 +25,7 @@ class MapModule implements IModule {
         container.bind<IMapBoundaries>("IMapBoundaries").to(MapBoundaries).inSingletonScope();
         container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder).inSingletonScope();
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(GeoJSONLayerView);
+        container.bind<ILayerView<GeoJSONCollection, PathProps>>("ILayerView").to(PathLayerView);
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(FeatureLayerView).inSingletonScope();
         container.bind<IShapeTransformer>("IShapeTransformer").to(ShapeTransformer).inSingletonScope();
         container.bind<IGeocodingProvider>("IGeocodingProvider").to(GoogleGeocodingProvider).inSingletonScope();
