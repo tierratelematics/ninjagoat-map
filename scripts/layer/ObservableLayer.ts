@@ -2,12 +2,15 @@ import ILayerBinder from "./ILayerBinder";
 import {lazyInject} from "ninjagoat";
 import {MapObservableFactory} from "./MapContext";
 import {Layer, LayerGroup} from "leaflet";
-import MapLayer from "./MapLayer";
 import {IDisposable} from "rx";
+import { FeatureGroup, FeatureGroupProps } from "react-leaflet";
 
-export type ObservableLayerProps<T> = {observable: MapObservableFactory<T>};
+export type ObservableLayerProps<T> = FeatureGroupProps & {
+    observable: MapObservableFactory<T>,
+    freezeBounds?: boolean;
+};
 
-export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends MapLayer<P> {
+export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends FeatureGroup<P, any> {
 
     protected layer: Layer | LayerGroup;
     @lazyInject("ILayerBinder")
@@ -17,7 +20,7 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
     createLeafletElement(props: P): Layer | LayerGroup {
         let observable: MapObservableFactory<any> = props.observable;
         let layerType = this.getLayerType(props);
-        let [layer, notifications] = this.layerBinder.bind(observable, layerType, this.getOptions(props));
+        let [layer, notifications] = this.layerBinder.bind(observable, layerType, (<any>this).getOptions(props));
         this.subscription = notifications.subscribe();
         this.layer = layer;
         return layer;

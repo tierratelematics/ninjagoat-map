@@ -2,13 +2,14 @@ import * as React from "react";
 import {Map as LeafletMap} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
 import IMapHolder from "./leaflet/IMapHolder";
-import {MapOptions} from "leaflet";
+import {MapOptions, LeafletEvent} from "leaflet";
 
 export type MapProps = MapOptions & {
-    onMapReady?: () => void
+    onMapReady?: () => void,
+    onMapClick?(event: Event): void; 
 }
 
-export class Map extends React.Component<MapProps, void> {
+export class Map extends React.Component<MapProps, any> {
 
     @lazyInject("IMapHolder")
     private mapHolder: IMapHolder;
@@ -17,8 +18,10 @@ export class Map extends React.Component<MapProps, void> {
         return <LeafletMap {...this.props as MapOptions} ref={component => {
             let map = this.mapHolder.obtainMap();
             if (component && !map) {
-                this.mapHolder.setMap(component.leafletElement);
+                map = component.leafletElement;
+                this.mapHolder.setMap(map);
                 if (this.props.onMapReady) this.props.onMapReady();
+                if (this.props.onMapClick) map.on("click", this.props.onMapClick);
             }
         }}>
             {this.props.children}
@@ -26,6 +29,10 @@ export class Map extends React.Component<MapProps, void> {
     }
 
     componentWillUnmount() {
-        this.mapHolder.setMap(null);
+        let map = this.mapHolder.obtainMap();
+        if (map) {
+            if (this.props.onMapClick) map.off("click", this.props.onMapClick);
+            this.mapHolder.setMap(null);
+        }
     }
 }

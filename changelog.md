@@ -1,3 +1,10 @@
+# 1.0.0
+
+* Update leaflet and react-leaflet
+* Add path layer
+* featureId now is not required in GeoJSONLayer
+* Add map click handler
+
 # 0.8.6
 
 Bump inversify

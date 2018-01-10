@@ -6,7 +6,7 @@ import {lazyInject} from "ninjagoat";
 import IMapBoundaries from "../leaflet/IMapBoundaries";
 import {defaultClusterIcon} from "./Icons";
 
-class ClusterGeoJSONLayer extends React.Component<ClusterProps, void> {
+class ClusterGeoJSONLayer extends React.Component<ClusterProps, any> {
 
     @lazyInject("IMapBoundaries")
     private mapBoundaries: IMapBoundaries;

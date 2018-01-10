@@ -23,7 +23,7 @@ class LayerBinder implements ILayerBinder {
         let layer = layerView.create(options),
             fromData: T;
 
-        let binder = this.mapBoundaries.boundsChanges()
+        let binder = Observable.if(() => !(options && options.freezeBounds), this.mapBoundaries.boundsChanges(), Observable.empty())
             .startWith(null)
             .map(() => source({
                 bounds: this.mapBoundaries.getBounds(),

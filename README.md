@@ -124,7 +124,7 @@ import {GeoJSONLayer} from "ninjagoat-map";
 
 <Map center={[30, 30]} zoom={10}>
     <TileLayer url={"http://{s}.tile.osm.org/{z}/{x}/{y}.png"}/>
-    <GeoJSONLayer observable={this.vieModel.sources.marker}/>
+    <GeoJSONLayer observable={this.viewModel.sources.marker}/>
 </Map>
 ```
 
@@ -142,7 +142,7 @@ import {DrawingLayer} from "ninjagoat-map";
 
 <Map center={[30, 30]} zoom={10}>
     <TileLayer url={"http://{s}.tile.osm.org/{z}/{x}/{y}.png"}/>
-    <DrawingLayer observable={this.vieModel.sources.shapes} />
+    <DrawingLayer observable={this.viewModel.sources.shapes} />
 </Map>
 ```
 
@@ -154,7 +154,7 @@ import {DrawingLayer, DrawControl} from "ninjagoat-map";
 
 <Map center={[30, 30]} zoom={10}>
     <TileLayer url={"http://{s}.tile.osm.org/{z}/{x}/{y}.png"}/>
-    <DrawingLayer observable={this.vieModel.sources.shapes}>
+    <DrawingLayer observable={this.viewModel.sources.shapes}>
         <DrawControl position="topright" />
     </DrawingLayer>
 </Map>
@@ -189,7 +189,7 @@ import {DrawingLayer, DrawControl} from "ninjagoat-map";
 
 <Map center={[30, 30]} zoom={10}>
     <TileLayer url={"http://{s}.tile.osm.org/{z}/{x}/{y}.png"}/>
-    <DrawingLayer observable={this.vieModel.sources.draw} onChange={this.viewModel.saveShapes.bind(this.viewModel)}>
+    <DrawingLayer observable={this.viewModel.sources.draw} onChange={this.viewModel.saveShapes.bind(this.viewModel)}>
         <DrawControl position="topright" />
     </DrawingLayer>
 </Map>
