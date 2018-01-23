@@ -102,11 +102,11 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         });
     }
 
-    private stringifyTemplate = (template: JSX.Element): string => {
+    private stringifyTemplate = (template: JSX.Element) => {
         if (!template) return;
         let host = document.createElement("div");
         render(template, host);
-        return host.innerHTML;
+        return host;
     }
 }
 
