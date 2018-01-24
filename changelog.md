@@ -1,3 +1,7 @@
+# 1.0.1
+
+Updatable popup element
+
 # 1.0.0
 
 * Update leaflet and react-leaflet
