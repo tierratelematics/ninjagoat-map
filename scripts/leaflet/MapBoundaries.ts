@@ -26,6 +26,11 @@ class MapBoundaries implements IMapBoundaries {
         return map.getZoom();
     }
 
+    getMaxZoom(): number {
+        let map = this.holder.obtainMap();
+        return map.getMaxZoom(); 
+    }
+
     setCenter(center: LatLng, zoom?: number) {
         let map = this.holder.obtainMap();
         map.setView(center, zoom);
