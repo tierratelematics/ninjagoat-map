@@ -1,3 +1,7 @@
+# 1.1.0
+
+Add popup to a cluster on the last zoom level
+
 # 1.0.1
 
 Updatable popup element
