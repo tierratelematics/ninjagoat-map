@@ -1,3 +1,7 @@
+# 1.2.0
+
+Add configurable zoomTo cluster
+
 # 1.1.0
 
 Add popup to a cluster on the last zoom level
