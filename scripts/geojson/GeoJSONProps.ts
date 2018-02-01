@@ -16,5 +16,6 @@ export type GeoJSONProps = ObservableLayerProps<GeoJSONCollection> & GeoJSONOpti
 
 export type ClusterProps = GeoJSONProps & {
     isCluster: (feature: GeoJSONFeature) => boolean;
-    clusterIcon?: (feature: GeoJSONFeature) => Icon,
+    clusterIcon?: (feature: GeoJSONFeature) => Icon;
+    zoomTo?: (feature: GeoJSONFeature) => number;
 };
