@@ -8,7 +8,7 @@ export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
 export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = ObservableLayerProps<GeoJSONCollection> & GeoJSONOptions & {
-    icon?: (feature: GeoJSONFeature) => Icon,
+    icon?: (feature: GeoJSONFeature) => Icon<any>,
     onMarkerClick?: (feature: GeoJSONFeature) => void,
     popup?: (feature: GeoJSONFeature) => JSX.Element,
     featureId?: (feature: GeoJSONFeature) => string
@@ -16,6 +16,6 @@ export type GeoJSONProps = ObservableLayerProps<GeoJSONCollection> & GeoJSONOpti
 
 export type ClusterProps = GeoJSONProps & {
     isCluster: (feature: GeoJSONFeature) => boolean;
-    clusterIcon?: (feature: GeoJSONFeature) => Icon;
+    clusterIcon?: (feature: GeoJSONFeature) => Icon<any>;
     zoomTo?: (feature: GeoJSONFeature) => number;
 };
