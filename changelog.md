@@ -1,3 +1,7 @@
+# 1.2.1
+
+Fix icons type check
+
 # 1.2.0
 
 Add configurable zoomTo cluster
