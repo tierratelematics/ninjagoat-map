@@ -1,3 +1,7 @@
+# 1.2.2
+
+Fix React types
+
 # 1.2.1
 
 Fix icons type check
