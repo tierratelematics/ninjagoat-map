@@ -1,3 +1,7 @@
+# 1.3.0
+
+Add custom control support and layers control
+
 # 1.2.2
 
 Fix React types
