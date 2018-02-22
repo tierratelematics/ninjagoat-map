@@ -3,7 +3,7 @@ export { Map, MapProps } from "./Map";
 export { default as GeoJSONLayer } from "./geojson/GeoJSONLayer";
 export { ClusterProps, GeoJSONCollection, GeoJSONFeature, GeoJSONProps, SupportedGeometries } from "./geojson/GeoJSONProps";
 export { default as ClusterGeoJSONLayer } from "./geojson/ClusterGeoJSONLayer";
-export { TileLayer, WMSTileLayer, LayersControl } from "react-leaflet"
+export { TileLayer, WMSTileLayer, LayersControl, ZoomControl } from "react-leaflet"
 export { DrawingLayer, DrawingLayerProps } from "./draw/DrawingLayer";
 export { EditControl as DrawControl } from "react-leaflet-draw";
 export { GeocodingControl, GeocodingControlProps } from "./geocoding/GeocodingControl";
