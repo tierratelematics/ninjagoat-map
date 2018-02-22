@@ -1,3 +1,7 @@
+# 1.4.0
+
+Export zoom control
+
 # 1.3.0
 
 Add custom control support and layers control

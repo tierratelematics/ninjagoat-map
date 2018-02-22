@@ -1,6 +1,6 @@
 {
   "name": "ninjagoat-map",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "dependencies": {
     "@types/react": "^15.6.4",
     "circle-to-polygon": "~1.0.0",
