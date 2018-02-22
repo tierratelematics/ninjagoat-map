@@ -20,3 +20,4 @@ export { default as IMapBoundaries } from "./leaflet/IMapBoundaries";
 export { default as IMapHolder } from "./leaflet/IMapHolder"; 
 export { PathLayer } from "./path/PathLayer";
 export { PathProps } from "./path/PathProps";
+export { default as CustomControl } from "react-leaflet-control";
