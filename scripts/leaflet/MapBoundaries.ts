@@ -1,15 +1,13 @@
-import {LatLng, LatLngBounds} from "leaflet";
-import {Observable} from "rx";
-import {inject, injectable} from "inversify";
+import { LatLng, LatLngBounds } from "leaflet";
+import { Observable } from "rx";
+import { inject, injectable } from "inversify";
 import IMapBoundaries from "./IMapBoundaries";
 import IMapHolder from "./IMapHolder";
 
 @injectable()
 class MapBoundaries implements IMapBoundaries {
 
-    constructor(@inject("IMapHolder") private holder: IMapHolder) {
-
-    }
+    constructor(@inject("IMapHolder") private holder: IMapHolder) { }
 
     getCenter(): LatLng {
         let map = this.holder.obtainMap();
@@ -28,7 +26,7 @@ class MapBoundaries implements IMapBoundaries {
 
     getMaxZoom(): number {
         let map = this.holder.obtainMap();
-        return map.getMaxZoom(); 
+        return map.getMaxZoom();
     }
 
     setCenter(center: LatLng, zoom?: number) {
@@ -37,7 +35,7 @@ class MapBoundaries implements IMapBoundaries {
     }
 
     boundsChanges(): Observable<void> {
-        return Observable.fromEvent(this.holder.obtainMap(), 'moveend');
+        return Observable.fromEvent(this.holder.obtainMap(), "moveend");
     }
 
     fitBounds(bounds, options?) {
@@ -46,4 +44,4 @@ class MapBoundaries implements IMapBoundaries {
     }
 }
 
-export default MapBoundaries
+export default MapBoundaries;

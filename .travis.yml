@@ -2,9 +2,9 @@ language: node_js
 node_js:
 - '6'
 install:
-- npm install smild@4.10.2 -g
+- npm install smild@4.13.0 -g
 - npm install
-- npm install ninjagoat@2.8.3
+- npm install ninjagoat@4.0.0
 script:
 - smild test
 - smild build
