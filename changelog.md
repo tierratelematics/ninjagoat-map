@@ -1,3 +1,7 @@
+# 2.0.0
+
+Update React to v16
+
 # 1.4.0
 
 Export zoom control
