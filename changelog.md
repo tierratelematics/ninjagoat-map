@@ -1,3 +1,7 @@
+# 2.0.1
+
+Avoid duplicated lodash versions
+
 # 2.0.0
 
 Update React to v16
