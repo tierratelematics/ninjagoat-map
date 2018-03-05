@@ -8,7 +8,7 @@
     "leaflet-draw": "~0.4.13",
     "leaflet-geosearch": "~2.6.0",
     "lodash": "^4.17.5",
-    "prop-types": "~15.5.8",
+    "prop-types": "^15.5.8",
     "react-leaflet-control": "~1.4.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
