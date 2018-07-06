@@ -1,3 +1,7 @@
+# 2.1.0
+
+Add invalidateSize prop inside Map Component
+
 # 2.0.1
 
 Avoid duplicated lodash versions
