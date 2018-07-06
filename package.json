@@ -10,8 +10,6 @@
     "lodash": "^4.17.5",
     "prop-types": "^15.5.8",
     "react-leaflet-control": "~1.4.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
     "react-leaflet": "~1.8.2",
     "react-leaflet-draw": "~0.18.0",
     "reflect-metadata": "0.1.8",
@@ -33,7 +31,9 @@
     "typemoq": "~1.2.1"
   },
   "peerDependencies": {
-    "ninjagoat": "^4.0.0"
+    "ninjagoat": "^4.0.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "scripts": {
     "test": "smild test"
