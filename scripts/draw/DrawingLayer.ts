@@ -1,12 +1,15 @@
-import {ObservableLayer} from "../layer/ObservableLayer";
-import {GeoJSONProps, GeoJSONCollection, GeoJSONFeature} from "../geojson/GeoJSONProps";
-import {lazyInject} from "ninjagoat";
+import { ObservableLayer } from "../layer/ObservableLayer";
+import { GeoJSONProps, GeoJSONCollection, GeoJSONFeature } from "../geojson/GeoJSONProps";
+import { lazyInject } from "ninjagoat";
 import IMapHolder from "../leaflet/IMapHolder";
-import {Circle, LayerGroup, Draw} from "leaflet";
-import {map} from "lodash";
+import { Circle, LayerGroup, Draw } from "leaflet";
+import { map } from "lodash";
 import IShapeTransformer from "./IShapeTransformer";
 
-export type DrawingLayerProps = GeoJSONProps & {onChange: (shapes: GeoJSONCollection) => void};
+export type DrawingLayerProps = GeoJSONProps & {
+    onChange: (shapes: GeoJSONCollection) => void,
+    onVertex?: (collection: GeoJSONCollection) => void
+};
 
 export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
 
@@ -25,6 +28,10 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
         map.on(Draw.Event.CREATED, this.notifyShapes.bind(this));
         map.on(Draw.Event.EDITED, this.notifyShapes.bind(this));
         map.on(Draw.Event.DELETED, this.notifyShapes.bind(this));
+        if (this.props.onVertex) {
+            map.on(Draw.Event.DRAWVERTEX, (event: any) => this.notifyVertices(event.layers));
+            map.on(Draw.Event.EDITVERTEX, (event: any) => this.notifyVertices(event.layers));
+        }
     }
 
     private notifyShapes() {
@@ -32,6 +39,12 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
             "type": "FeatureCollection",
             "features": this.combineShapes()
         });
+    }
+
+    private notifyVertices(layers) {
+        if (this.props.onVertex) {
+            this.props.onVertex(layers.toGeoJSON());
+        }
     }
 
     private combineShapes(): GeoJSONFeature[] {
@@ -51,6 +64,10 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
             map.off(Draw.Event.CREATED);
             map.off(Draw.Event.EDITED);
             map.off(Draw.Event.DELETED);
+            if (this.props.onVertex) {
+                map.off(Draw.Event.DRAWVERTEX);
+                map.off(Draw.Event.EDITVERTEX);
+            }
         }
     }
 }
