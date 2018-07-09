@@ -1,3 +1,7 @@
+# 2.2.0
+
+Add listening of vertex events
+
 # 2.1.0
 
 Add invalidateSize prop inside Map Component
