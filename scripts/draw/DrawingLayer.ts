@@ -25,9 +25,9 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
     componentDidMount() {
         super.componentDidMount();
         let map = this.mapHolder.obtainMap();
-        map.on(Draw.Event.CREATED, this.notifyShapes.bind(this));
         map.on(Draw.Event.EDITED, this.notifyShapes.bind(this));
         map.on(Draw.Event.DELETED, this.notifyShapes.bind(this));
+        map.on(Draw.Event.DRAWSTOP, this.notifyShapes.bind(this));
         if (this.props.onVertex) {
             map.on(Draw.Event.DRAWVERTEX, (event: any) => this.notifyVertices(event.layers));
             map.on(Draw.Event.EDITVERTEX, (event: any) => this.notifyVertices(event.layers));
