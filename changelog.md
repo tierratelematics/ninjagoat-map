@@ -1,3 +1,7 @@
+# 2.2.1
+
+Use DrawStop event to manage cancel of the shape during drawing
+
 # 2.2.0
 
 Add listening of vertex events
