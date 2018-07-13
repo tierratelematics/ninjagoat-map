@@ -34,7 +34,7 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
         }
     }
 
-    private notifyShapes() {
+    private notifyShapes(event) {
         this.props.onChange({
             "type": "FeatureCollection",
             "features": this.combineShapes()
@@ -61,7 +61,7 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
         super.componentWillUnmount();
         let map = this.mapHolder.obtainMap();
         if (map) { // Map could be already disposed
-            map.off(Draw.Event.CREATED);
+            map.off(Draw.Event.DRAWSTOP);
             map.off(Draw.Event.EDITED);
             map.off(Draw.Event.DELETED);
             if (this.props.onVertex) {
