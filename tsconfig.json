@@ -9,7 +9,8 @@
       "mocha",
       "node",
       "reflect-metadata",
-      "leaflet-draw"
+      "leaflet-draw",
+      "leaflet"
     ],
     "lib": [
       "es5",
