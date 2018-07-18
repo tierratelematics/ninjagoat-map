@@ -1,6 +1,6 @@
 {
   "name": "ninjagoat-map",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "dependencies": {
     "circle-to-polygon": "~1.0.0",
     "inversify": "^4.3.0",
