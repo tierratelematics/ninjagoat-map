@@ -1,3 +1,7 @@
+# 2.2.2
+
+Manage refresh of DrawingLayer when drawing
+
 # 2.2.1
 
 Use DrawStop event to manage cancel of the shape during drawing
