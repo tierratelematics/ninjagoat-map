@@ -17,6 +17,9 @@ import GoogleGeocodingProvider from "./geocoding/GoogleGeocodingProvider";
 import { GeoJSONLayerCache } from "./geojson/GeoJSONLayerCache";
 import { PathProps } from "./path/PathProps";
 import { PathLayerView } from "./path/PathLayerView";
+import { ShapeUpdateStrategy } from "./geojson/ShapeUpdateStrategy";
+import { MarkerUpdateStrategy } from "./geojson/MarkerUpdateStrategy";
+import { IFeatureUpdateStrategy } from "./geojson/IFeatureUpdateStrategy";
 
 class MapModule implements IModule {
 
@@ -29,6 +32,8 @@ class MapModule implements IModule {
         container.bind<ILayerView<GeoJSONCollection, GeoJSONProps>>("ILayerView").to(FeatureLayerView).inSingletonScope();
         container.bind<IShapeTransformer>("IShapeTransformer").to(ShapeTransformer).inSingletonScope();
         container.bind<IGeocodingProvider>("IGeocodingProvider").to(GoogleGeocodingProvider).inSingletonScope();
+        container.bind<IFeatureUpdateStrategy>("ShapeUpdateStrategy").to(ShapeUpdateStrategy).inSingletonScope();
+        container.bind<IFeatureUpdateStrategy>("MarkerUpdateStrategy").to(MarkerUpdateStrategy).inSingletonScope();
         container.bind<GeoJSONLayerCache>("GeoJSONLayerCache").to(GeoJSONLayerCache);
     };
 

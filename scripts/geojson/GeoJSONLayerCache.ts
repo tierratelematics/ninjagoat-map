@@ -30,6 +30,10 @@ export class GeoJSONLayerCache {
     }
 
     public has(id: string): boolean {
+        return !!this.features[id];
+    }
+
+    public isUpdated(id: string): boolean {
         return !!this.updated[id];
     }
 }
