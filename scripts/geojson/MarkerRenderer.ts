@@ -1,4 +1,4 @@
-import { IFeatureUpdateStrategy } from "./IFeatureUpdateStrategy";
+import { IFeatureRendeder } from "./IFeatureRenderer";
 import { injectable, inject } from "inversify";
 import { Layer } from "leaflet";
 import { GeoJSONFeature, ClusterProps } from "./GeoJSONProps";
@@ -7,7 +7,7 @@ import { defaultClusterIcon } from "./Icons";
 import { render } from "react-dom";
 
 @injectable()
-export class MarkerUpdateStrategy implements IFeatureUpdateStrategy {
+export class MarkerRenderer implements IFeatureRendeder {
     constructor(@inject("IMapBoundaries") private mapBoundaries: IMapBoundaries) { }
 
     addFeature(layer: Layer, feature: GeoJSONFeature, options: ClusterProps): Layer {
