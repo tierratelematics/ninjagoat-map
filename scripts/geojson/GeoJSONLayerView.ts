@@ -2,20 +2,20 @@ import * as _ from "lodash";
 import ILayerView from "../layer/ILayerView";
 import { Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONLeaflet, LayerGroup, marker } from "leaflet";
 import { inject, injectable } from "inversify";
-import { GeoJSONCollection, GeoJSONFeature, ClusterProps } from "./GeoJSONProps";
+import { GeoJSONCollection, GeoJSONFeature, ClusterProps, TooltipDetail } from "./GeoJSONProps";
 import IMapHolder from "../leaflet/IMapHolder";
-import { render } from "react-dom";
 import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
-import {defaultClusterIcon} from "./Icons";
-import IMapBoundaries from "../leaflet/IMapBoundaries";
+import { IFeatureRendeder } from "./IFeatureRenderer";
+import { assign } from "lodash";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     type = "GeoJSON";
 
     constructor(@inject("IMapHolder") private mapHolder: IMapHolder,
-                @inject("IMapBoundaries") private mapBoundaries: IMapBoundaries,
-                @inject("GeoJSONLayerCache") private cache: GeoJSONLayerCache) { }
+        @inject("GeoJSONLayerCache") private cache: GeoJSONLayerCache,
+        @inject("ShapeRenderer") private shapeRenderer: IFeatureRendeder,
+        @inject("MarkerRenderer") private markerRenderer: IFeatureRendeder) { }
 
     create(options: ClusterProps): Layer | LayerGroup {
         this.cache.init();
@@ -38,83 +38,71 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             } : undefined);
         };
         let onEachFeature = (feature: GeoJSON.Feature<GeoJSON.GeometryObject>, layer: Layer) => {
-            layer.on("click", () => options.onMarkerClick && options.onMarkerClick(<GeoJSONFeature>feature));
+            if (options.onMarkerClick) {
+                layer.on("click", () => options.onMarkerClick(<GeoJSONFeature>feature));
+            }
             options.onEachFeature && options.onEachFeature(feature, layer);
         };
 
-        return {
+        return assign({}, options, {
             observable: null,
             featureId: featureId,
             pointToLayer: pointToLayer,
-            popup: options.popup,
-            icon: options.icon,
-            style: options.style,
             onEachFeature: onEachFeature,
-            filter: options.filter,
-            coordsToLatLng: options.coordsToLatLng,
-            clusterIcon: options.clusterIcon,
-            isCluster: options.isCluster
-        };
+        });
     }
 
     private drawFeature(feature: GeoJSONFeature, options: ClusterProps): void {
         let featureId = options.featureId(feature);
-        let layer = this.updateFeature(feature, this.cache.layers[featureId], options);
+        let layer = (this.cache.has(featureId)) ? this.updateFeature(this.cache.layers[featureId], feature, options) : this.addFeature(feature, options);
         this.cache.add(featureId, feature, layer);
     }
 
-    private updateFeature(feature: GeoJSONFeature, previous: Layer, options: ClusterProps): Layer {
-        if (feature.geometry.type !== "Point") return;
-        return !previous ? this.createLayer(feature, options) : this.moveLayer(previous, feature, options);
-    }
+    private updateFeature(previousLayer: Layer, feature: GeoJSONFeature, options: ClusterProps): Layer {
+        let previousFeature: GeoJSONFeature = this.cache.features[options.featureId(feature)];
+        let layer: Layer = (feature.geometry.type !== "Point") ?
+            this.shapeRenderer.updateFeature(previousLayer, previousFeature, feature, options) :
+            this.markerRenderer.updateFeature(previousLayer, previousFeature, feature, options);
 
-    private createLayer(feature: GeoJSONFeature, options: ClusterProps): Layer {
-        let layer = GeoJSONLeaflet.geometryToLayer(feature, options);
-        if (!layer) return;
+        if(layer.getTooltip()) {
+            layer.unbindTooltip();
+        }
+        this.bindTooltip(feature, layer, options);
 
-        options.onEachFeature(feature, layer);
-        if (this.shouldDisplayPopup(feature, options) && options.popup)
-            layer.bindPopup(this.stringifyTemplate(options.popup(feature)));
-        this.mapHolder.obtainMap().addLayer(layer);
+        if (options.onFeatureUpdated) {
+            options.onFeatureUpdated(feature, layer);
+        }
         return layer;
     }
 
-    private shouldDisplayPopup(feature: GeoJSONFeature, options: ClusterProps): boolean {
-        let isMaxZoom = this.mapBoundaries.getMaxZoom() === this.mapBoundaries.getZoom();
-        return (!options.isCluster || (options.isCluster && !options.isCluster(feature))) || isMaxZoom;
-    }
+    private addFeature(feature: GeoJSONFeature, options: ClusterProps): Layer {
+        let layer = new GeoJSONLeaflet(feature, options).getLayers()[0];
+        layer = (feature.geometry.type !== "Point") ?
+            this.shapeRenderer.addFeature(layer, feature, options) :
+            this.markerRenderer.addFeature(layer, feature, options);
 
-    private moveLayer(previous, feature: GeoJSONFeature, options: ClusterProps): Layer {
-        if (!previous) return;
-
-        let [lng, lat] = feature.geometry.coordinates;
-        previous.setLatLng([lat, lng]);
-        if (options.isCluster && options.isCluster(feature)) {
-            let iconGenerator = options.clusterIcon || defaultClusterIcon;
-            previous.setIcon(iconGenerator(feature));
-        } else {
-            if (options.icon) previous.setIcon(options.icon(feature));
-        }
-        if (this.shouldDisplayPopup(feature, options) && options.popup) previous.setPopupContent(this.stringifyTemplate(options.popup(feature)));
-        
-        return previous;
+        this.bindTooltip(feature, layer, options);
+        this.mapHolder.obtainMap().addLayer(layer);
+        return layer;
     }
 
     private removeLayers() {
         let map = this.mapHolder.obtainMap();
         _.map(this.cache.layers, (l: Layer, featureId: string) => {
-            if (this.cache.has(featureId)) return;
-
-            map.removeLayer(this.cache.layers[featureId]);
-            this.cache.remove(featureId);
+            if (!this.cache.isUpdated(featureId)) {
+                map.removeLayer(this.cache.layers[featureId]);
+                this.cache.remove(featureId);
+            }
         });
     }
 
-    private stringifyTemplate = (template: JSX.Element) => {
-        if (!template) return;
-        let host = document.createElement("div");
-        render(template, host);
-        return host;
+    private bindTooltip(feature: GeoJSONFeature, layer: Layer, options: ClusterProps): void {
+        if (options.bindTooltip) {
+            let tooltip: TooltipDetail = options.bindTooltip(feature);
+            if (tooltip) {
+                layer.bindTooltip(tooltip.content, tooltip.options);
+            }
+        }
     }
 }
 
