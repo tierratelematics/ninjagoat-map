@@ -1,4 +1,4 @@
-import { GeoJSONOptions, Icon } from "leaflet";;
+import { GeoJSONOptions, Icon, Layer, Content, TooltipOptions, Tooltip } from "leaflet";;
 import { ObservableLayerProps } from "../layer/ObservableLayer";
 
 export type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon;
@@ -18,4 +18,11 @@ export type ClusterProps = GeoJSONProps & {
     isCluster: (feature: GeoJSONFeature) => boolean;
     clusterIcon?: (feature: GeoJSONFeature) => Icon<any>;
     zoomTo?: (feature: GeoJSONFeature) => number;
+    onFeatureUpdated?: (feature: GeoJSONFeature, layer: Layer) => void;
+    bindTooltip?: (feature: GeoJSONFeature) => TooltipDetail;  
+};
+
+export type TooltipDetail = {
+    content: Tooltip | Content,
+    options?: TooltipOptions
 };
