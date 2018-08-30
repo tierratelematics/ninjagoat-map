@@ -1,3 +1,7 @@
+# 2.3.0
+
+Add support to shapes inside GeoJsonLayer
+
 # 2.2.2
 
 Manage refresh of DrawingLayer when drawing
