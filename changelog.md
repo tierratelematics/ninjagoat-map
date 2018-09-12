@@ -1,3 +1,7 @@
+# 2.3.1
+
+Fix DrawControl update
+
 # 2.3.0
 
 Add support to shapes inside GeoJsonLayer

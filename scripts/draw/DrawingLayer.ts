@@ -3,9 +3,8 @@ import { GeoJSONProps, GeoJSONCollection, GeoJSONFeature } from "../geojson/GeoJ
 import { lazyInject } from "ninjagoat";
 import IMapHolder from "../leaflet/IMapHolder";
 import { Circle, LayerGroup, Draw } from "leaflet";
-import { map, isEqual } from "lodash";
+import { map } from "lodash";
 import IShapeTransformer from "./IShapeTransformer";
-import { Children } from "react";
 
 export type DrawingLayerProps = GeoJSONProps & {
     onChange: (shapes: GeoJSONCollection) => void,
@@ -70,9 +69,5 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
                 map.off(Draw.Event.EDITVERTEX);
             }
         }
-    }
-
-    shouldComponentUpdate(nextProps){
-        return !isEqual(Children.only(this.props.children).props, Children.only(nextProps.children).props);
     }
 }
