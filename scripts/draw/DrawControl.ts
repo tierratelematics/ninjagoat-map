@@ -1,7 +1,7 @@
-import { LayersControl } from "react-leaflet";
-import { isEqual, cloneDeep } from "lodash";
+import { LayersControl, FeatureGroup } from "react-leaflet";
+import { isEqual, clone, cloneDeep, find } from "lodash";
 import "leaflet-draw";
-import { Control } from "leaflet";
+import { Control, featureGroup, Layer } from "leaflet";
 
 export interface DrawControlProps {
     draw: {
@@ -20,8 +20,9 @@ export interface DrawControlProps {
     }
 };
 
-
 export class DrawControl extends LayersControl<DrawControlProps, any> {
+    private layers: Layer[] = [];
+
     onDrawCreate = (e) => {
         const { layerContainer } = this.context;
         layerContainer.addLayer(e.layer);
@@ -37,6 +38,10 @@ export class DrawControl extends LayersControl<DrawControlProps, any> {
         super.componentDidMount();
     }
 
+    shouldComponentUpdate(nextProps){
+        return !isEqual(this.props, nextProps) || this.context.layerContainer.getLayers().length != this.layers.length;
+    }
+
     componentWillUnmount() {
         const { map } = this.context;
         this.leafletElement.remove(map);
@@ -46,15 +51,12 @@ export class DrawControl extends LayersControl<DrawControlProps, any> {
 
     componentDidUpdate(prevProps, prevState, prevContext) {
         super.componentDidUpdate(prevProps, prevState, prevContext);
-
-        if (isEqual(this.props.draw, prevProps.draw) || this.props.position !== prevProps.position) {
-            return false;
-        }
-
-        const { map } = this.context;
+        const { map,layerContainer } = this.context;
         this.leafletElement.remove(map);
         this.updateDrawControls();
         this.leafletElement.addTo(map);
+        this.layers = cloneDeep(layerContainer.getLayers());
+
         return null;
     }
 
