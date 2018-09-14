@@ -64,10 +64,16 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             this.shapeRenderer.updateFeature(previousLayer, previousFeature, feature, options) :
             this.markerRenderer.updateFeature(previousLayer, previousFeature, feature, options);
 
-        if(layer.getTooltip()) {
-            layer.unbindTooltip();
+        if (options.bindTooltip) {
+            const tooltipDetail: TooltipDetail = options.bindTooltip(feature);
+            const hasTooltip: boolean = !!layer.getTooltip();
+
+            if (hasTooltip && !tooltipDetail) {
+                layer.unbindTooltip();
+            } else if (!hasTooltip && tooltipDetail) {
+                this.bindTooltip(feature, layer, options);
+            }
         }
-        this.bindTooltip(feature, layer, options);
 
         if (options.onFeatureUpdated) {
             options.onFeatureUpdated(feature, layer);
