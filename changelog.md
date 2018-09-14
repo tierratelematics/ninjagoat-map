@@ -1,3 +1,7 @@
+# 2.3.2
+
+Optimize binding of tooltip when a shape is updated
+
 # 2.3.1
 
 Fix DrawControl update
