@@ -2,8 +2,8 @@ import { ObservableLayer } from "../layer/ObservableLayer";
 import { GeoJSONProps, GeoJSONCollection, GeoJSONFeature } from "../geojson/GeoJSONProps";
 import { lazyInject } from "ninjagoat";
 import IMapHolder from "../leaflet/IMapHolder";
-import { Circle, LayerGroup, Draw } from "leaflet";
-import { map } from "lodash";
+import { Circle, LayerGroup, Draw, Layer } from "leaflet";
+import { map, filter } from "lodash";
 import IShapeTransformer from "./IShapeTransformer";
 
 export type DrawingLayerProps = GeoJSONProps & {
@@ -43,7 +43,8 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
 
     private notifyVertices(layers) {
         if (this.props.onVertex) {
-            this.props.onVertex(layers.toGeoJSON());
+            const markedVertices: Layer[] = filter(layers.getLayers(), (l: any) => l.options.opacity === 1);
+            this.props.onVertex(new LayerGroup(markedVertices).toGeoJSON() as GeoJSONCollection);
         }
     }
 
