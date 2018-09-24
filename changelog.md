@@ -1,3 +1,7 @@
+# 2.3.3
+
+Filter marked vertices when editing shape
+
 # 2.3.2
 
 Optimize binding of tooltip when a shape is updated
