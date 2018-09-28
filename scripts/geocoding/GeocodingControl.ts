@@ -4,7 +4,7 @@ import {merge} from "lodash";
 import {lazyInject} from "ninjagoat";
 import IGeocodingProvider from "./IGeocodingProvider";
 import {Icon} from "leaflet";
-import { IGeocodingProviderResult } from "../../dist/geocoding/IGeocodingProviderResult";
+import { IGeocodingProviderResult } from "./IGeocodingProviderResult";
 
 export type GeocodingControlProps = LayersControlProps & {
     position: string;

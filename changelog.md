@@ -1,3 +1,7 @@
+# 2.4.0
+
+Add props on GeocodingControl component
+
 # 2.3.3
 
 Filter marked vertices when editing shape
