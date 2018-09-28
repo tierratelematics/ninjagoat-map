@@ -17,3 +17,5 @@ export { PathLayer } from "./path/PathLayer";
 export { PathProps } from "./path/PathProps";
 export { default as CustomControl } from "react-leaflet-control";
 export { DrawControl } from "./draw/DrawControl";
+export { IGeocodingProviderResult } from "./geocoding/IGeocodingProviderResult";
+export { GecondingControlContext } from "./geocoding/GeocodingControl";
