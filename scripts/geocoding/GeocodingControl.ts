@@ -4,6 +4,7 @@ import {merge} from "lodash";
 import {lazyInject} from "ninjagoat";
 import IGeocodingProvider from "./IGeocodingProvider";
 import {Icon} from "leaflet";
+import { IGeocodingProviderResult } from "../../dist/geocoding/IGeocodingProviderResult";
 
 export type GeocodingControlProps = LayersControlProps & {
     position: string;
@@ -13,8 +14,21 @@ export type GeocodingControlProps = LayersControlProps & {
         icon: Icon,
         draggable?: boolean,
     },
-    searchLabel?: string
+    searchLabel?: string,
+    autoComplete?: boolean,
+    autoCompleteDelay?: number,
+    maxMarkers?: number,
+    retainZoomLevel?: boolean,
+    animateZoom?: boolean,
+    autoClose?: boolean,
+    keepResult?: boolean,
+    popupFormat?: (context: GecondingControlContext) => string
 };
+
+export type GecondingControlContext = {
+    query: string,
+    result: IGeocodingProviderResult
+}
 
 export class GeocodingControl extends LayersControl<GeocodingControlProps, any> {
 
