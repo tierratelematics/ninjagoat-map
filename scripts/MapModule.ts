@@ -14,12 +14,12 @@ import IShapeTransformer from "./draw/IShapeTransformer";
 import ShapeTransformer from "./draw/ShapeTransformer";
 import IGeocodingProvider from "./geocoding/IGeocodingProvider";
 import GoogleGeocodingProvider from "./geocoding/GoogleGeocodingProvider";
-import { GeoJSONLayerCache } from "./geojson/GeoJSONLayerCache";
 import { PathProps } from "./path/PathProps";
 import { PathLayerView } from "./path/PathLayerView";
 import { ShapeRenderer } from "./geojson/ShapeRenderer";
 import { MarkerRenderer } from "./geojson/MarkerRenderer";
 import { IFeatureRendeder } from "./geojson/IFeatureRenderer";
+import { GeoJSONLayerCacheFactory } from "./geojson/GeoJSONLayerCacheFactory";
 
 class MapModule implements IModule {
 
@@ -34,7 +34,7 @@ class MapModule implements IModule {
         container.bind<IGeocodingProvider>("IGeocodingProvider").to(GoogleGeocodingProvider).inSingletonScope();
         container.bind<IFeatureRendeder>("ShapeRenderer").to(ShapeRenderer).inSingletonScope();
         container.bind<IFeatureRendeder>("MarkerRenderer").to(MarkerRenderer).inSingletonScope();
-        container.bind<GeoJSONLayerCache>("GeoJSONLayerCache").to(GeoJSONLayerCache);
+        container.bind<GeoJSONLayerCacheFactory>("GeoJSONLayerCacheFactory").to(GeoJSONLayerCacheFactory);
     };
 
     register(registry: IViewModelRegistry, serviceLocator?: IServiceLocator, overrides?: any): void {

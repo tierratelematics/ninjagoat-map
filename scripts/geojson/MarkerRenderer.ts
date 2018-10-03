@@ -1,6 +1,6 @@
 import { IFeatureRendeder } from "./IFeatureRenderer";
 import { injectable, inject } from "inversify";
-import { Layer } from "leaflet";
+import { Layer, LayerGroup } from "leaflet";
 import { GeoJSONFeature, ClusterProps } from "./GeoJSONProps";
 import IMapBoundaries from "../leaflet/IMapBoundaries";
 import { defaultClusterIcon } from "./Icons";
@@ -10,7 +10,7 @@ import { render } from "react-dom";
 export class MarkerRenderer implements IFeatureRendeder {
     constructor(@inject("IMapBoundaries") private mapBoundaries: IMapBoundaries) { }
 
-    addFeature(layer: Layer, feature: GeoJSONFeature, options: ClusterProps): Layer {
+    addFeature(layer: Layer, feature: GeoJSONFeature, options: ClusterProps, layerGroup: LayerGroup): Layer {
         if (this.shouldDisplayPopup(feature, options)) {
             layer.bindPopup(this.stringifyTemplate(options.popup(feature)));
         }
@@ -18,7 +18,7 @@ export class MarkerRenderer implements IFeatureRendeder {
         return layer;
     }
 
-    updateFeature(previousLayer, previousFeature: GeoJSONFeature, feature: GeoJSONFeature, options: ClusterProps): Layer {
+    updateFeature(previousLayer, previousFeature: GeoJSONFeature, feature: GeoJSONFeature, options: ClusterProps, layerGroup: LayerGroup): Layer {
         let [lng, lat] = feature.geometry.coordinates;
         previousLayer.setLatLng([lat, lng]);
         if (options.isCluster && options.isCluster(feature)) {
