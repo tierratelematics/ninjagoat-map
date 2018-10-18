@@ -3,31 +3,35 @@ import ILayerView from "../layer/ILayerView";
 import { Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONLeaflet, LayerGroup, marker } from "leaflet";
 import { inject, injectable } from "inversify";
 import { GeoJSONCollection, GeoJSONFeature, ClusterProps, TooltipDetail } from "./GeoJSONProps";
-import IMapHolder from "../leaflet/IMapHolder";
-import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
 import { IFeatureRendeder } from "./IFeatureRenderer";
 import { assign } from "lodash";
+import { GeoJSONLayerCacheFactory } from "./GeoJSONLayerCacheFactory";
+import { memoize } from "lodash";
+import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     type = "GeoJSON";
+    private memoizedCacheFactory;
 
-    constructor(@inject("IMapHolder") private mapHolder: IMapHolder,
-        @inject("GeoJSONLayerCache") private cache: GeoJSONLayerCache,
+    constructor(@inject("GeoJSONLayerCacheFactory") private cacheFactory: GeoJSONLayerCacheFactory,
         @inject("ShapeRenderer") private shapeRenderer: IFeatureRendeder,
-        @inject("MarkerRenderer") private markerRenderer: IFeatureRendeder) { }
+        @inject("MarkerRenderer") private markerRenderer: IFeatureRendeder) {
+        this.memoizedCacheFactory = memoize(this.cacheFactory.for);
+    }
 
     create(options: ClusterProps): Layer | LayerGroup {
-        this.cache.init();
         return geoJSONLayer(null, options);
     }
 
     update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: ClusterProps) {
         if (!toProps || !toProps.features) return;
+        const layerGroup: LayerGroup = <LayerGroup>layer;
+        const cache: GeoJSONLayerCache = this.memoizedCacheFactory(layerGroup);
 
-        this.cache.clear();
-        toProps.features.map(feature => this.drawFeature(feature, this.enrichOptions(options)));
-        this.removeLayers();
+        cache.clear();
+        toProps.features.map(feature => this.drawFeature(feature, this.enrichOptions(options), layerGroup, cache));
+        this.removeLayers(layerGroup, cache);
     }
 
     private enrichOptions(options: ClusterProps): ClusterProps {
@@ -52,17 +56,20 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         });
     }
 
-    private drawFeature(feature: GeoJSONFeature, options: ClusterProps): void {
+    private drawFeature(feature: GeoJSONFeature, options: ClusterProps, layerGroup: LayerGroup, cache: GeoJSONLayerCache): void {
         let featureId = options.featureId(feature);
-        let layer = (this.cache.has(featureId)) ? this.updateFeature(this.cache.layers[featureId], feature, options) : this.addFeature(feature, options);
-        this.cache.add(featureId, feature, layer);
+        let layer = (cache.has(featureId)) ?
+            this.updateFeature(cache.layers[featureId], feature, options, layerGroup, cache) :
+            this.addFeature(feature, options, layerGroup, cache);
+
+        cache.add(featureId, feature, layer);
     }
 
-    private updateFeature(previousLayer: Layer, feature: GeoJSONFeature, options: ClusterProps): Layer {
-        let previousFeature: GeoJSONFeature = this.cache.features[options.featureId(feature)];
-        let layer: Layer = (feature.geometry.type !== "Point") ?
-            this.shapeRenderer.updateFeature(previousLayer, previousFeature, feature, options) :
-            this.markerRenderer.updateFeature(previousLayer, previousFeature, feature, options);
+    private updateFeature(previousLayer: Layer, feature: GeoJSONFeature, options: ClusterProps, layerGroup: LayerGroup, cache: GeoJSONLayerCache): Layer {
+        const previousFeature: GeoJSONFeature = cache.features[options.featureId(feature)];
+        const layer: Layer = (feature.geometry.type !== "Point") ?
+            this.shapeRenderer.updateFeature(previousLayer, previousFeature, feature, options, layerGroup) :
+            this.markerRenderer.updateFeature(previousLayer, previousFeature, feature, options, layerGroup);
 
         if (options.bindTooltip) {
             const tooltipDetail: TooltipDetail = options.bindTooltip(feature);
@@ -81,23 +88,22 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         return layer;
     }
 
-    private addFeature(feature: GeoJSONFeature, options: ClusterProps): Layer {
+    private addFeature(feature: GeoJSONFeature, options: ClusterProps, layerGroup: LayerGroup, cache: GeoJSONLayerCache): Layer {
         let layer = new GeoJSONLeaflet(feature, options).getLayers()[0];
         layer = (feature.geometry.type !== "Point") ?
-            this.shapeRenderer.addFeature(layer, feature, options) :
-            this.markerRenderer.addFeature(layer, feature, options);
+            this.shapeRenderer.addFeature(layer, feature, options, layerGroup) :
+            this.markerRenderer.addFeature(layer, feature, options, layerGroup);
 
         this.bindTooltip(feature, layer, options);
-        this.mapHolder.obtainMap().addLayer(layer);
+        layerGroup.addLayer(layer);
         return layer;
     }
 
-    private removeLayers() {
-        let map = this.mapHolder.obtainMap();
-        _.map(this.cache.layers, (l: Layer, featureId: string) => {
-            if (!this.cache.isUpdated(featureId)) {
-                map.removeLayer(this.cache.layers[featureId]);
-                this.cache.remove(featureId);
+    private removeLayers(layerGroup: LayerGroup, cache: GeoJSONLayerCache) {
+        _.map(cache.layers, (l: Layer, featureId: string) => {
+            if (!cache.isUpdated(featureId)) {
+                layerGroup.removeLayer(cache.layers[featureId]);
+                cache.remove(featureId);
             }
         });
     }

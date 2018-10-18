@@ -1,16 +1,14 @@
 import { Layer } from "leaflet";
-import { injectable } from "inversify";
 import { Dictionary } from "ninjagoat";
 import { GeoJSONFeature } from "./GeoJSONProps";
 
-@injectable()
 export class GeoJSONLayerCache {
-    public layers: Dictionary<Layer> = {};
-    public features: Dictionary<GeoJSONFeature> = {};
+    public layers: Dictionary<Layer>;
+    public features: Dictionary<GeoJSONFeature>;
 
     private updated: Dictionary<GeoJSONFeature>;
 
-    public init() {
+    constructor() {
         this.layers = {};
         this.features = {};
     }
