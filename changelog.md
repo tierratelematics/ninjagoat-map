@@ -1,3 +1,7 @@
+# 2.4.1
+
+Manage caching of multiple GeoJsonLayer
+
 # 2.4.0
 
 Add props on GeocodingControl component
