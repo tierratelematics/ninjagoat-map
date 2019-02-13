@@ -1,26 +1,27 @@
+import { injectable } from "inversify";
+import { featureGroup, GeoJSON as geoJSONUtil, LayerGroup } from "leaflet";
+import { forEach } from "lodash";
+import { GeoJSONCollection, GeoJSONProps } from "../geojson/GeoJSONProps";
 import ILayerView from "../layer/ILayerView";
-import {Layer, featureGroup, GeoJSON as geoJSONUtil, LayerGroup} from "leaflet";
-import {injectable} from "inversify";
-import {GeoJSONCollection, GeoJSONProps} from "../geojson/GeoJSONProps";
-import {forEach} from "lodash";
 
 @injectable()
 class DrawingLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
-    type = "Drawing";
+    private layerGroup: LayerGroup;
+    private options: GeoJSONProps;
 
-    create(options: GeoJSONProps): Layer | LayerGroup {
-        return featureGroup([]);
+    create(options: GeoJSONProps): LayerGroup {
+        this.options = options;
+        this.layerGroup = featureGroup([]);
+        return this.layerGroup;
     }
 
-    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Layer | LayerGroup, options: GeoJSONProps) {
-        let layerGroup = <LayerGroup>layer;
-        layerGroup.clearLayers();
+    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection) {
+        this.layerGroup.clearLayers();
         if (!toProps) return;
         forEach(toProps.features, feature => {
-            layerGroup.addLayer(geoJSONUtil.geometryToLayer(feature, options));
+            this.layerGroup.addLayer(geoJSONUtil.geometryToLayer(feature, this.options));
         });
     }
-
 }
 
 export default DrawingLayerView

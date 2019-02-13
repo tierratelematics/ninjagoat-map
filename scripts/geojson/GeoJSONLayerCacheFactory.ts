@@ -4,7 +4,7 @@ import { LayerGroup } from "leaflet";
 
 @injectable()
 export class GeoJSONLayerCacheFactory {
-    for(layer: LayerGroup): GeoJSONLayerCache {
+    create(): GeoJSONLayerCache {
         return new GeoJSONLayerCache();
     }
 } 

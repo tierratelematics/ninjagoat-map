@@ -1,26 +1,20 @@
-import ILayerBinder from "./ILayerBinder";
-import {inject, injectable, multiInject} from "inversify";
-import ILayerView from "./ILayerView";
-import {find} from "lodash";
-import {MapObservableFactory} from "./MapContext";
+import { inject, injectable } from "inversify";
+import { Layer, LayerGroup } from "leaflet";
+import { Observable } from "rx";
 import IMapBoundaries from "../leaflet/IMapBoundaries";
-import {Layer, LayerGroup} from "leaflet";
-import {Observable} from "rx";
+import ILayerBinder from "./ILayerBinder";
+import { ILayerFactory } from "./ILayerFactory";
+import { MapObservableFactory } from "./MapContext";
 
 @injectable()
 class LayerBinder implements ILayerBinder {
 
-    constructor(@multiInject("ILayerView") private layerViews: ILayerView<any, any>[],
+    constructor(@inject("ILayerFactory") private layerFactory: ILayerFactory,
                 @inject("IMapBoundaries") private mapBoundaries: IMapBoundaries) {
-
     }
 
     bind<T>(source: MapObservableFactory<T>, type: string, options: any): [Layer | LayerGroup, Observable<void>] {
-        let layerView = find(this.layerViews, {"type": type});
-        if (!layerView)
-            throw new Error("No views registered for this type of layer");
-
-        let layer = layerView.create(options),
+        let [layer, layerView] = this.layerFactory.create(type, options),
             fromData: T;
 
         let binder = Observable.if(() => !(options && options.freezeBounds), this.mapBoundaries.boundsChanges(), Observable.empty())
@@ -31,7 +25,7 @@ class LayerBinder implements ILayerBinder {
             }))
             .switch()
             .map(newData => {
-                layerView.update(fromData, newData, layer, options);
+                layerView.update(fromData, newData);
                 fromData = newData;
             });
 

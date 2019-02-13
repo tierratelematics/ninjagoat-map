@@ -1,24 +1,25 @@
-import * as _ from "lodash";
-import ILayerView from "../layer/ILayerView";
-import { Layer, polyline, LayerGroup, latLng, Polyline } from "leaflet";
 import { inject, injectable } from "inversify";
-import { GeoJSONCollection, GeoJSONFeature } from "../geojson/GeoJSONProps";
-import IMapHolder from "../leaflet/IMapHolder";
-import { render } from "react-dom";
-import { PathProps } from "./PathProps";
+import { latLng, polyline, Polyline, Layer } from "leaflet";
 import { map } from "lodash";
+import { GeoJSONCollection } from "../geojson/GeoJSONProps";
+import ILayerView from "../layer/ILayerView";
+import IMapHolder from "../leaflet/IMapHolder";
+import { PathProps } from "./PathProps";
 
 @injectable()
 export class PathLayerView implements ILayerView<GeoJSONCollection, PathProps> {
-    type = "Path";
-
+    private options: PathProps;
+    private layer: Polyline;
+    
     constructor(@inject("IMapHolder") private mapHolder: IMapHolder) { }
 
-    create(options: PathProps): Layer | LayerGroup {
-        return polyline([], options);
+    create(options: PathProps): Layer {
+        this.options = options;
+        this.layer = polyline([], options);
+        return this.layer;
     }
 
-    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection, layer: Polyline, options: PathProps) {
+    update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection) {
         if (!toProps || !toProps.features) return;
 
         let points = map(toProps.features, feature => {
@@ -26,6 +27,6 @@ export class PathLayerView implements ILayerView<GeoJSONCollection, PathProps> {
             return latLng(coordinates[1], coordinates[0]);
         });
         
-        layer.setLatLngs(points);
+        this.layer.setLatLngs(points);
     }
 }
