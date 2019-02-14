@@ -20,6 +20,8 @@ import { IFeatureRendeder } from "./geojson/IFeatureRenderer";
 import { GeoJSONLayerCacheFactory } from "./geojson/GeoJSONLayerCacheFactory";
 import { ILayerFactory } from "./layer/ILayerFactory";
 import { LayerFactory } from "./layer/LayerFactory";
+import { IPopupRenderer } from "./layer/IPopupRenderer";
+import { PopupRenderer } from "./layer/PopupRenderer";
 
 class MapModule implements IModule {
 
@@ -34,6 +36,7 @@ class MapModule implements IModule {
         container.bind<interfaces.Factory<GenericLayerView>>("Factory<ILayerView>").toAutoFactory("GeoJSONLayerView").whenTargetNamed("GeoJSON");
         container.bind<interfaces.Factory<GenericLayerView>>("Factory<ILayerView>").toAutoFactory("PathLayerView").whenTargetNamed("Path");
         container.bind<interfaces.Factory<GenericLayerView>>("Factory<ILayerView>").toAutoFactory("FeatureLayerView").whenTargetNamed("Drawing");
+        container.bind<IPopupRenderer>("IPopupRenderer").to(PopupRenderer).inSingletonScope();
         container.bind<IShapeTransformer>("IShapeTransformer").to(ShapeTransformer).inSingletonScope();
         container.bind<IGeocodingProvider>("IGeocodingProvider").to(GoogleGeocodingProvider).inSingletonScope();
         container.bind<IFeatureRendeder>("ShapeRenderer").to(ShapeRenderer).inSingletonScope();
