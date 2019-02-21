@@ -28,8 +28,8 @@ class MapModule implements IModule {
     modules = (container: interfaces.Container) => {
         container.bind<IMapHolder>("IMapHolder").to(MapHolder).inSingletonScope();
         container.bind<IMapBoundaries>("IMapBoundaries").to(MapBoundaries).inSingletonScope();
-        container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder).inSingletonScope();
-        container.bind<ILayerFactory>("ILayerFactory").to(LayerFactory).inRequestScope();
+        container.bind<ILayerBinder>("ILayerBinder").to(LayerBinder);
+        container.bind<ILayerFactory>("ILayerFactory").to(LayerFactory).inSingletonScope();
         container.bind<GenericLayerView>("GeoJSONLayerView").to(GeoJSONLayerView);
         container.bind<GenericLayerView>("PathLayerView").to(PathLayerView);
         container.bind<GenericLayerView>("FeatureLayerView").to(FeatureLayerView);
