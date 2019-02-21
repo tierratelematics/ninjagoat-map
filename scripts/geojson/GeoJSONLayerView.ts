@@ -1,25 +1,43 @@
-import { map } from "lodash";
+import { map, get } from "lodash";
 import ILayerView from "../layer/ILayerView";
 import { Layer, geoJSON as geoJSONLayer, GeoJSON as GeoJSONLeaflet, LayerGroup, marker } from "leaflet";
 import { inject, injectable } from "inversify";
-import { GeoJSONCollection, GeoJSONFeature, ClusterProps, TooltipDetail } from "./GeoJSONProps";
+import { GeoJSONCollection, GeoJSONFeature, ClusterProps, TooltipDetail, PopupContext } from "./GeoJSONProps";
 import { IFeatureRendeder } from "./IFeatureRenderer";
 import { assign } from "lodash";
 import { GeoJSONLayerCacheFactory } from "./GeoJSONLayerCacheFactory";
 import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
+import { IPopupRenderer } from "../layer/IPopupRenderer";
+import IMapBoundaries from "../leaflet/IMapBoundaries";
+import { IDisposable, Subject } from "rx";
+import { Feature } from "geojson";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     private cache: GeoJSONLayerCache;
     private options: ClusterProps;
     private layerGroup: LayerGroup;
+    private onFeatureClick: Subject<Feature>;
+    private featureSubscription: IDisposable;
 
     constructor(@inject("GeoJSONLayerCacheFactory") private cacheFactory: GeoJSONLayerCacheFactory,
         @inject("ShapeRenderer") private shapeRenderer: IFeatureRendeder,
-        @inject("MarkerRenderer") private markerRenderer: IFeatureRendeder) {
+        @inject("MarkerRenderer") private markerRenderer: IFeatureRendeder,
+        @inject("IPopupRenderer") private popupRenderer: IPopupRenderer,
+        @inject("IMapBoundaries") private mapBoundaries: IMapBoundaries) {
     }
 
     create(options: ClusterProps): Layer | LayerGroup {
+        if (options.popup) {
+            this.onFeatureClick = new Subject<Feature>();
+            this.featureSubscription = this.onFeatureClick
+                .flatMap((feature: GeoJSONFeature) => options.popup(feature).map((popupContext) => ([feature, popupContext])))
+                .subscribe((data) => {
+                    const [feature, popupContext] = data;
+                    this.renderPopup(feature, popupContext);
+                });
+        }
+
         this.cache = this.cacheFactory.create();
         this.layerGroup = geoJSONLayer(null, options);
         this.options = this.enrichOptions(options);
@@ -42,7 +60,12 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         };
         let onEachFeature = (feature: GeoJSON.Feature<GeoJSON.GeometryObject>, layer: Layer) => {
             if (options.onMarkerClick) {
-                layer.on("click", () => options.onMarkerClick(<GeoJSONFeature>feature));
+                layer.on("click", () => {
+                    if (this.onFeatureClick) {
+                        this.onFeatureClick.onNext(<GeoJSONFeature>feature);
+                    }
+                    options.onMarkerClick(<GeoJSONFeature>feature);
+                });
             }
             options.onEachFeature && options.onEachFeature(feature, layer);
         };
@@ -113,6 +136,29 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             if (tooltip) {
                 layer.bindTooltip(tooltip.content, tooltip.options);
             }
+        }
+    }
+
+    private renderPopup(feature: GeoJSONFeature, context: PopupContext): void {
+        const featureToAnchor: GeoJSONFeature = get(context, 'displayOptions.anchorTo', feature);
+        const featureId: string = this.options.featureId(featureToAnchor);
+
+        context = assign<PopupContext>({
+            displayOptions: {
+                when: () => this.shouldDisplayPopup(feature)
+            }
+        }, context);
+        this.popupRenderer.renderOn(this.cache.layers[featureId], context);
+    }
+
+    private shouldDisplayPopup(feature: GeoJSONFeature): boolean {
+        let isMaxZoom = this.mapBoundaries.getMaxZoom() === this.mapBoundaries.getZoom();
+        return (!this.options.isCluster || (this.options.isCluster && !this.options.isCluster(feature))) || isMaxZoom;
+    }
+
+    dispose(): void {
+        if (this.featureSubscription) {
+            this.featureSubscription.dispose();
         }
     }
 }
