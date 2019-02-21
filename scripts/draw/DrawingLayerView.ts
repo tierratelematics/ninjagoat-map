@@ -22,6 +22,9 @@ class DrawingLayerView implements ILayerView<GeoJSONCollection, GeoJSONProps> {
             this.layerGroup.addLayer(geoJSONUtil.geometryToLayer(feature, this.options));
         });
     }
+
+    dispose(): void {
+    }
 }
 
 export default DrawingLayerView

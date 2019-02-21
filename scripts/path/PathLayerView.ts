@@ -29,4 +29,7 @@ export class PathLayerView implements ILayerView<GeoJSONCollection, PathProps> {
         
         this.layer.setLatLngs(points);
     }
+
+    dispose(): void {
+    }
 }

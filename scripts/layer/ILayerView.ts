@@ -1,5 +1,6 @@
 import { LayerGroup, Layer } from "leaflet";
-interface ILayerView<TProps, TOptions> {
+import { IDisposable } from "../IDisposable";
+interface ILayerView<TProps, TOptions> extends IDisposable {
     create(options: TOptions): Layer | LayerGroup;
     update(fromProps: TProps, toProps: TProps);
 }

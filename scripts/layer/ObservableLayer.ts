@@ -28,6 +28,7 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
 
     componentWillUnmount() {
         if (this.subscription) this.subscription.dispose();
+        this.layerBinder.dispose();
     }
 
     abstract getLayerType(props: P): string;

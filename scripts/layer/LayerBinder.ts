@@ -5,10 +5,12 @@ import IMapBoundaries from "../leaflet/IMapBoundaries";
 import ILayerBinder from "./ILayerBinder";
 import { ILayerFactory } from "./ILayerFactory";
 import { MapObservableFactory } from "./MapContext";
+import ILayerView from "./ILayerView";
 
 @injectable()
 class LayerBinder implements ILayerBinder {
-
+    private layerView: ILayerView<any, any>;
+    
     constructor(@inject("ILayerFactory") private layerFactory: ILayerFactory,
                 @inject("IMapBoundaries") private mapBoundaries: IMapBoundaries) {
     }
@@ -17,6 +19,7 @@ class LayerBinder implements ILayerBinder {
         let [layer, layerView] = this.layerFactory.create(type, options),
             fromData: T;
 
+        this.layerView = layerView;
         let binder = Observable.if(() => !(options && options.freezeBounds), this.mapBoundaries.boundsChanges(), Observable.empty())
             .startWith(null)
             .map(() => source({
@@ -30,6 +33,10 @@ class LayerBinder implements ILayerBinder {
             });
 
         return [layer, binder];
+    }
+
+    dispose(): void {
+        this.layerView.dispose();
     }
 
 }
