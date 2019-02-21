@@ -59,14 +59,9 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             } : undefined);
         };
         let onEachFeature = (feature: GeoJSON.Feature<GeoJSON.GeometryObject>, layer: Layer) => {
-            if (options.onMarkerClick) {
-                layer.on("click", () => {
-                    if (this.onFeatureClick) {
-                        this.onFeatureClick.onNext(<GeoJSONFeature>feature);
-                    }
-                    options.onMarkerClick(<GeoJSONFeature>feature);
-                });
-            }
+            layer.on("click", () => {
+                this.handleFeatureClick(feature);
+            });
             options.onEachFeature && options.onEachFeature(feature, layer);
         };
 
@@ -76,6 +71,16 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             pointToLayer: pointToLayer,
             onEachFeature: onEachFeature,
         });
+    }
+
+    private handleFeatureClick(feature: GeoJSON.Feature<GeoJSON.GeometryObject>): void {
+        const featureId: string = this.options.featureId(<GeoJSONFeature>feature);
+        const featureCached: GeoJSONFeature = this.cache.features[featureId];
+        if (this.onFeatureClick) {
+            this.onFeatureClick.onNext(featureCached);
+        }
+        
+        this.options.onMarkerClick && this.options.onMarkerClick(featureCached);
     }
 
     private drawFeature(feature: GeoJSONFeature): void {
