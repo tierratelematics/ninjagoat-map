@@ -31,7 +31,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         if (options.popup) {
             this.onFeatureClick = new Subject<Feature>();
             this.featureSubscription = this.onFeatureClick
-                .flatMap((feature: GeoJSONFeature) => options.popup(feature).map((popupContext) => ([feature, popupContext])))
+                .switchMap((feature: GeoJSONFeature) => options.popup(feature).map((popupContext) => ([feature, popupContext])))
                 .subscribe((data) => {
                     const [feature, popupContext] = data;
                     this.renderPopup(feature, popupContext);
@@ -62,6 +62,9 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             layer.on("click", () => {
                 this.handleFeatureClick(feature);
             });
+            layer.on("popupclose", () => {
+                this.handlePopupClose(<GeoJSONFeature>feature, layer);
+            });
             options.onEachFeature && options.onEachFeature(feature, layer);
         };
 
@@ -71,6 +74,15 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             pointToLayer: pointToLayer,
             onEachFeature: onEachFeature,
         });
+    }
+
+    private handlePopupClose(feature: GeoJSONFeature, layer: Layer): void {
+        if(this.options.popupClose){
+            const featureId: string = this.options.featureId(<GeoJSONFeature>feature);
+            this.options.popupClose(this.cache.features[featureId], layer);
+            return;
+        }
+        layer.unbindPopup();
     }
 
     private handleFeatureClick(feature: GeoJSON.Feature<GeoJSON.GeometryObject>): void {
@@ -109,9 +121,6 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
             }
         }
 
-        if (this.options.onFeatureUpdated) {
-            this.options.onFeatureUpdated(feature, layer);
-        }
         return layer;
     }
 
@@ -129,6 +138,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     private removeZombieLayers() {
         map(this.cache.layers, (l: Layer, featureId: string) => {
             if (!this.cache.isUpdated(featureId)) {
+                this.cache.layers[featureId].unbindPopup();
                 this.layerGroup.removeLayer(this.cache.layers[featureId]);
                 this.cache.remove(featureId);
             }
@@ -150,13 +160,16 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
 
         context = assign<PopupContext>({
             displayOptions: {
-                when: () => this.shouldDisplayPopup(feature)
+                when: () => this.shouldDisplayPopup(this.cache.features[featureId], featureId)
             }
         }, context);
         this.popupRenderer.renderOn(this.cache.layers[featureId], context);
     }
 
-    private shouldDisplayPopup(feature: GeoJSONFeature): boolean {
+    private shouldDisplayPopup(feature: GeoJSONFeature, featureId: string): boolean {
+        if(!this.cache.has(featureId)){
+            return false;
+        }
         let isMaxZoom = this.mapBoundaries.getMaxZoom() === this.mapBoundaries.getZoom();
         return (!this.options.isCluster || (this.options.isCluster && !this.options.isCluster(feature))) || isMaxZoom;
     }

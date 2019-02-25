@@ -19,8 +19,8 @@ export type ClusterProps = GeoJSONProps & {
     isCluster: (feature: GeoJSONFeature) => boolean;
     clusterIcon?: (feature: GeoJSONFeature) => Icon<any>;
     zoomTo?: (feature: GeoJSONFeature) => number;
-    onFeatureUpdated?: (feature: GeoJSONFeature, layer: Layer) => void;
-    bindTooltip?: (feature: GeoJSONFeature) => TooltipDetail;  
+    bindTooltip?: (feature: GeoJSONFeature) => TooltipDetail;
+    popupClose?: (feature: GeoJSONFeature, Layer: Layer) => void;
 };
 
 export type TooltipDetail = {
