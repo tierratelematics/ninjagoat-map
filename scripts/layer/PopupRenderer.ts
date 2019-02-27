@@ -2,7 +2,7 @@ import { IPopupRenderer } from "./IPopupRenderer";
 import { Layer, Popup } from "leaflet";
 import { render } from "react-dom";
 import { PopupContext } from "../geojson/GeoJSONProps";
-import { get, isEqual } from "lodash";
+import { get, isMatch } from "lodash";
 import { injectable } from "inversify";
 @injectable()
 export class PopupRenderer implements IPopupRenderer {
@@ -13,14 +13,16 @@ export class PopupRenderer implements IPopupRenderer {
         }
 
         const popup: Popup = layer.getPopup();
-        if(!popup || !isEqual(popup.options, context.options)){
+        if(!popup || !isMatch(popup.options, context.options)){
             layer.unbindPopup();
             layer.bindPopup(this.stringifyTemplate(context.content), context.options);
         } else {
             layer.setPopupContent(this.stringifyTemplate(context.content));
         }
 
-        layer.openPopup();
+        if(!layer.isPopupOpen()){
+            layer.openPopup();
+        }
     }
 
     private stringifyTemplate = (template: JSX.Element) => {
