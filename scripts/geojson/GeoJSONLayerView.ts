@@ -86,9 +86,10 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     }
 
     private handleFeatureClick(feature: GeoJSON.Feature<GeoJSON.GeometryObject>): void {
-        const featureId: string = this.options.featureId(<GeoJSONFeature>feature);
+        const geoFeature: GeoJSONFeature = <GeoJSONFeature>feature;
+        const featureId: string = this.options.featureId(geoFeature);
         const featureCached: GeoJSONFeature = this.cache.features[featureId];
-        if (this.onFeatureClick) {
+        if (this.onFeatureClick && !this.options.isCluster(geoFeature)) {
             this.onFeatureClick.onNext(featureCached);
         }
         
