@@ -1,3 +1,7 @@
+# 3.0.0
+
+Make popup reactive
+
 # 2.4.1
 
 Manage caching of multiple GeoJsonLayer

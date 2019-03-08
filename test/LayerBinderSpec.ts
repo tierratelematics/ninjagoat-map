@@ -8,6 +8,7 @@ import IMapBoundaries from "../scripts/leaflet/IMapBoundaries";
 import ILayerView from "../scripts/layer/ILayerView";
 import LayerBinder from "../scripts/layer/LayerBinder";
 import ILayerBinder from "../scripts/layer/ILayerBinder";
+import { ILayerFactory } from "../scripts/layer/ILayerFactory";
 
 describe("Given a layer binder", () => {
 
@@ -15,29 +16,27 @@ describe("Given a layer binder", () => {
     let layerView: IMock<ILayerView<any, any>>;
     let data: ReplaySubject<any>;
     let mapBoundaries: IMock<IMapBoundaries>;
+    let layerViewFactory: IMock<ILayerFactory>;
     let viewChanges: Subject<void>;
 
     beforeEach(() => {
         viewChanges = new Subject<void>();
         mapBoundaries = Mock.ofType<IMapBoundaries>();
         mapBoundaries.setup(m => m.boundsChanges()).returns(() => viewChanges);
-        data = new ReplaySubject<any>();
+        
         layerView = Mock.ofType<ILayerView<any, any>>();
-        layerView.setup(l => l.type).returns(() => "GeoJSON");
-        subject = new LayerBinder([layerView.object], mapBoundaries.object);
-    });
 
-    context("when a layer type is not registered", () => {
-        it("should throw an error", () => {
-            expect(() => subject.bind(context => data, "InexistentType", null)).to.throwError();
-        });
+        layerViewFactory = Mock.ofType<ILayerFactory>();
+        layerViewFactory.setup(l => l.create("GeoJSON", It.isAny())).returns(() => [null, layerView.object]);
+
+        data = new ReplaySubject<any>();
+        subject = new LayerBinder(layerViewFactory.object, mapBoundaries.object);
     });
 
     context("when a layer is shown for the first time", () => {
         it("should be just created", () => {
             subject.bind(context => data, "GeoJSON", {popup: false});
-
-            layerView.verify(g => g.create(It.isValue({popup: false})), Times.once());
+            layerViewFactory.verify(l => l.create("GeoJSON", It.isValue({popup: false})), Times.once());
         });
     });
 
@@ -49,7 +48,7 @@ describe("Given a layer binder", () => {
         it("the layer itself should be updated", () => {
             subject.bind(context => data, "GeoJSON", null)[1].subscribe();
 
-            layerView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]}), It.isAny(), null), Times.once());
+            layerView.verify(g => g.update(It.isValue({markers: []}), It.isValue({markers: [{id: "8283"}]})), Times.once());
         });
     });
 
@@ -71,7 +70,7 @@ describe("Given a layer binder", () => {
                 layerView.verify(g => g.update(It.isAny(), It.isValue({
                     bounds: new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)),
                     zoom: 12
-                }), It.isAny(), null), Times.once());
+                })), Times.once());
             });
         });
         context("when those changes are disabled", () => {
@@ -81,7 +80,7 @@ describe("Given a layer binder", () => {
                 })[1].subscribe();
                 viewChanges.onNext(null);
 
-                layerView.verify(g => g.update(It.isAny(), It.isAny(), It.isAny(), It.isAny()), Times.exactly(2));
+                layerView.verify(g => g.update(It.isAny(), It.isAny()), Times.exactly(2));
             });
         });
     });
