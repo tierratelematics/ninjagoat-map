@@ -1,3 +1,7 @@
+# 3.1.0
+
+Expose leaflet map events and add id prop to observable layer
+
 # 3.0.0
 
 Make popup reactive

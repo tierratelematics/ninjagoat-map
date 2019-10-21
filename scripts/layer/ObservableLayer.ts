@@ -8,6 +8,7 @@ import { FeatureGroup, FeatureGroupProps } from "react-leaflet";
 export type ObservableLayerProps<T> = FeatureGroupProps & {
     observable: MapObservableFactory<T>,
     freezeBounds?: boolean;
+    id?: string;
 };
 
 export abstract class ObservableLayer<P extends ObservableLayerProps<any>> extends FeatureGroup<P, any> {
