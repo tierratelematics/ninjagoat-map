@@ -1,11 +1,11 @@
 import * as React from "react";
-import {Map as LeafletMap} from "react-leaflet";
+import {Map as LeafletMap, MapEvents} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
 import IMapHolder from "./leaflet/IMapHolder";
 import {MapOptions, LeafletEvent} from "leaflet";
 import { Observable } from "rx";
 
-export type MapProps = MapOptions & {
+export type MapProps = MapOptions & MapEvents & {
     invalidateSize?: Observable<void>,
     onMapReady?: () => void,
     onMapClick?(event: Event): void; 
