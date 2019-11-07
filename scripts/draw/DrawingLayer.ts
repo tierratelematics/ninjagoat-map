@@ -2,13 +2,17 @@ import { ObservableLayer } from "../layer/ObservableLayer";
 import { GeoJSONProps, GeoJSONCollection, GeoJSONFeature } from "../geojson/GeoJSONProps";
 import { lazyInject } from "ninjagoat";
 import IMapHolder from "../leaflet/IMapHolder";
-import { Circle, LayerGroup, Draw, Layer } from "leaflet";
+import { Circle, LayerGroup, Draw, Layer, DrawEvents } from "leaflet";
 import { map, filter } from "lodash";
 import IShapeTransformer from "./IShapeTransformer";
+
 
 export type DrawingLayerProps = GeoJSONProps & {
     onChange: (shapes: GeoJSONCollection) => void,
     onVertex?: (collection: GeoJSONCollection) => void
+    onDrawStart?: () => void;
+    onEditStart?: () => void;
+    onEditStop?: () => void;
 };
 
 export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
@@ -28,9 +32,22 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
         map.on(Draw.Event.EDITED, this.notifyShapes.bind(this));
         map.on(Draw.Event.DELETED, this.notifyShapes.bind(this));
         map.on(Draw.Event.DRAWSTOP, this.notifyShapes.bind(this));
+
         if (this.props.onVertex) {
             map.on(Draw.Event.DRAWVERTEX, (event: any) => this.notifyVertices(event.layers));
             map.on(Draw.Event.EDITVERTEX, (event: any) => this.notifyVertices(event.layers));
+        }
+
+        if (this.props.onDrawStart) {
+            map.on(Draw.Event.DRAWSTART, (event: DrawEvents.DrawStart) => this.props.onDrawStart());
+        }
+
+        if (this.props.onEditStart) {
+            map.on(Draw.Event.EDITSTART, (event: DrawEvents.EditStart) => this.props.onEditStart());
+        }
+
+        if (this.props.onEditStop) {
+            map.on(Draw.Event.EDITSTOP, (event: DrawEvents.EditStop) => this.props.onEditStop());
         }
     }
 
@@ -68,6 +85,15 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
             if (this.props.onVertex) {
                 map.off(Draw.Event.DRAWVERTEX);
                 map.off(Draw.Event.EDITVERTEX);
+            }
+            if (this.props.onDrawStart) {
+                map.off(Draw.Event.DRAWSTART);
+            }
+            if (this.props.onEditStart) {
+                map.off(Draw.Event.EDITSTART);
+            }
+            if (this.props.onEditStop) {
+                map.off(Draw.Event.EDITSTOP);
             }
         }
     }
