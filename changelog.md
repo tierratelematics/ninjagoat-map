@@ -1,3 +1,7 @@
+# 3.2.0
+
+Add optional DrawingLayer's props to handle drawing events
+
 # 3.1.0
 
 Expose leaflet map events and add id prop to observable layer
