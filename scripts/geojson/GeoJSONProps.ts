@@ -30,7 +30,7 @@ export type TooltipDetail = {
 };
 
 export type PopupContext = {
-    content: JSX.Element,
+    content?: JSX.Element,
     options?: PopupOptions,
     displayOptions?: DisplayPopupOptions,
 }
