@@ -21,6 +21,7 @@ export type ClusterProps = GeoJSONProps & {
     zoomTo?: (feature: GeoJSONFeature) => number;
     bindTooltip?: (feature: GeoJSONFeature) => TooltipDetail;
     popupClose?: (feature: GeoJSONFeature, Layer: Layer) => void;
+    onPopupRendered?: (element: HTMLElement) => void;
 };
 
 export type TooltipDetail = {
