@@ -1,3 +1,7 @@
+# 3.3.0 
+
+Optionally return popup's DOM element to be able to use a react portal to fill the popup
+
 # 3.2.0
 
 Add optional DrawingLayer's props to handle drawing events

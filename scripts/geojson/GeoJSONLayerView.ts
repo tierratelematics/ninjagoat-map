@@ -34,7 +34,10 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
                 .switchMap((feature: GeoJSONFeature) => options.popup(feature).map((popupContext) => ([feature, popupContext])))
                 .subscribe((data) => {
                     const [feature, popupContext] = data;
-                    this.renderPopup(feature, popupContext);
+                    const element = this.renderPopup(feature, popupContext);
+                    if (options.onPopupRendered) {
+                        options.onPopupRendered(element);
+                    }
                 });
         }
 
@@ -155,7 +158,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         }
     }
 
-    private renderPopup(feature: GeoJSONFeature, context: PopupContext): void {
+    private renderPopup(feature: GeoJSONFeature, context: PopupContext): HTMLElement {
         const featureToAnchor: GeoJSONFeature = get(context, 'displayOptions.anchorTo', feature);
         const featureId: string = this.options.featureId(featureToAnchor);
 
@@ -164,7 +167,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
                 when: () => this.shouldDisplayPopup(this.cache.features[featureId], featureId)
             }
         }, context);
-        this.popupRenderer.renderOn(this.cache.layers[featureId], context);
+        return this.popupRenderer.renderOn(this.cache.layers[featureId], context);
     }
 
     private shouldDisplayPopup(feature: GeoJSONFeature, featureId: string): boolean {
