@@ -9,6 +9,7 @@ script:
 - smild test
 - smild build
 deploy:
+  edge: true
   skip_cleanup: true
   provider: npm
   email: sysadmin@tierratelematics.com
