@@ -1,3 +1,7 @@
+# 3.4.0
+
+Export ScaleControl from react-leaflet
+
 # 3.3.0 
 
 Optionally return popup's DOM element to be able to use a react portal to fill the popup
