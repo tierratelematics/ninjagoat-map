@@ -20,3 +20,4 @@ export { DrawControl } from "./draw/DrawControl";
 export { IGeocodingProviderResult } from "./geocoding/IGeocodingProviderResult";
 export { GecondingControlContext } from "./geocoding/GeocodingControl";
 export { PopupContext } from "./geojson/GeoJSONProps";
+export { default as IShapeTransformer } from "./draw/IShapeTransformer";
