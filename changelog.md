@@ -1,3 +1,7 @@
+# 3.5.0
+
+Export IShapeTransformer
+
 # 3.4.0
 
 Export ScaleControl from react-leaflet
