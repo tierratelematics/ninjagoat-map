@@ -1,3 +1,7 @@
+# 3.6.0
+
+Add support for marker options (such as zIndexOffset)
+
 # 3.5.0
 
 Export IShapeTransformer
