@@ -1,6 +1,8 @@
 language: node_js
 node_js:
 - '10'
+cache:
+  npm: false
 install:
 - npm install smild@4.13.0 npm-install-peers@1.2.1 -g
 - npm ci
