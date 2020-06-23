@@ -162,7 +162,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         const featureToAnchor: GeoJSONFeature = get(context, 'displayOptions.anchorTo', feature);
         const featureId: string = this.options.featureId(featureToAnchor);
 
-        context = assign<PopupContext>({
+        context = assign<PopupContext, PopupContext>({
             displayOptions: {
                 when: () => this.shouldDisplayPopup(this.cache.features[featureId], featureId)
             }
