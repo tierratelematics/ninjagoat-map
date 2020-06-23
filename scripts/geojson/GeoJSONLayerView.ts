@@ -50,7 +50,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     update(fromProps: GeoJSONCollection, toProps: GeoJSONCollection) {
         if (!toProps || !toProps.features) return;
         this.cache.clear();
-        toProps.features.map(feature => this.drawFeature(feature));
+        toProps.features.forEach(feature => this.drawFeature(feature));
         this.removeZombieLayers();
     }
 
@@ -162,7 +162,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         const featureToAnchor: GeoJSONFeature = get(context, 'displayOptions.anchorTo', feature);
         const featureId: string = this.options.featureId(featureToAnchor);
 
-        context = assign<PopupContext>({
+        context = assign<PopupContext, PopupContext>({
             displayOptions: {
                 when: () => this.shouldDisplayPopup(this.cache.features[featureId], featureId)
             }
