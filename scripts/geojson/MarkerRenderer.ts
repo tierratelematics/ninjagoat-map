@@ -18,6 +18,10 @@ export class MarkerRenderer implements IFeatureRendeder {
             previousLayer.setIcon(iconGenerator(feature));
         } else {
             if (options.icon) previousLayer.setIcon(options.icon(feature));
+            if (options.markerOptions) {
+                const markerOptions = options.markerOptions(feature);
+                previousLayer.setZIndexOffset(markerOptions?.zIndexOffset ?? 0);
+            }
         }
 
         return previousLayer;

@@ -1,4 +1,4 @@
-import { GeoJSONOptions, Icon, Layer, Content, TooltipOptions, Tooltip, PopupOptions } from "leaflet";;
+import {GeoJSONOptions, Icon, Layer, Content, TooltipOptions, Tooltip, PopupOptions, MarkerOptions} from "leaflet";;
 import { ObservableLayerProps } from "../layer/ObservableLayer";
 import { Observable } from "rx";
 
@@ -9,10 +9,11 @@ export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
 export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
 export type GeoJSONProps = ObservableLayerProps<GeoJSONCollection> & GeoJSONOptions & {
-    icon?: (feature: GeoJSONFeature) => Icon<any>,
-    onMarkerClick?: (feature: GeoJSONFeature) => void,
-    popup?: (feature: GeoJSONFeature) => Observable<PopupContext>,
-    featureId?: (feature: GeoJSONFeature) => string
+    icon?: (feature: GeoJSONFeature) => Icon<any>;
+    onMarkerClick?: (feature: GeoJSONFeature) => void;
+    popup?: (feature: GeoJSONFeature) => Observable<PopupContext>;
+    featureId?: (feature: GeoJSONFeature) => string;
+    markerOptions?: (feature: GeoJSONFeature) => Omit<MarkerOptions, 'icon'>;
 };
 
 export type ClusterProps = GeoJSONProps & {

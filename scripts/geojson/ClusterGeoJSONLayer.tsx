@@ -17,7 +17,11 @@ class ClusterGeoJSONLayer extends React.Component<ClusterProps, any> {
             {...this.props}
             pointToLayer={(feature: GeoJSON.Feature<GeoJSON.Point>, latlng: LatLng) => {
                 if (!this.props.isCluster(feature)) {
-                    return marker(latlng, this.props.icon ? {icon: this.props.icon(feature)} : undefined);
+                    const markerOptions = {
+                        ...this.props.markerOptions?.(feature),
+                        icon: this.props.icon?.(feature)
+                    };
+                    return marker(latlng, markerOptions);
                 }
                 return marker(latlng, this.props.clusterIcon ? {icon: this.props.clusterIcon(feature)} :
                     {icon: defaultClusterIcon(feature)});
