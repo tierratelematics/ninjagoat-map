@@ -1,3 +1,7 @@
+# 3.7.0
+
+Extend GeoJSONCollection and SupportGeometries types
+
 # 3.6.0
 
 Add support for marker options (such as zIndexOffset)
