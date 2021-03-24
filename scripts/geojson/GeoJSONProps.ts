@@ -2,9 +2,9 @@ import {GeoJSONOptions, Icon, Layer, Content, TooltipOptions, Tooltip, PopupOpti
 import { ObservableLayerProps } from "../layer/ObservableLayer";
 import { Observable } from "rx";
 
-export type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon;
+export type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon | GeoJSON.LineString;
 
-export type GeoJSONCollection = GeoJSON.FeatureCollection<SupportedGeometries>;
+export type GeoJSONCollection<P = GeoJSON.GeoJsonProperties> = GeoJSON.FeatureCollection<SupportedGeometries, P>;
 
 export type GeoJSONFeature = GeoJSON.Feature<SupportedGeometries>;
 
