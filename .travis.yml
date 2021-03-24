@@ -4,7 +4,7 @@ node_js:
 cache:
   npm: false
 install:
-- npm install smild@4.16.1 npm-install-peers@1.2.1 -g
+- npm install smild@4.16.1 npm-install-peers@1.2.2 -g
 - npm ci
 - npm-install-peers
 script:
