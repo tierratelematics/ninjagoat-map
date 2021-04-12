@@ -1,3 +1,7 @@
+# 3.8.0
+
+Bump leaflet version to 1.7.1
+
 # 3.7.0
 
 Extend GeoJSONCollection and SupportGeometries types
