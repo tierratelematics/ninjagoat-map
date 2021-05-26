@@ -2,7 +2,7 @@ import ILayerBinder from "./ILayerBinder";
 import {lazyInject} from "ninjagoat";
 import {MapObservableFactory} from "./MapContext";
 import {Layer, LayerGroup} from "leaflet";
-import {IDisposable} from "rx";
+import {Unsubscribable} from "rxjs";
 import { FeatureGroup, FeatureGroupProps } from "react-leaflet";
 
 export type ObservableLayerProps<T> = FeatureGroupProps & {
@@ -16,7 +16,7 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
     protected layer: Layer | LayerGroup;
     @lazyInject("ILayerBinder")
     private layerBinder: ILayerBinder;
-    private subscription: IDisposable;
+    private subscription: Unsubscribable;
 
     createLeafletElement(props: P): Layer | LayerGroup {
         let observable: MapObservableFactory<any> = props.observable;
@@ -28,7 +28,7 @@ export abstract class ObservableLayer<P extends ObservableLayerProps<any>> exten
     }
 
     componentWillUnmount() {
-        if (this.subscription) this.subscription.dispose();
+        if (this.subscription) this.subscription.unsubscribe();
         this.layerBinder.dispose();
     }
 

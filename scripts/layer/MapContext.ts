@@ -1,5 +1,5 @@
 import {LatLngBounds} from "leaflet";
-import {Observable} from "rx";
+import {Observable} from "rxjs";
 
 export type MapObservableFactory<T> = (context: MapContext) => Observable<T>;
 

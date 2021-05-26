@@ -2,7 +2,7 @@ import "reflect-metadata";
 require("jsdom-global")();
 import expect = require("expect.js");
 import {IMock, Mock, Times, It} from "typemoq";
-import {ReplaySubject, Subject, Observable} from "rx";
+import {ReplaySubject, Subject, Observable, of} from "rxjs";
 import {LatLng, LatLngBounds} from "leaflet";
 import IMapBoundaries from "../scripts/leaflet/IMapBoundaries";
 import ILayerView from "../scripts/layer/ILayerView";
@@ -42,8 +42,8 @@ describe("Given a layer binder", () => {
 
     context("when the data gets an update", () => {
         beforeEach(() => {
-            data.onNext({markers: []});
-            data.onNext({markers: [{id: "8283"}]});
+            data.next({markers: []});
+            data.next({markers: [{id: "8283"}]});
         });
         it("the layer itself should be updated", () => {
             subject.bind(context => data, "GeoJSON", null)[1].subscribe();
@@ -54,18 +54,18 @@ describe("Given a layer binder", () => {
 
     context("when the bounding box changes", () => {
         beforeEach(() => {
-            data.onNext({markers: []});
-            data.onNext({markers: [{id: "8283"}]});
+            data.next({markers: []});
+            data.next({markers: [{id: "8283"}]});
         });
         context("when those changes are enabled", () => {
             it("should reload the source with the new bounding box", () => {
                 subject.bind(context => {
                     if (!context.bounds) return data;
-                    return Observable.just(context);
+                    return of(context);
                 }, "GeoJSON", null)[1].subscribe();
                 mapBoundaries.setup(m => m.getBounds()).returns(() => new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)));
                 mapBoundaries.setup(m => m.getZoom()).returns(() => 12);
-                viewChanges.onNext(null);
+                viewChanges.next(null);
 
                 layerView.verify(g => g.update(It.isAny(), It.isValue({
                     bounds: new LatLngBounds(new LatLng(50, 50), new LatLng(60, 80)),
@@ -78,7 +78,7 @@ describe("Given a layer binder", () => {
                 subject.bind(context => data, "GeoJSON", {
                     freezeBounds: true
                 })[1].subscribe();
-                viewChanges.onNext(null);
+                viewChanges.next(null);
 
                 layerView.verify(g => g.update(It.isAny(), It.isAny()), Times.exactly(2));
             });

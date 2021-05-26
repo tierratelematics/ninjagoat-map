@@ -1,6 +1,6 @@
 import {GeoJSONOptions, Icon, Layer, Content, TooltipOptions, Tooltip, PopupOptions, MarkerOptions} from "leaflet";;
 import { ObservableLayerProps } from "../layer/ObservableLayer";
-import { Observable } from "rx";
+import { Observable } from "rxjs";
 
 export type SupportedGeometries = GeoJSON.Point | GeoJSON.Polygon | GeoJSON.MultiPolygon | GeoJSON.LineString;
 

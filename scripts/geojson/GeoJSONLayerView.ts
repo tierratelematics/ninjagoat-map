@@ -9,8 +9,9 @@ import { GeoJSONLayerCacheFactory } from "./GeoJSONLayerCacheFactory";
 import { GeoJSONLayerCache } from "./GeoJSONLayerCache";
 import { IPopupRenderer } from "../layer/IPopupRenderer";
 import IMapBoundaries from "../leaflet/IMapBoundaries";
-import { IDisposable, Subject } from "rx";
+import {Subject, Unsubscribable} from "rxjs";
 import { Feature } from "geojson";
+import {switchMap, map as observableMap} from "rxjs/operators";
 
 @injectable()
 class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
@@ -18,7 +19,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
     private options: ClusterProps;
     private layerGroup: LayerGroup;
     private onFeatureClick: Subject<Feature>;
-    private featureSubscription: IDisposable;
+    private featureSubscription: Unsubscribable;
 
     constructor(@inject("GeoJSONLayerCacheFactory") private cacheFactory: GeoJSONLayerCacheFactory,
         @inject("ShapeRenderer") private shapeRenderer: IFeatureRendeder,
@@ -31,8 +32,10 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         if (options.popup) {
             this.onFeatureClick = new Subject<Feature>();
             this.featureSubscription = this.onFeatureClick
-                .switchMap((feature: GeoJSONFeature) => options.popup(feature).map((popupContext) => ([feature, popupContext])))
-                .subscribe((data) => {
+                .pipe(
+                    switchMap((feature: GeoJSONFeature) => options.popup(feature).pipe(observableMap(popupContext => ([feature, popupContext]))))
+                )
+                .subscribe((data: [GeoJSONFeature, PopupContext]) => {
                     const [feature, popupContext] = data;
                     const element = this.renderPopup(feature, popupContext);
                     if (options.onPopupRendered) {
@@ -93,7 +96,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
         const featureId: string = this.options.featureId(geoFeature);
         const featureCached: GeoJSONFeature = this.cache.features[featureId];
         if (this.onFeatureClick && !this.options.isCluster(geoFeature)) {
-            this.onFeatureClick.onNext(featureCached);
+            this.onFeatureClick.next(featureCached);
         }
         
         this.options.onMarkerClick && this.options.onMarkerClick(featureCached);
@@ -180,7 +183,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
 
     dispose(): void {
         if (this.featureSubscription) {
-            this.featureSubscription.dispose();
+            this.featureSubscription.unsubscribe();
         }
     }
 }

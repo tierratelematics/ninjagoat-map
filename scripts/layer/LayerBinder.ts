@@ -1,11 +1,12 @@
-import { inject, injectable } from "inversify";
-import { Layer, LayerGroup } from "leaflet";
-import { Observable } from "rx";
+import {inject, injectable} from "inversify";
+import {Layer, LayerGroup} from "leaflet";
+import {EMPTY, iif, Observable} from "rxjs";
 import IMapBoundaries from "../leaflet/IMapBoundaries";
 import ILayerBinder from "./ILayerBinder";
-import { ILayerFactory } from "./ILayerFactory";
-import { MapObservableFactory } from "./MapContext";
+import {ILayerFactory} from "./ILayerFactory";
+import {MapObservableFactory} from "./MapContext";
 import ILayerView from "./ILayerView";
+import {map, startWith, switchAll} from "rxjs/operators";
 
 @injectable()
 class LayerBinder implements ILayerBinder {
@@ -20,18 +21,19 @@ class LayerBinder implements ILayerBinder {
             fromData: T;
 
         this.layerView = layerView;
-        let binder = Observable.if(() => !(options && options.freezeBounds), this.mapBoundaries.boundsChanges(), Observable.empty())
-            .startWith(null)
-            .map(() => source({
-                bounds: this.mapBoundaries.getBounds(),
-                zoom: this.mapBoundaries.getZoom()
-            }))
-            .switch()
-            .map(newData => {
-                layerView.update(fromData, newData);
-                fromData = newData;
-            });
-
+        let binder = iif(() => !(options && options.freezeBounds), this.mapBoundaries.boundsChanges(), EMPTY)
+            .pipe(
+                startWith(null),
+                map(() => source({
+                    bounds: this.mapBoundaries.getBounds(),
+                    zoom: this.mapBoundaries.getZoom()
+                })),
+                switchAll(),
+                map(newData => {
+                    layerView.update(fromData, newData);
+                    fromData = newData as T;
+                })
+            );
         return [layer, binder];
     }
 
