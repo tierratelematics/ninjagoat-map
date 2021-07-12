@@ -5,7 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: Install smild
-      run: npm install smild@4.16.1 -g
+      run: npm install smild@4.16.1 npm-install-peers -g
       shell: bash
 
     - name: Install dependencies
@@ -13,7 +13,7 @@ runs:
       shell: bash
 
     - name: Install peer dependencies
-      run: npm install react@16.2.0 react-dom@16.2.0 --no-save
+      run: npm-install-peers
       shell: bash
 
     - name: Test
