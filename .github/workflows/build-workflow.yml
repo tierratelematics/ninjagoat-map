@@ -13,4 +13,4 @@ jobs:
           node-version: '10.21.0'
 
       - name: Use Build action
-        uses: ./.github/actions/build
+        uses: "./../actions/build"
