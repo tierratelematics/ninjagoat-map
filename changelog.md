@@ -1,3 +1,7 @@
+# 4.0.0-rc.0
+
+Update to rxjs 6
+
 # 3.8.0
 
 Bump leaflet version to 1.7.1
