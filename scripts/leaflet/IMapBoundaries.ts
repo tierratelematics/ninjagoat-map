@@ -1,5 +1,5 @@
 import {LatLng, LatLngBounds, LatLngBoundsExpression, FitBoundsOptions} from "leaflet";
-import {Observable} from "rx";
+import {Observable} from "rxjs";
 
 interface IMapBoundaries {
     getCenter(): LatLng;

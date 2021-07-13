@@ -3,7 +3,7 @@ import {Map as LeafletMap, MapEvents} from "react-leaflet";
 import {lazyInject} from "ninjagoat";
 import IMapHolder from "./leaflet/IMapHolder";
 import {MapOptions, LeafletEvent} from "leaflet";
-import { Observable } from "rx";
+import { Observable } from "rxjs";
 
 export type MapProps = MapOptions & MapEvents & {
     invalidateSize?: Observable<void>,

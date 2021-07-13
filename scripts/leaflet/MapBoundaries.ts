@@ -1,5 +1,5 @@
 import { LatLng, LatLngBounds } from "leaflet";
-import { Observable } from "rx";
+import {fromEvent, Observable} from "rxjs";
 import { inject, injectable } from "inversify";
 import IMapBoundaries from "./IMapBoundaries";
 import IMapHolder from "./IMapHolder";
@@ -35,7 +35,7 @@ class MapBoundaries implements IMapBoundaries {
     }
 
     boundsChanges(): Observable<void> {
-        return Observable.fromEvent(this.holder.obtainMap(), "moveend");
+        return fromEvent(this.holder.obtainMap(), "moveend");
     }
 
     fitBounds(bounds, options?) {
