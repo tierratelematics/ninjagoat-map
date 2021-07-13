@@ -20,7 +20,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Use Build action
-        uses: ./.workflows/build-action.yml
+        uses: ./.github/actions/build
 
       - name: Publish
         run: npm publish
