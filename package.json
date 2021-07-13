@@ -31,7 +31,7 @@
     "typescript": "^3.9.5"
   },
   "peerDependencies": {
-    "ninjagoat": "^4.0.0",
+    "ninjagoat": "5.0.0-rc1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
