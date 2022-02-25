@@ -35,7 +35,7 @@ class GeoJSONLayerView implements ILayerView<GeoJSONCollection, ClusterProps> {
                 .subscribe((data) => {
                     const [feature, popupContext] = data;
                     const element = this.renderPopup(feature, popupContext);
-                    if (options.onPopupRendered) {
+                    if (element !== undefined && options.onPopupRendered) {
                         options.onPopupRendered(element);
                     }
                 });
