@@ -1,3 +1,7 @@
+# 3.8.1
+
+Avoid calling of onPopupRendered when popup has not been rendered
+
 # 3.8.0
 
 Bump leaflet version to 1.7.1
