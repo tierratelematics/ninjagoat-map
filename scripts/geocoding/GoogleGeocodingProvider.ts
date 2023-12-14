@@ -18,7 +18,7 @@ class GoogleGeocodingProvider implements IGeocodingProvider {
         if (!this.client)
             this.client = new GoogleProvider({
                 params: {
-                    key: this.apiKeyConfig.key
+                    apiKey: this.apiKeyConfig.key
                 }
             });
         return this.client.search(query);

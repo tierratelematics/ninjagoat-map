@@ -1,12 +1,12 @@
 {
   "name": "ninjagoat-map",
-  "version": "3.8.1",
+  "version": "3.9.0",
   "dependencies": {
     "circle-to-polygon": "~1.0.0",
     "inversify": "^4.3.0",
     "leaflet": "1.7.1",
     "leaflet-draw": "~1.0.2",
-    "leaflet-geosearch": "~2.6.0",
+    "leaflet-geosearch": "^3.6.1",
     "lodash": "^4.17.5",
     "prop-types": "^15.5.8",
     "react-leaflet": "~1.8.2",

@@ -36,6 +36,6 @@ export class GeocodingControl extends LayersControl<GeocodingControlProps, any> 
     private geocodingProvider: IGeocodingProvider;
 
     createLeafletElement(props: GeocodingControlProps): Object {
-        return new GeoSearchControl(merge({}, {provider: this.geocodingProvider}, props));
+        return GeoSearchControl(merge({}, {provider: this.geocodingProvider}, props));
     }
 }
