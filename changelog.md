@@ -1,3 +1,7 @@
+# 3.8.2
+
+Add callback functions for CREATED and DELETED draw events
+
 # 3.8.1
 
 Avoid calling of onPopupRendered when popup has not been rendered
