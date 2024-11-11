@@ -11,6 +11,8 @@ export type DrawingLayerProps = GeoJSONProps & {
     onChange: (shapes: GeoJSONCollection) => void,
     onVertex?: (collection: GeoJSONCollection) => void
     onDrawStart?: () => void;
+    onDrawCreated?: (ev: DrawEvents.Created) => void;
+    onDrawDeleted?: (ev: DrawEvents.Deleted) => void;
     onEditStart?: () => void;
     onEditStop?: () => void;
 };
@@ -40,6 +42,14 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
 
         if (this.props.onDrawStart) {
             map.on(Draw.Event.DRAWSTART, (event: DrawEvents.DrawStart) => this.props.onDrawStart());
+        }
+
+        if (this.props.onDrawCreated) {
+            map.on(Draw.Event.CREATED, (event: DrawEvents.Created) => this.props.onDrawCreated(event));
+        }
+
+        if (this.props.onDrawDeleted) {
+            map.on(Draw.Event.DELETED, (event: DrawEvents.Deleted) => this.props.onDrawDeleted(event));
         }
 
         if (this.props.onEditStart) {
@@ -88,6 +98,12 @@ export class DrawingLayer extends ObservableLayer<DrawingLayerProps> {
             }
             if (this.props.onDrawStart) {
                 map.off(Draw.Event.DRAWSTART);
+            } 
+            if (this.props.onDrawCreated) {
+                map.off(Draw.Event.CREATED);
+            } 
+            if (this.props.onDrawDeleted) {
+                map.off(Draw.Event.DELETED);
             }
             if (this.props.onEditStart) {
                 map.off(Draw.Event.EDITSTART);
