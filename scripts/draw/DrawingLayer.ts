@@ -11,8 +11,8 @@ export type DrawingLayerProps = GeoJSONProps & {
     onChange: (shapes: GeoJSONCollection) => void,
     onVertex?: (collection: GeoJSONCollection) => void
     onDrawStart?: () => void;
-    onDrawCreated?: (ev: DrawEvents.Created) => void;
-    onDrawDeleted?: (ev: DrawEvents.Deleted) => void;
+    onDrawCreated?: (ev: any) => void;
+    onDrawDeleted?: (ev: any) => void;
     onEditStart?: () => void;
     onEditStop?: () => void;
 };
