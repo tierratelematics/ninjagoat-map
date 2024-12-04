@@ -1,3 +1,7 @@
+# 3.8.3
+
+Change type of event object parameters for map event callbacks
+
 # 3.8.2
 
 Add callback functions for CREATED and DELETED draw events
